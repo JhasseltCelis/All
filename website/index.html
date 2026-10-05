@@ -210,7 +210,7 @@ section { padding-block: 120px; scroll-margin-top: 64px; }
 .fgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
 .fgrid .full { grid-column: 1 / -1; }
 @media (max-width: 640px) { .fgrid { grid-template-columns: 1fr; } .formcard { padding: 22px; } }
-.field { display: grid; gap: 8px; min-width: 0; }
+.field { display: grid; gap: 8px; min-width: 0; align-content: start; }
 .field > label, legend { font-weight: 500; font-size: 0.93rem; }
 .help { font-size: 0.84rem; color: var(--muted); }
 .req { color: var(--error); margin-left: 2px; }
@@ -466,6 +466,28 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
 .done.arriving .tick path { animation: draw 0.28s var(--ease) 0.08s forwards; }
 @keyframes draw { to { stroke-dashoffset: 0; } }
 @media (prefers-reduced-motion: reduce) { .done .tick path { stroke-dashoffset: 0; } }
+
+/* ===== Honest fit check ===== */
+.fit { grid-template-columns: 1fr 1fr; }
+.fit > div { padding: 40px 36px 44px; display: grid; gap: 22px; align-content: start; }
+.fit h3 { font-family: var(--display); font-weight: 850; font-stretch: 112%; text-transform: uppercase; font-size: clamp(1.5rem, 2.4vw, 2.1rem); line-height: 0.95; letter-spacing: -0.015em; }
+.fit ul { list-style: none; margin: 0; padding: 0; display: grid; }
+.fit li { display: grid; grid-template-columns: 30px 1fr; gap: 10px; padding: 16px 0; border-top: 1px solid var(--line); }
+.fit li:first-child { border-top: 0; padding-top: 0; }
+.fit li svg { width: 20px; height: 20px; margin-top: 3px; fill: none; stroke-width: 2.5; }
+.fit li b { display: block; font-weight: 600; margin-bottom: 2px; }
+.fit li span { color: var(--muted); }
+.fit .yes svg { stroke: var(--blue); }
+.fit .nope { background: var(--band); color: var(--band-fg); }
+.fit .nope li { border-top-color: color-mix(in srgb, var(--band-fg) 18%, transparent); }
+.fit .nope li span { color: var(--band-fg); opacity: 0.72; }
+.fit .nope svg { stroke: var(--band-fg); }
+.fit .nope h3 span { color: var(--blue); }
+.fit-foot { margin-top: 20px; }
+@media (max-width: 860px) { .fit { grid-template-columns: 1fr; } .fit > div { padding: 28px 22px 32px; } }
+.plan-note { display: none; border-left: 3px solid var(--blue); padding: 10px 14px; font-size: 0.9rem; background: color-mix(in srgb, var(--blue) 8%, var(--bg)); }
+.plan-note.show { display: block; }
+@media (prefers-reduced-motion: no-preference) { .plan-note.show { animation: errIn 0.18s ease-out both; } }
 </style>
 
 <a class="skip" href="#main">Skip to content</a>
@@ -580,6 +602,36 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
     </ul>
   </div>
 
+  <section id="fit" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 class="disp">Who this is for.<br><span class="blue">Honestly.</span></h2>
+        <p class="lead">I'd rather lose a sale than sell you something you don't need. Here's the fit check.</p>
+      </div>
+      <div class="fit cells">
+        <div class="yes">
+          <h3>Made for you if</h3>
+          <ul>
+            <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg><span><b>You already pay for AI</b>Claude, ChatGPT or Gemini on a paid plan, and it feels like you're getting $5 of value from a $20 subscription.</span></li>
+            <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg><span><b>You're on a top tier plan</b>Max, Pro, Team or Business. You get the most out of this, because that's where most of the features live, unused.</span></li>
+            <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg><span><b>You're great at your job, and your job isn't tech</b>Agents, dentists, lawyers, designers, consultants, office managers.</span></li>
+            <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg><span><b>You'd rather spend one hour with a person</b>than ten hours watching tutorials at 2x speed.</span></li>
+          </ul>
+        </div>
+        <div class="nope">
+          <h3>Probably <span>not</span> for you if</h3>
+          <ul>
+            <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15"/></svg><span><b>You're on a free plan</b>Connectors, projects and custom skills live behind the paywall. I'd be giving you a tour of a locked house. Upgrade first, then come back. I'll wait.</span></li>
+            <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15"/></svg><span><b>You've said "I'll just build my own MCP server"</b>You don't need me. You might need some sleep.</span></li>
+            <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15"/></svg><span><b>Your terminal has more themes than your wardrobe</b>Respect. You can do this yourself in an afternoon, and you'd enjoy it.</span></li>
+            <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15"/></svg><span><b>You want AI for cheaper</b>This isn't a discount. It's how you finally get your money's worth from what you already pay.</span></li>
+          </ul>
+        </div>
+      </div>
+      <p class="fit-foot muted">Not sure which side you're on? Book anyway. The interviewer checks your plan, and I'll tell you honestly if you don't need me.</p>
+    </div>
+  </section>
+
   <section id="how" style="padding-top:0">
     <div class="wrap">
       <div class="sec-head">
@@ -619,7 +671,7 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
     <div class="wrap">
       <div class="sec-head">
         <h2 class="disp">Packages</h2>
-        <p class="lead">One time price. Pay after the session. The Care plan is optional.</p>
+        <p class="lead">One time price, paid after the session. Requires a paid Claude, ChatGPT or Gemini plan. The Care plan is optional.</p>
       </div>
       <div class="plans cells">
         <article class="plan">
@@ -683,6 +735,7 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
             <tr><th scope="row">Connections</th><td>2</td><td class="pk">All key tools</td><td>All key tools</td></tr>
             <tr><th scope="row">Custom skills, GPTs or Gems</th><td class="no">Not included</td><td class="pk">3</td><td>Shared team skills</td></tr>
             <tr><th scope="row">Session length</th><td>60 min</td><td class="pk">90 min</td><td>Setup plus training</td></tr>
+            <tr><th scope="row">Works with free AI plans</th><td class="no">No</td><td class="pk no">No</td><td class="no">No</td></tr>
             <tr><th scope="row">2 week tune up</th><td class="no">Not included</td><td class="pk">Yes</td><td>Yes</td></tr>
           </tbody>
         </table>
@@ -710,8 +763,9 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
       <h2 class="disp">Questions</h2>
       <div class="cells rows">
         <div><span class="k">Q</span><div class="t"><h3>Do I need to be technical?</h3><p class="muted">No. If you can use email, you're ready.</p></div></div>
-        <div><span class="k">Q</span><div class="t"><h3>Which AI plan do I need?</h3><p class="muted">Free plans cover the basics. Connecting email and files, and custom skills, usually need the paid plan, around $20 a month. I'll tell you before we start.</p></div></div>
+        <div><span class="k">Q</span><div class="t"><h3>Which AI plan do I need?</h3><p class="muted">A paid one. Claude, ChatGPT and Gemini all keep email connections, projects and custom skills on their paid plans, usually from about $20 a month. Higher tiers get even more out of a setup. On a free plan? Upgrade before the session and you're set.</p></div></div>
         <div><span class="k">Q</span><div class="t"><h3>Is the interviewer a real person?</h3><p class="muted">No, it's an AI assistant that takes notes for me. I read everything and prepare your session personally.</p></div></div>
+        <div><span class="k">Q</span><div class="t"><h3>I'm a developer. Should I book?</h3><p class="muted">Honestly, probably not. If you know what an API key is, you can set this up yourself, and you'd have more fun doing it. Send your non tech friends instead.</p></div></div>
         <div><span class="k">Q</span><div class="t"><h3>What if something stops working later?</h3><p class="muted">AI tools change often. The Care plan covers that, or book a single tune up any time.</p></div></div>
       </div>
     </div>
@@ -739,6 +793,10 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
             <div class="field"><label for="b-pkg">Package</label>
               <select id="b-pkg" name="package"><option>Not sure yet</option><option>Starter</option><option>Pro</option><option>Team</option><option>Care plan</option></select>
             </div>
+            <div class="field full"><label for="b-plan">Your current AI plan</label>
+              <select id="b-plan" name="plan"><option value="">Choose one</option><option>Paid (Pro, Plus or similar)</option><option>Top tier (Max, Pro, Team or Business)</option><option>Free</option><option>Not sure</option></select>
+            </div>
+            <p class="plan-note full" id="planNote" role="status"></p>
             <fieldset class="full">
               <legend>Which AI do you want set up?</legend>
               <div class="opts">
@@ -869,7 +927,7 @@ const spy = new IntersectionObserver(es => es.forEach(e => {
   if (!home.hidden) navLinks.forEach(a => a.classList.toggle("active", a.dataset.sec === e.target.id));
   mcta.classList.toggle("off", e.target.id === "top" || e.target.id === "book");
 }), { rootMargin: "-45% 0px -50% 0px" });
-["top", "why", "layers-sec", "how", "packages", "privacy", "faq", "book"].forEach(id => spy.observe($(id)));
+["top", "why", "layers-sec", "fit", "how", "packages", "privacy", "faq", "book"].forEach(id => spy.observe($(id)));
 
 document.querySelectorAll("[data-pkg]").forEach(a => a.addEventListener("click", () => { $("b-pkg").value = a.dataset.pkg; }));
 
@@ -1069,6 +1127,16 @@ function swap(from, to, before) {
   from.classList.add("leaving");
   setTimeout(show, 160);
 }
+
+// Be upfront about plans before anyone books
+$("b-plan").addEventListener("change", e => {
+  const note = $("planNote"), v = e.target.value;
+  const msg = v === "Free" ? "Heads up: setups need a paid plan, because the useful features live there. You can still book, just upgrade before the session. Most people do it the day before."
+    : v === "Not sure" ? "No problem. The interviewer will help you check, and I'll tell you before we start."
+    : "";
+  note.textContent = msg;
+  note.classList.toggle("show", !!msg);
+});
 
 // ---------- Booking ----------
 const bookRules = {

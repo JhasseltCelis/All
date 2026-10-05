@@ -37,12 +37,13 @@ How to talk:
 - Never ask for passwords, API keys, card numbers or similar. If the client starts sharing one, tell them kindly not to and continue.
 - Do not give setup advice or recommend products. If asked, say the consultant will cover it in the session.
 - If the client wants to stop early, wrap up politely.
+- The service needs a paid AI plan. If they're on a free plan, mention kindly that they'll need to upgrade before the session, and that the consultant will help them pick. If they turn out to be a developer or very technical, be honest that they may not need the service, and let the consultant decide.
 
 When every topic is covered well enough, or the client wants to stop, thank them, tell them the consultant will review their answers before the session, and set done to true.
 
 Output fields: message is what the client sees. covered lists every topic covered so far. done is true only on your final message.`;
 
-const SUMMARY_PROMPT = `You prepare briefings for a consultant who sets up Claude, ChatGPT and Gemini for clients. Read the intake interview below and write the briefing the consultant will use to prepare the setup session. Be specific and practical. Use only what the client said; write "not mentioned" when something is missing. The client recap is shown to the client, so write it in their language, warmly, in 2 or 3 sentences. Everything else is for the consultant, in English.`;
+const SUMMARY_PROMPT = `You prepare briefings for a consultant who sets up Claude, ChatGPT and Gemini for clients. Read the intake interview below and write the briefing the consultant will use to prepare the setup session. Be specific and practical. Use only what the client said; write "not mentioned" when something is missing. The service needs a paid AI plan and is not meant for developers or very technical people: set fit_warning to a short note if the client is on a free plan or seems too technical to need help, otherwise "none". The client recap is shown to the client, so write it in their language, warmly, in 2 or 3 sentences. Everything else is for the consultant, in English.`;
 
 // ---------- Web entry points ----------
 
@@ -124,6 +125,8 @@ function handleFinish(req) {
       role: { type: 'string' },
       industry: { type: 'string' },
       current_ai: { type: 'string' },
+      plan_status: { type: 'string', enum: ['Paid', 'Top tier', 'Free, must upgrade', 'Unknown'] },
+      fit_warning: { type: 'string' },
       tasks: {
         type: 'array',
         items: {
@@ -144,7 +147,7 @@ function handleFinish(req) {
       open_questions: { type: 'array', items: { type: 'string' } },
       client_recap: { type: 'string' }
     },
-    required: ['one_line', 'language', 'role', 'industry', 'current_ai', 'tasks', 'tools_to_connect', 'writing_style',
+    required: ['one_line', 'language', 'role', 'industry', 'current_ai', 'plan_status', 'fit_warning', 'tasks', 'tools_to_connect', 'writing_style',
       'privacy_limits', 'company_rules', 'recommended_package', 'package_reason', 'session_plan', 'prep_checklist',
       'open_questions', 'client_recap'],
     additionalProperties: false
@@ -177,6 +180,7 @@ function handleBooking(req) {
     email: clean(req.email, 120),
     phone: clean(req.phone, 40),
     pkg: clean(req.package, 40),
+    plan: clean(req.plan, 60),
     ai: clean([].concat(req.ai || []).join(', '), 120),
     date: clean(req.date, 20),
     time: clean(req.time, 20),
@@ -184,11 +188,11 @@ function handleBooking(req) {
   };
   if (!b.name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(b.email)) return { ok: false, error: 'invalid' };
 
-  sheet('Bookings', ['Received', 'Name', 'Email', 'Phone', 'Package', 'AI', 'Date', 'Time', 'Notes'])
-    .appendRow([new Date(), b.name, b.email, b.phone, b.pkg, b.ai, b.date, b.time, b.notes]);
+  sheet('Bookings', ['Received', 'Name', 'Email', 'Phone', 'Package', 'AI plan', 'AI', 'Date', 'Time', 'Notes'])
+    .appendRow([new Date(), b.name, b.email, b.phone, b.pkg, b.plan, b.ai, b.date, b.time, b.notes]);
 
   const text = 'New booking request\n\n' + b.name + ' (' + b.email + (b.phone ? ', ' + b.phone : '') + ')\n' +
-    'Package: ' + b.pkg + '\nAI: ' + (b.ai || 'not chosen') + '\nWhen: ' + (b.date || 'any day') + ', ' + b.time +
+    'Package: ' + b.pkg + '\nAI plan: ' + (b.plan || 'not given') + (b.plan === 'Free' ? '  (needs to upgrade before the session)' : '') + '\nAI: ' + (b.ai || 'not chosen') + '\nWhen: ' + (b.date || 'any day') + ', ' + b.time +
     (b.notes ? '\n\nNotes: ' + b.notes : '');
   notifyOwner('New booking: ' + b.name, text, '<pre style="font:14px/1.5 sans-serif;white-space:pre-wrap">' + esc(text) + '</pre>');
   return { ok: true };
@@ -249,10 +253,10 @@ function callClaude(opts) {
 // ---------- Delivery: sheet, email, Telegram ----------
 
 function saveInterview(name, email, s, transcript) {
-  sheet('Interviews', ['Received', 'Name', 'Email', 'Summary', 'Role', 'Package', 'Tasks', 'Tools', 'Style',
+  sheet('Interviews', ['Received', 'Name', 'Email', 'Summary', 'Role', 'AI plan', 'Fit check', 'Package', 'Tasks', 'Tools', 'Style',
     'Privacy', 'Prep checklist', 'Open questions', 'Transcript'])
     .appendRow([
-      new Date(), name, email, s.one_line, s.role + ' / ' + s.industry, s.recommended_package,
+      new Date(), name, email, s.one_line, s.role + ' / ' + s.industry, s.plan_status, s.fit_warning, s.recommended_package,
       s.tasks.map(t => t.task + ': ' + t.skill_idea).join('\n'),
       s.tools_to_connect.join(', '), s.writing_style, s.privacy_limits,
       s.prep_checklist.join('\n'), s.open_questions.join('\n'), transcript.slice(0, 45000)
@@ -281,7 +285,8 @@ function briefingText(name, email, s) {
     s.one_line,
     '',
     'Role: ' + s.role + ', ' + s.industry,
-    'AI today: ' + s.current_ai,
+    'AI today: ' + s.current_ai + ' (' + s.plan_status + ')',
+    'Fit check: ' + s.fit_warning,
     'Suggested package: ' + s.recommended_package + '. ' + s.package_reason,
     '',
     'Top tasks:',
@@ -307,7 +312,7 @@ function briefingHtml(name, email, s, transcript) {
     '<h2 style="margin:0 0 4px">' + esc(name) + '</h2><p style="margin:0 0 16px;color:#555">' + esc(email) + '</p>' +
     '<p style="font-size:17px;margin:0 0 20px"><b>' + esc(s.one_line) + '</b></p>' +
     '<table style="border-collapse:collapse;margin-bottom:20px">' +
-    row('Role', s.role + ', ' + s.industry) + row('AI today', s.current_ai) +
+    row('Role', s.role + ', ' + s.industry) + row('AI today', s.current_ai + ' (' + s.plan_status + ')') + row('Fit check', s.fit_warning) +
     row('Package', s.recommended_package + '. ' + s.package_reason) +
     row('Connect', s.tools_to_connect.join(', ') || 'not mentioned') + row('Style', s.writing_style) +
     row('Keep private', s.privacy_limits) + row('Company rules', s.company_rules) + '</table>' +
@@ -379,9 +384,9 @@ function json(obj) { return ContentService.createTextOutput(JSON.stringify(obj))
 
 /** Creates the "Joogo clients" sheet and asks for permissions. */
 function setup() {
-  sheet('Interviews', ['Received', 'Name', 'Email', 'Summary', 'Role', 'Package', 'Tasks', 'Tools', 'Style',
+  sheet('Interviews', ['Received', 'Name', 'Email', 'Summary', 'Role', 'AI plan', 'Fit check', 'Package', 'Tasks', 'Tools', 'Style',
     'Privacy', 'Prep checklist', 'Open questions', 'Transcript']);
-  sheet('Bookings', ['Received', 'Name', 'Email', 'Phone', 'Package', 'AI', 'Date', 'Time', 'Notes']);
+  sheet('Bookings', ['Received', 'Name', 'Email', 'Phone', 'Package', 'AI plan', 'AI', 'Date', 'Time', 'Notes']);
   console.log('Sheet ready: https://docs.google.com/spreadsheets/d/' + prop('SHEET_ID'));
 }
 
