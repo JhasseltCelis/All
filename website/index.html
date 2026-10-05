@@ -319,6 +319,112 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
   .marquee ul[aria-hidden] { display: none; }
   .live i, .typing i { animation: none; }
 }
+
+/* ===== v5: interactive hero demo ===== */
+:root { --enter: cubic-bezier(0.22, 1, 0.36, 1); --exit: cubic-bezier(0.4, 0, 1, 1); --hl: color-mix(in srgb, var(--blue) 16%, transparent); }
+.hero2 { padding-block: 48px 0; }
+.hero2 h1 { font-family: var(--display); font-weight: 900; font-stretch: 118%; text-transform: uppercase; font-size: clamp(3rem, 9.4vw, 9rem); line-height: 0.86; letter-spacing: -0.035em; }
+.hero2 h1 span { display: block; }
+.hero2 .sub { display: grid; grid-template-columns: 1fr auto; gap: 24px 40px; align-items: end; margin-top: 32px; }
+.hero2 .sub .ctas { display: flex; gap: 10px; flex-wrap: wrap; }
+@media (max-width: 860px) { .hero2 .sub { grid-template-columns: 1fr; } }
+
+.lab { margin-top: 48px; display: grid; grid-template-columns: 340px 1fr; border: 1px solid var(--fg); }
+.lab-ctrl { border-right: 1px solid var(--fg); display: grid; align-content: start; }
+.lab-ctrl .grp { padding: 20px 22px; display: grid; gap: 12px; }
+.lab-ctrl .grp + .grp { border-top: 1px solid var(--line); }
+.lab-ctrl .ttl { font-weight: 600; font-size: 0.95rem; }
+.jobs { display: flex; flex-wrap: wrap; gap: 6px; }
+.job { min-height: 40px; padding: 0 14px; border: 1px solid var(--line); background: var(--bg); color: var(--fg); font: 500 0.9rem var(--sans); cursor: pointer; transition: background-color 0.18s var(--enter), border-color 0.18s var(--enter), color 0.18s var(--enter); }
+.job:hover { border-color: var(--fg); }
+.job[aria-pressed="true"] { background: var(--fg); border-color: var(--fg); color: var(--bg); }
+.layers { list-style: none; margin: 0; padding: 0; display: grid; }
+.layer { display: grid; grid-template-columns: 26px 1fr; gap: 12px; align-items: start; width: 100%; padding: 12px 0; border: 0; border-top: 1px solid var(--line); background: none; color: var(--muted); font: inherit; text-align: left; cursor: pointer; transition: color 0.2s var(--enter); }
+.layers li:first-child .layer { border-top: 0; }
+.layer:hover { color: var(--fg); }
+.layer .sq { width: 18px; height: 18px; margin-top: 2px; border: 1.5px solid var(--line); display: grid; place-items: center; transition: background-color 0.22s var(--enter), border-color 0.22s var(--enter); }
+.layer .sq svg { width: 12px; height: 12px; stroke: var(--blue-ink); fill: none; stroke-width: 3; opacity: 0; transform: scale(0.6); transition: opacity 0.2s var(--enter), transform 0.25s var(--enter); }
+.layer b { display: block; font-weight: 600; font-size: 0.95rem; }
+.layer small { display: block; font-family: var(--mono); font-size: 0.74rem; margin-top: 2px; }
+.layer.on { color: var(--fg); }
+.layer.on .sq { background: var(--blue); border-color: var(--blue); }
+.layer.on .sq svg { opacity: 1; transform: none; }
+.layer.cur b { color: var(--blue); }
+
+.lab-out { display: grid; grid-template-rows: auto 1fr auto; min-width: 0; background: var(--soft); }
+.lab-ask { padding: 18px 24px; border-bottom: 1px solid var(--line); display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: baseline; background: var(--bg); }
+.lab-ask .mono { color: var(--muted); }
+.lab-ask p { font-weight: 500; }
+.lab-reply { padding: 28px 24px; display: grid; gap: 16px; align-content: start; min-height: 260px; }
+.lab-reply .who { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+.reply { font-size: clamp(1.05rem, 1.6vw, 1.3rem); line-height: 1.55; max-width: 60ch; transition: opacity 0.14s var(--exit), transform 0.14s var(--exit), filter 0.14s var(--exit); }
+.reply.out { opacity: 0; transform: translateY(-3px); filter: blur(2px); }
+.reply.in { animation: replyIn 0.38s var(--enter) both; }
+@keyframes replyIn { from { opacity: 0; transform: translateY(6px); filter: blur(4px); } to { opacity: 1; transform: none; filter: none; } }
+.reply mark { background: var(--hl); color: inherit; padding: 0 2px; box-shadow: inset 0 -2px 0 var(--blue); }
+.verdict { display: inline-flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 0.78rem; }
+.verdict i { width: 10px; height: 10px; background: var(--muted); transition: background-color 0.25s var(--enter); }
+.verdict.good i { background: var(--blue); }
+.lab-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 14px 24px; border-top: 1px solid var(--line); background: var(--bg); }
+.steps-dots { display: flex; gap: 6px; }
+.steps-dots i { width: 28px; height: 4px; background: var(--line); transform-origin: left; transition: background-color 0.25s var(--enter); }
+.steps-dots i.on { background: var(--blue); }
+@media (max-width: 960px) {
+  .lab { grid-template-columns: 1fr; }
+  .lab-ctrl { border-right: 0; border-bottom: 1px solid var(--fg); }
+  .layers { grid-template-columns: 1fr 1fr; gap: 0 16px; }
+  .layers li:nth-child(2) .layer { border-top: 0; }
+}
+@media (max-width: 520px) { .layers { grid-template-columns: 1fr; } .layers li:nth-child(2) .layer { border-top: 1px solid var(--line); } .lab-reply { min-height: 300px; } }
+
+/* ===== Manifesto: words light up on scroll ===== */
+.manifesto { padding-block: 140px; }
+.manifesto p { font-family: var(--display); font-weight: 800; font-stretch: 108%; font-size: clamp(1.9rem, 4.6vw, 4.1rem); line-height: 1.04; letter-spacing: -0.02em; max-width: 22ch; text-wrap: balance; }
+.manifesto .w { opacity: var(--o, 1); transition: opacity 0.12s linear; }
+.manifesto .w.b { color: var(--blue); }
+
+/* ===== Stacking layers ===== */
+.stack { display: grid; gap: 24px; }
+.scard { position: sticky; top: calc(88px + var(--i) * 18px); background: var(--bg); border: 1px solid var(--fg); display: grid; grid-template-columns: 1fr 1fr; min-height: 360px; transform-origin: center top; will-change: transform; }
+.scard > div { padding: 36px; display: grid; gap: 16px; align-content: start; min-width: 0; }
+.scard .n { font-family: var(--display); font-weight: 900; font-stretch: 112%; font-size: 4.6rem; line-height: 0.85; letter-spacing: -0.03em; color: var(--blue); }
+.scard h3 { font-family: var(--display); font-weight: 850; font-stretch: 112%; text-transform: uppercase; font-size: clamp(1.6rem, 2.6vw, 2.3rem); line-height: 0.95; letter-spacing: -0.015em; }
+.scard p { color: var(--muted); max-width: 44ch; }
+.scard .vis { border-left: 1px solid var(--line); background: var(--soft); align-content: center; }
+.code { font-family: var(--mono); font-size: 0.84rem; line-height: 1.75; background: var(--bg); border: 1px solid var(--line); padding: 18px 20px; }
+.code b { color: var(--blue); font-weight: 500; }
+.conn { display: grid; gap: 8px; }
+.conn div { display: flex; justify-content: space-between; align-items: center; gap: 12px; background: var(--bg); border: 1px solid var(--line); padding: 12px 16px; font-weight: 500; }
+.conn span { font-family: var(--mono); font-size: 0.76rem; color: var(--blue); }
+.conn .lim { color: var(--muted); }
+.skill { background: var(--bg); border: 1px solid var(--line); display: grid; }
+.skill > * { padding: 14px 18px; }
+.skill > * + * { border-top: 1px solid var(--line); }
+.skill .mono { color: var(--muted); }
+.cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; max-width: 320px; }
+.cal i { aspect-ratio: 1; background: var(--bg); border: 1px solid var(--line); }
+.cal i.on { background: var(--blue); border-color: var(--blue); }
+.cal-cap { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 0.76rem; color: var(--muted); max-width: 320px; }
+@media (max-width: 860px) {
+  .scard { grid-template-columns: 1fr; position: relative; top: auto; min-height: 0; }
+  .scard .vis { border-left: 0; border-top: 1px solid var(--line); }
+  .scard > div { padding: 24px; }
+}
+
+/* ===== Skills ribbon (static, scrollable by the visitor) ===== */
+.ribbon { border-block: 1px solid var(--line); overflow-x: auto; scrollbar-width: none; }
+.ribbon::-webkit-scrollbar { display: none; }
+.ribbon ul { display: flex; list-style: none; margin: 0; padding: 0; width: max-content; }
+.ribbon li { padding: 18px 28px; border-right: 1px solid var(--line); white-space: nowrap; display: grid; gap: 2px; }
+.ribbon li b { font-weight: 600; }
+.ribbon li span { font-family: var(--mono); font-size: 0.74rem; color: var(--muted); }
+
+@media (prefers-reduced-motion: reduce) {
+  .reply, .reply.out { transition: none; opacity: 1; transform: none; filter: none; }
+  .reply.in { animation: none; }
+  .manifesto .w { opacity: 1 !important; transition: none; }
+  .scard { transform: none !important; }
+}
 </style>
 
 <a class="skip" href="#main">Skip to content</a>
@@ -338,79 +444,100 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
 <!-- ================= HOME ================= -->
 <main id="view-home">
   <span id="main"></span>
-  <header class="hero" id="top">
+  <header class="hero2" id="top">
     <div class="wrap">
-      <h1><span>Your AI.</span><span>Set up.</span><span class="blue">In one call.</span></h1>
-      <div class="hero-row cells" style="border-left:0">
-        <div>
-          <p class="lead">You already pay for Claude, ChatGPT or Gemini. I set it up around your real job: your voice, your inbox, your files, and the tasks you repeat every week.</p>
-        </div>
+      <h1><span>Your AI,</span><span class="blue">set up for you.</span></h1>
+      <div class="sub">
+        <p class="lead">You already pay for Claude, ChatGPT or Gemini. In one call I give it your voice, your calendar, your files and your repeat tasks. Try it below: pick a job and add the setup one layer at a time.</p>
         <div class="ctas">
           <a class="btn blue" href="#book">Book your setup <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5"/></svg></a>
-          <a class="btn line" href="#packages">See prices</a>
+          <a class="btn line" href="#interview">Start the interview</a>
         </div>
-        <div style="border-right:0">
-          <ul class="checks-list">
-            <li><svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3.5 9.5l3.5 3.5 7.5-8"/></svg>Pay after the session</li>
-            <li><svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3.5 9.5l3.5 3.5 7.5-8"/></svg>You never share passwords</li>
-            <li><svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3.5 9.5l3.5 3.5 7.5-8"/></svg>No tech skills needed</li>
-          </ul>
+      </div>
+
+      <div class="lab" id="lab" aria-label="Interactive demo: see how a setup changes an AI reply">
+        <div class="lab-ctrl">
+          <div class="grp">
+            <p class="ttl" id="jobsLabel">Pick a job</p>
+            <div class="jobs" role="group" aria-labelledby="jobsLabel" id="jobs">
+              <button type="button" class="job" data-job="realestate" aria-pressed="true">Real estate</button>
+              <button type="button" class="job" data-job="dental" aria-pressed="false">Dental clinic</button>
+              <button type="button" class="job" data-job="law" aria-pressed="false">Law firm</button>
+              <button type="button" class="job" data-job="design" aria-pressed="false">Freelancer</button>
+            </div>
+          </div>
+          <div class="grp">
+            <p class="ttl" id="layersLabel">Add the setup</p>
+            <ul class="layers" id="layers" aria-labelledby="layersLabel">
+              <li><button type="button" class="layer" data-step="0"><span class="sq"><svg viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5L10 3.5"/></svg></span><span><b>Generic AI</b><small>no setup</small></span></button></li>
+              <li><button type="button" class="layer" data-step="1"><span class="sq"><svg viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5L10 3.5"/></svg></span><span><b>Your instructions</b><small id="l1"></small></span></button></li>
+              <li><button type="button" class="layer" data-step="2"><span class="sq"><svg viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5L10 3.5"/></svg></span><span><b>Your tools</b><small id="l2"></small></span></button></li>
+              <li><button type="button" class="layer" data-step="3"><span class="sq"><svg viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5L10 3.5"/></svg></span><span><b>Your skill</b><small id="l3"></small></span></button></li>
+            </ul>
+          </div>
+        </div>
+        <div class="lab-out">
+          <div class="lab-ask"><span class="mono">You ask</span><p id="ask"></p></div>
+          <div class="lab-reply">
+            <div class="who"><span class="mono muted">AI reply</span><span class="verdict" id="verdict"><i></i><span></span></span></div>
+            <p class="reply" id="reply-demo" aria-live="polite"></p>
+          </div>
+          <div class="lab-foot">
+            <span class="steps-dots" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+            <button type="button" class="btn line" id="nextLayer" style="min-height:44px">Add next layer <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5"/></svg></button>
+          </div>
         </div>
       </div>
     </div>
   </header>
 
-  <div class="band" aria-label="Works with Claude, ChatGPT, Gemini, Gmail, Outlook, Google Drive, Notion and Slack">
-    <div class="marquee">
-      <ul><li>Claude</li><li>ChatGPT</li><li>Gemini</li><li>Gmail</li><li>Outlook</li><li>Google Drive</li><li>Notion</li><li>Slack</li></ul>
-      <ul aria-hidden="true"><li>Claude</li><li>ChatGPT</li><li>Gemini</li><li>Gmail</li><li>Outlook</li><li>Google Drive</li><li>Notion</li><li>Slack</li></ul>
-    </div>
-  </div>
-
-  <section id="proof">
+  <section class="manifesto" id="why">
     <div class="wrap">
-      <div class="sec-head">
-        <h2 class="disp">Same ask.<br><span class="blue">Better answer.</span></h2>
-        <p class="lead">Same AI, same request. The only difference is the setup.</p>
-      </div>
-      <p class="mono muted ask">Request: "Reply to Carla, she wants to move Thursday's viewing to Saturday."</p>
-      <div class="ba cells">
-        <div class="before">
-          <div class="tag"><b>Before</b><span class="mono muted">generic AI</span></div>
-          <p class="mail">Dear Carla, Thank you for reaching out. I hope this message finds you well. I would be more than happy to accommodate your request to reschedule. Please let me know what time works best for you on Saturday, and I will do my best to arrange it. Best regards.</p>
-          <ul class="notes">
-            <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 8h8"/></svg>Can't see your calendar, so it asks her again</li>
-            <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 8h8"/></svg>Stiff tone you'd have to rewrite</li>
-            <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 8h8"/></svg>No clear next step</li>
-          </ul>
-        </div>
-        <div class="after">
-          <div class="tag"><b>After</b><span class="mono muted">set up by Joogo</span></div>
-          <p class="mail">Hi Carla, no problem at all. Saturday I'm free at 10:00 or 14:30 at the Brickell apartment. Which works for you? I'll send parking details once you confirm.</p>
-          <ul class="notes">
-            <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7"/></svg>Checked your calendar and offered real times</li>
-            <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7"/></svg>Short and warm, the way you write</li>
-            <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7"/></svg>Ends with one clear next step</li>
-          </ul>
-        </div>
-      </div>
+      <p id="manifesto">Most people pay for AI and use it like a search box. A setup turns it into an assistant that already knows your clients, your calendar and the way you write.</p>
     </div>
   </section>
 
-  <section id="get" style="padding-top:0">
+  <section id="layers-sec" style="padding-top:0">
     <div class="wrap">
       <div class="sec-head">
-        <h2 class="disp">What you<br>walk away with</h2>
+        <h2 class="disp">Four layers.<br><span class="blue">One call.</span></h2>
         <p class="lead">Everything lives in your own account. No new apps to learn.</p>
       </div>
-      <div class="get cells">
-        <div><p class="n">01</p><h3>Instructions that sound like you</h3><p>Your role, clients, tone and languages saved once. Every chat starts already knowing you.</p></div>
-        <div><p class="n">02</p><h3>Your tools, connected</h3><p>Email, calendar and files, with only the access you approve.</p></div>
-        <div><p class="n">03</p><h3>Skills for repeat work</h3><p>Custom skills, GPTs or Gems for the 3 tasks you do most.</p></div>
-        <div><p class="n">04</p><h3>Cheat sheet and tune up</h3><p>A one page guide, and a check in two weeks later to fix what feels off.</p></div>
+      <div class="stack" id="stack">
+        <article class="scard" style="--i:0">
+          <div><p class="n">01</p><h3>Instructions that sound like you</h3><p>Your role, your clients, your tone and your languages, saved once. Every chat starts already knowing who you are.</p></div>
+          <div class="vis"><div class="code"><b>Role:</b> dental office manager, 3 dentists<br><b>Tone:</b> friendly, calm, never pushy<br><b>Always:</b> confirm date, time and what to bring<br><b>Never:</b> give medical advice<br><b>Languages:</b> English, Spanish</div></div>
+        </article>
+        <article class="scard" style="--i:1">
+          <div><p class="n">02</p><h3>Your tools, connected</h3><p>It reads your inbox, calendar and files when you ask, with only the access you approve.</p></div>
+          <div class="vis"><div class="conn"><div>Gmail<span>read and draft</span></div><div>Google Calendar<span>read</span></div><div>Google Drive<span>one folder only</span></div><div>Bank and payroll<span class="lim">not connected</span></div></div></div>
+        </article>
+        <article class="scard" style="--i:2">
+          <div><p class="n">03</p><h3>Skills for your repeat work</h3><p>Custom skills, GPTs or Gems for the 3 tasks you do most. One short sentence, and the work comes back done your way.</p></div>
+          <div class="vis"><div class="skill"><span class="mono">Skill</span><b>Friday client follow ups</b><span>Finds this week's viewings in your calendar, drafts a warm follow up for each client, and leaves them in Gmail for you to send.</span><span class="mono">You type: "Do my Friday follow ups"</span></div></div>
+        </article>
+        <article class="scard" style="--i:3">
+          <div><p class="n">04</p><h3>A cheat sheet and a tune up</h3><p>A one page guide with your best prompts. Two weeks later we meet again and fix anything that feels off.</p></div>
+          <div class="vis" style="gap:12px"><div class="cal" aria-label="Setup on day 1, tune up on day 14"><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="on"></i></div><div class="cal-cap"><span>Day 1: setup</span><span>Day 14: tune up</span></div></div>
+        </article>
       </div>
     </div>
   </section>
+
+  <div class="ribbon" tabindex="0" aria-label="Skill ideas from real jobs, scroll sideways for more">
+    <ul>
+      <li><b>Friday client follow ups</b><span>real estate</span></li>
+      <li><b>Appointment changes</b><span>dental clinic</span></li>
+      <li><b>Lease summary memo</b><span>law firm</span></li>
+      <li><b>Proposal from a brief</b><span>freelancer</span></li>
+      <li><b>Weekly report for my manager</b><span>marketing</span></li>
+      <li><b>Meeting notes to action items</b><span>any job</span></li>
+      <li><b>Invoice reminder emails</b><span>small business</span></li>
+      <li><b>Listing descriptions</b><span>real estate</span></li>
+      <li><b>Session recap for clients</b><span>coaching</span></li>
+      <li><b>Reply in the client's language</b><span>any job</span></li>
+    </ul>
+  </div>
 
   <section id="how" style="padding-top:0">
     <div class="wrap">
@@ -425,7 +552,7 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
             <div><a class="btn line" href="#interview">Try the interview <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5"/></svg></a></div>
           </div>
           <div class="chatmock" aria-hidden="true">
-            <div class="cm-head"><span class="mono">Joogo interviewer</span><span class="mono live"><i></i>live</span></div>
+            <div class="cm-head"><span class="mono">Joogo interviewer</span><span class="mono muted">example</span></div>
             <div class="cm-body">
               <p class="bub ai">Hi Ana. What does a normal workday look like for you?</p>
               <p class="bub me">I run the front desk at a dental clinic. Lots of calls and emails.</p>
@@ -691,7 +818,7 @@ const spy = new IntersectionObserver(es => es.forEach(e => {
   if (!home.hidden) navLinks.forEach(a => a.classList.toggle("active", a.dataset.sec === e.target.id));
   mcta.classList.toggle("off", e.target.id === "top" || e.target.id === "book");
 }), { rootMargin: "-45% 0px -50% 0px" });
-["top", "proof", "get", "how", "packages", "privacy", "faq", "book"].forEach(id => spy.observe($(id)));
+["top", "why", "layers-sec", "how", "packages", "privacy", "faq", "book"].forEach(id => spy.observe($(id)));
 
 document.querySelectorAll("[data-pkg]").forEach(a => a.addEventListener("click", () => { $("b-pkg").value = a.dataset.pkg; }));
 
@@ -713,6 +840,157 @@ function busy(btn, on, label) {
   const s = btn.querySelector("span");
   if (s) { if (!btn.dataset.label) btn.dataset.label = s.textContent; s.textContent = on ? label : btn.dataset.label; }
 }
+
+// ---------- Hero lab: one reply, four layers of setup ----------
+// [[text]] marks what the newest layer added; it renders highlighted.
+const JOBS = {
+  realestate: {
+    ask: "Reply to Carla. She wants to move Thursday's viewing to Saturday.",
+    layers: ["warm, short, English or Spanish", "Google Calendar", "viewing follow ups"],
+    steps: [
+      ["Dear Carla, Thank you for reaching out. I hope this message finds you well. I would be more than happy to accommodate your request. Please let me know what time works best for you on Saturday. Best regards.", "You'd rewrite this"],
+      ["[[Hi Carla, no problem at all.]] Saturday works. What time suits you best?", "Your tone, but it asks her again"],
+      ["Hi Carla, no problem at all. Saturday I'm free at [[10:00 or 14:30]]. Which works for you?", "Real times from your calendar"],
+      ["Hi Carla, no problem at all. Saturday I'm free at 10:00 or 14:30 [[at the Brickell apartment]]. Which works for you? [[Once you confirm, I'll send parking details and the floor plan.]]", "Ready to send"]
+    ]
+  },
+  dental: {
+    ask: "Answer Mr. Patel. He wants to bring his daughter's appointment forward.",
+    layers: ["calm, friendly, no medical advice", "Outlook calendar", "appointment changes"],
+    steps: [
+      ["Dear Mr. Patel, Thank you for your message. We have received your request and will look into it. We will get back to you as soon as possible. Kind regards.", "You'd rewrite this"],
+      ["[[Hi Mr. Patel, happy to help.]] Let me check what we have earlier and come back to you today.", "Your tone, but no answer yet"],
+      ["Hi Mr. Patel, happy to help. We have [[Tuesday at 9:15 or Wednesday at 16:40 with Dr. Silva]]. Would either work?", "Real slots from the calendar"],
+      ["Hi Mr. Patel, happy to help. We have Tuesday at 9:15 or Wednesday at 16:40 with Dr. Silva. Would either work? [[Reply with the time and I'll confirm, with a reminder the day before. Please bring her insurance card.]]", "Ready to send"]
+    ]
+  },
+  law: {
+    ask: "Summarize the new lease from Ortega Holdings for the client.",
+    layers: ["plain English, formal, flag risks", "Google Drive", "client memo template"],
+    steps: [
+      ["This document is a lease agreement between two parties. It contains various terms and conditions regarding the rental of a property, including rent, duration and the obligations of each party.", "Too vague to use"],
+      ["[[In plain English:]] a 5 year lease, rent paid monthly, the tenant covers repairs. [[Three clauses need attention.]]", "Clearer, but no details"],
+      ["In plain English: a 5 year lease [[from 1 March, $8,400 a month, rising 3% a year]]. Three clauses need attention: [[7.2 repairs, 11 early exit, 14 personal guarantee.]]", "Real figures from the file"],
+      ["[[Client memo, Ortega Holdings lease.]] In plain English: a 5 year lease from 1 March, $8,400 a month, rising 3% a year. Three clauses need attention: 7.2 repairs, 11 early exit, 14 personal guarantee. [[Drafted in your memo template, ready for your review.]]", "Ready for review"]
+    ]
+  },
+  design: {
+    ask: "Write a proposal for Café Lume's new brand.",
+    layers: ["plain English, one page, euros", "Notion call notes", "proposal from a brief"],
+    steps: [
+      ["Thank you for the opportunity. We are pleased to present our proposal for your branding project. Our team offers comprehensive branding solutions tailored to your unique needs and goals.", "You'd rewrite this"],
+      ["[[Hi Lena, here's a one page proposal for Café Lume.]] Clear scope, clear price, no jargon.", "Your voice, no specifics"],
+      ["Hi Lena, here's a one page proposal for Café Lume. [[From our call: logo, menu and signage, delivered in 4 weeks. Total €3,200, half upfront.]]", "Real scope from your notes"],
+      ["Hi Lena, here's a one page proposal for Café Lume. From our call: logo, menu and signage, delivered in 4 weeks. Total €3,200, half upfront. [[Two rounds of changes included. Not included: photography and printing. Attached as a PDF.]]", "Ready to send"]
+    ]
+  }
+};
+let job = "realestate", step = 0, touched = false, autoT = null;
+const replyEl = $("reply-demo"), verdictEl = $("verdict");
+
+function renderReply(text) {
+  replyEl.textContent = "";
+  text.split(/(\[\[.*?\]\])/).forEach(part => {
+    if (!part) return;
+    if (part.startsWith("[[")) { const m = document.createElement("mark"); m.textContent = part.slice(2, -2); replyEl.append(m); }
+    else replyEl.append(document.createTextNode(part));
+  });
+}
+function paintLab(animate) {
+  const j = JOBS[job], [text, verdict] = j.steps[step];
+  $("ask").textContent = j.ask;
+  ["l1", "l2", "l3"].forEach((id, i) => { $(id).textContent = j.layers[i]; });
+  document.querySelectorAll(".layer").forEach(b => {
+    const s = +b.dataset.step;
+    b.classList.toggle("on", s <= step);
+    b.classList.toggle("cur", s === step);
+    b.setAttribute("aria-pressed", String(s === step));
+  });
+  document.querySelectorAll(".steps-dots i").forEach((d, i) => d.classList.toggle("on", i <= step));
+  verdictEl.classList.toggle("good", step === 3);
+  verdictEl.querySelector("span").textContent = verdict;
+  $("nextLayer").firstChild.textContent = step < 3 ? "Add next layer " : "Start over ";
+  if (!animate || reduce) { renderReply(text); return; }
+  // Exit fast and small, enter slower with blur: the reply is "rewritten"
+  replyEl.classList.remove("in");
+  replyEl.classList.add("out");
+  setTimeout(() => {
+    renderReply(text);
+    replyEl.classList.remove("out");
+    void replyEl.offsetWidth;
+    replyEl.classList.add("in");
+  }, 140);
+}
+function stopAuto() { touched = true; clearTimeout(autoT); }
+document.querySelectorAll(".job").forEach(b => b.addEventListener("click", () => {
+  stopAuto();
+  if (b.dataset.job === job) return;
+  document.querySelectorAll(".job").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+  job = b.dataset.job; step = 0; paintLab(true);
+}));
+document.querySelectorAll(".layer").forEach(b => b.addEventListener("click", () => {
+  stopAuto();
+  if (+b.dataset.step === step) return;
+  step = +b.dataset.step; paintLab(true);
+}));
+$("nextLayer").addEventListener("click", () => { stopAuto(); step = (step + 1) % 4; paintLab(true); });
+paintLab(false);
+
+// Play the four layers once when the demo is first seen, unless the visitor takes over
+if (!reduce) {
+  const once = new IntersectionObserver(es => {
+    if (!es[0].isIntersecting) return;
+    once.disconnect();
+    const tick = () => { if (touched || step >= 3) return; step++; paintLab(true); autoT = setTimeout(tick, 2200); };
+    autoT = setTimeout(tick, 1600);
+  }, { threshold: 0.6 });
+  once.observe($("lab"));
+}
+
+// ---------- Manifesto: words light up as it scrolls through the middle of the screen ----------
+const man = $("manifesto");
+const KEY = ["search", "box.", "assistant", "clients,", "calendar", "write."];
+const words = man.textContent.trim().split(/\s+/);
+man.textContent = "";
+words.forEach((w, i) => {
+  const s = document.createElement("span");
+  s.className = "w" + (KEY.includes(w) ? " b" : "");
+  s.textContent = w;
+  man.append(s, document.createTextNode(i < words.length - 1 ? " " : ""));
+});
+const wordEls = [...man.querySelectorAll(".w")];
+
+// ---------- Stack: earlier cards settle back as the next one slides over ----------
+const cards = [...document.querySelectorAll(".scard")];
+const stackOn = () => matchMedia("(min-width: 861px)").matches;
+
+let ticking = false;
+function onScroll() {
+  if (ticking || home.hidden) return;
+  ticking = true;
+  requestAnimationFrame(() => {
+    ticking = false;
+    const vh = innerHeight;
+    if (!reduce) {
+      const r = man.getBoundingClientRect();
+      const p = Math.min(1, Math.max(0, (vh * 0.85 - r.top) / (r.height + vh * 0.35)));
+      const lit = p * wordEls.length;
+      wordEls.forEach((el, i) => el.style.setProperty("--o", (0.14 + 0.86 * Math.min(1, Math.max(0, lit - i))).toFixed(3)));
+      if (stackOn()) {
+        cards.forEach((c, i) => {
+          const next = cards[i + 1];
+          if (!next) return;
+          const gap = next.getBoundingClientRect().top - c.getBoundingClientRect().top;
+          const cover = Math.min(1, Math.max(0, 1 - gap / c.offsetHeight));
+          c.style.transform = cover ? `scale(${(1 - cover * 0.04).toFixed(4)})` : "";
+        });
+      } else cards.forEach(c => { c.style.transform = ""; });
+    }
+  });
+}
+addEventListener("scroll", onScroll, { passive: true });
+addEventListener("resize", onScroll);
+onScroll();
 
 // ---------- Booking ----------
 const bookRules = {
