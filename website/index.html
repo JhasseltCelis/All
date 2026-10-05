@@ -54,7 +54,7 @@ a { color: inherit; }
 .skip:focus { top: 12px; }
 
 /* Buttons: square, heavy */
-.btn { display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 52px; padding: 0 24px; border: 2px solid var(--fg); background: var(--fg); color: var(--bg); font: 600 0.98rem var(--sans); text-decoration: none; cursor: pointer; transition: background-color 0.2s var(--ease), border-color 0.2s var(--ease), color 0.2s var(--ease), transform 0.15s var(--ease); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 52px; padding: 0 24px; border: 2px solid var(--fg); background: var(--fg); color: var(--bg); font: 600 0.98rem var(--sans); text-decoration: none; cursor: pointer; transition: background-color 0.2s var(--ease), border-color 0.2s var(--ease), color 0.2s var(--ease), transform 0.15s var(--ease), opacity 0.2s var(--ease); }
 .btn:hover { background: var(--blue); border-color: var(--blue); color: var(--blue-ink); }
 .btn:active { transform: translateY(1px); }
 .btn.blue { background: var(--blue); border-color: var(--blue); color: var(--blue-ink); }
@@ -71,7 +71,7 @@ nav.top .wrap { display: flex; align-items: center; justify-content: space-betwe
 .logo { font-family: var(--display); font-weight: 900; font-stretch: 125%; font-size: 1.35rem; letter-spacing: -0.01em; text-decoration: none; display: flex; align-items: center; gap: 8px; }
 .logo i { width: 12px; height: 12px; background: var(--blue); display: inline-block; }
 .navlinks { display: flex; align-items: center; gap: 4px; height: 100%; }
-.navlinks a.nl { display: inline-flex; align-items: center; height: 100%; padding: 0 14px; color: var(--muted); text-decoration: none; font-size: 0.93rem; font-weight: 500; border-bottom: 2px solid transparent; transition: color 0.2s; }
+.navlinks a.nl { display: inline-flex; align-items: center; height: 100%; padding: 0 14px; color: var(--muted); text-decoration: none; font-size: 0.93rem; font-weight: 500; border-bottom: 2px solid transparent; transition: color 0.18s var(--ease); }
 .navlinks a.nl:hover { color: var(--fg); }
 .navlinks a.nl.active { color: var(--fg); border-bottom-color: var(--blue); }
 .navlinks .btn { min-height: 44px; padding: 0 18px; margin-left: 10px; font-size: 0.9rem; }
@@ -218,7 +218,7 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 legend { padding: 0; margin-bottom: 10px; }
 input[type=text], input[type=email], input[type=tel], input[type=date], select, textarea {
   font: 400 1rem var(--sans); color: var(--fg); background: var(--bg); border: 1px solid var(--line); border-radius: 0; min-height: 48px; padding: 12px 14px; width: 100%;
-  transition: border-color 0.2s var(--ease);
+  transition: border-color 0.2s var(--ease), box-shadow 0.15s var(--ease);
 }
 input:hover, select:hover, textarea:hover { border-color: var(--muted); }
 input:focus, select:focus, textarea:focus { outline: none; border-color: var(--blue); box-shadow: inset 0 0 0 1px var(--blue); }
@@ -228,7 +228,7 @@ textarea { min-height: 100px; resize: vertical; }
 .opts { display: flex; flex-wrap: wrap; gap: 8px; }
 .opt { position: relative; display: inline-flex; cursor: pointer; }
 .opt input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
-.opt span { display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border: 1px solid var(--line); font-weight: 500; font-size: 0.93rem; transition: background-color 0.2s, border-color 0.2s, color 0.2s; }
+.opt span { display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border: 1px solid var(--line); font-weight: 500; font-size: 0.93rem; transition: background-color 0.18s var(--ease), border-color 0.18s var(--ease), color 0.18s var(--ease); }
 .opt input:checked + span { background: var(--fg); border-color: var(--fg); color: var(--bg); }
 .opt input:focus-visible + span { outline: 2px solid var(--blue); outline-offset: 2px; }
 .opt.wide span { white-space: normal; padding-block: 10px; }
@@ -262,12 +262,12 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
 .back:hover { color: var(--fg); }
 .back svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
 .topics { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
-.topics li { display: grid; grid-template-columns: 28px 1fr auto; gap: 10px; align-items: center; padding: 13px 0; border-bottom: 1px solid var(--line); font-weight: 500; color: var(--muted); transition: color 0.3s; }
-.topics li .box { width: 18px; height: 18px; border: 1.5px solid var(--line); display: grid; place-items: center; transition: background-color 0.3s, border-color 0.3s; }
-.topics li .box svg { width: 12px; height: 12px; stroke: var(--blue-ink); fill: none; stroke-width: 3; opacity: 0; }
+.topics li { display: grid; grid-template-columns: 28px 1fr auto; gap: 10px; align-items: center; padding: 13px 0; border-bottom: 1px solid var(--line); font-weight: 500; color: var(--muted); transition: color 0.18s var(--ease); }
+.topics li .box { width: 18px; height: 18px; border: 1.5px solid var(--line); display: grid; place-items: center; transition: background-color 0.2s var(--ease), border-color 0.2s var(--ease); }
+.topics li .box svg { width: 12px; height: 12px; stroke: var(--blue-ink); fill: none; stroke-width: 3; stroke-dasharray: 14; stroke-dashoffset: 14; transition: stroke-dashoffset 0.28s var(--ease) calc(60ms + var(--d, 0ms)); }
 .topics li.on { color: var(--fg); }
 .topics li.on .box { background: var(--blue); border-color: var(--blue); }
-.topics li.on .box svg { opacity: 1; }
+.topics li.on .box svg { stroke-dashoffset: 0; }
 .topics li .st { font-family: var(--mono); font-size: 0.74rem; }
 .meter { height: 4px; background: var(--soft); }
 .meter i { display: block; height: 100%; background: var(--blue); transform-origin: left; transform: scaleX(0); transition: transform 0.5s var(--ease); }
@@ -310,7 +310,17 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
   .hero h1 span { animation: rise 0.9s var(--ease) both; }
   .hero h1 span:nth-child(2) { animation-delay: 0.08s; }
   .hero h1 span:nth-child(3) { animation-delay: 0.16s; }
-  .msg, .recap { animation: rise 0.4s var(--ease) both; }
+  .msg.ai { animation: msgIn 0.26s var(--ease) both; --rise: 8px; }
+  .msg.me { animation: msgIn 0.14s ease-out both; --rise: 4px; }
+  .msg.sys, .msg.err { animation: fadeIn 0.16s ease-out both; }
+  .msg.restored { animation: none; }
+  .recap { animation: recapIn 0.42s var(--ease) both; }
+  .ferr:not([hidden]) { animation: errIn 0.16s ease-out both; }
+  .typing { animation: fadeIn 0.15s ease-out 0.3s both; }
+  @keyframes msgIn { from { opacity: 0; transform: translateY(var(--rise)); } }
+  @keyframes fadeIn { from { opacity: 0; } }
+  @keyframes errIn { from { opacity: 0; transform: translateY(-4px); } }
+  @keyframes recapIn { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0); } }
   @keyframes rise { from { transform: translateY(18px); opacity: 0.001; } to { transform: none; opacity: 1; } }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -425,6 +435,37 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
   .manifesto .w { opacity: 1 !important; transition: none; }
   .scard { transform: none !important; }
 }
+
+/* ===== Motion pass (audit fixes) ===== */
+@media (prefers-reduced-motion: no-preference) {
+  /* Hero: each line unmasks once, blue line lands last with an underline sweep */
+  .hero2 h1 span { clip-path: inset(0 0 100% 0); animation: unmask 0.7s var(--ease) forwards; }
+  .hero2 h1 span:nth-child(2) { animation-delay: 0.09s; }
+  .hero2 h1 span.blue { position: relative; width: fit-content; }
+  .hero2 h1 span.blue::after { content: ""; position: absolute; left: 0; right: 0; bottom: -0.04em; height: 0.07em; background: var(--blue); transform: scaleX(0); transform-origin: left; animation: sweep 0.4s var(--ease) 0.6s forwards; }
+  html.intro-done .hero2 h1 span { animation: none; clip-path: none; }
+  html.intro-done .hero2 h1 span.blue::after { animation: none; transform: none; }
+  @keyframes unmask { to { clip-path: inset(0 0 -0.2em 0); } }
+  @keyframes sweep { to { transform: scaleX(1); } }
+  /* View change between home and interview */
+  ::view-transition-old(root) { animation: vtOut 0.16s ease-out both; }
+  ::view-transition-new(root) { animation: vtIn 0.28s var(--ease) both; }
+  @keyframes vtOut { to { opacity: 0; } }
+  @keyframes vtIn { from { opacity: 0; transform: translateY(12px); } }
+  /* Form to confirmation, start form to chat */
+  .leaving { opacity: 0; transform: translateY(-8px); transition: opacity 0.16s ease-out, transform 0.16s ease-out; }
+  .arriving { animation: arrive 0.32s var(--ease) both; }
+  @keyframes arrive { from { opacity: 0; transform: translateY(12px); filter: blur(4px); } }
+  /* Chat preview plays once on scroll-in */
+  .chatmock.armed .bub { opacity: 0; transform: translateY(6px); }
+  .chatmock .bub { transition: opacity 0.24s var(--ease), transform 0.24s var(--ease); }
+}
+.hero2 h1 span.blue { display: block; }
+.done .tick { width: 40px; height: 40px; }
+.done .tick path { fill: none; stroke: var(--blue); stroke-width: 3; stroke-dasharray: 30; stroke-dashoffset: 30; }
+.done.arriving .tick path { animation: draw 0.28s var(--ease) 0.08s forwards; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@media (prefers-reduced-motion: reduce) { .done .tick path { stroke-dashoffset: 0; } }
 </style>
 
 <a class="skip" href="#main">Skip to content</a>
@@ -717,6 +758,7 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
           <p class="ferr" id="bookSendErr" role="alert" hidden></p>
         </form>
         <div class="done" id="bookDone" tabindex="-1" hidden>
+          <svg class="tick" viewBox="0 0 40 40" aria-hidden="true"><path d="M8 21l8 8 16-17"/></svg>
           <h3>Request<br>received</h3>
           <p class="muted">Thanks, <span id="bookDoneName"></span>. Next, a quick chat with the Joogo interviewer so I can prepare your session.</p>
           <div><a class="btn blue" href="#interview">Start the interview <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5"/></svg></a></div>
@@ -802,6 +844,14 @@ let wasIv = false;
 function route() {
   const h = location.hash.slice(1);
   const isIv = h === "interview";
+  // Cross-fade only when the view actually changes; anchor jumps stay instant
+  if (isIv !== wasIv && document.startViewTransition && !reduce && routed) {
+    document.startViewTransition(() => applyRoute(h, isIv));
+  } else applyRoute(h, isIv);
+  routed = true;
+}
+let routed = false;
+function applyRoute(h, isIv) {
   home.hidden = isIv; iview.hidden = !isIv; mcta.hidden = isIv;
   if (isIv) {
     navLinks.forEach(a => a.classList.toggle("active", a.dataset.sec === "interview"));
@@ -812,6 +862,7 @@ function route() {
 }
 addEventListener("hashchange", route);
 route();
+setTimeout(() => document.documentElement.classList.add("intro-done"), 1200);
 
 const spy = new IntersectionObserver(es => es.forEach(e => {
   if (!e.isIntersecting) return;
@@ -947,6 +998,19 @@ if (!reduce) {
   once.observe($("lab"));
 }
 
+// ---------- How it works: the interview preview plays once ----------
+const mock = document.querySelector(".chatmock");
+if (mock && !reduce && "IntersectionObserver" in window) {
+  const bubs = [...mock.querySelectorAll(".bub")];
+  mock.classList.add("armed");
+  const io = new IntersectionObserver(es => {
+    if (!es[0].isIntersecting) return;
+    io.disconnect();
+    bubs.forEach((b, i) => setTimeout(() => { b.style.opacity = "1"; b.style.transform = "none"; }, 300 + i * 700));
+  }, { threshold: 0.5 });
+  io.observe(mock);
+}
+
 // ---------- Manifesto: words light up as it scrolls through the middle of the screen ----------
 const man = $("manifesto");
 const KEY = ["search", "box.", "assistant", "clients,", "calendar", "write."];
@@ -992,6 +1056,20 @@ addEventListener("scroll", onScroll, { passive: true });
 addEventListener("resize", onScroll);
 onScroll();
 
+// Old content leaves quickly and small, new content arrives slower with a soft blur
+function swap(from, to, before) {
+  const show = () => {
+    from.hidden = true; from.classList.remove("leaving");
+    if (before) before();
+    to.hidden = false;
+    if (!reduce) { to.classList.remove("arriving"); void to.offsetWidth; to.classList.add("arriving"); }
+    if (to.tabIndex >= 0 || to.hasAttribute("tabindex")) to.focus({ preventScroll: true });
+  };
+  if (reduce) return show();
+  from.classList.add("leaving");
+  setTimeout(show, 160);
+}
+
 // ---------- Booking ----------
 const bookRules = {
   "b-name": () => $("b-name").value.trim() ? "" : "Add your name so I know who to reply to.",
@@ -1017,7 +1095,7 @@ $("bookForm").addEventListener("submit", async e => {
   try { localStorage.setItem("joogo-contact", JSON.stringify({ name: d.name, email: d.email })); } catch {}
   $("i-name").value = d.name; $("i-email").value = d.email;
   $("bookDoneName").textContent = d.name.trim().split(" ")[0];
-  e.target.hidden = true; $("bookDone").hidden = false; $("bookDone").focus();
+  swap(e.target, $("bookDone"));
 });
 
 // ---------- Interview ----------
@@ -1035,20 +1113,22 @@ try {
 function save() { try { localStorage.setItem(SAVE_KEY, JSON.stringify(iv)); } catch {} }
 function setCovered(list) {
   iv.covered = [...new Set([...iv.covered, ...(list || [])])].filter(t => TOPICS.includes(t));
+  let n = 0;
   document.querySelectorAll("#topics li").forEach(li => {
     const on = iv.covered.includes(li.dataset.t);
+    if (on && !li.classList.contains("on")) li.style.setProperty("--d", (n++ * 60) + "ms");
     li.classList.toggle("on", on);
     li.querySelector(".st").textContent = on ? "done" : "";
   });
   $("ivMeter").style.transform = `scaleX(${iv.covered.length / TOPICS.length})`;
   $("ivCount").textContent = `${iv.covered.length} of ${TOPICS.length} topics covered`;
 }
-function bubble(role, text) {
+function bubble(role, text, restored) {
   const p = document.createElement("p");
-  p.className = "msg " + role;
+  p.className = "msg " + role + (restored ? " restored" : "");
   p.textContent = text;
   log.append(p);
-  log.scrollTop = log.scrollHeight;
+  log.scrollTo({ top: log.scrollHeight, behavior: reduce || restored ? "auto" : "smooth" });
   if (matchMedia("(max-width: 900px)").matches) p.scrollIntoView({ block: "end", behavior: reduce ? "auto" : "smooth" });
   return p;
 }
@@ -1126,11 +1206,14 @@ async function finish() {
   const a = document.createElement("a"); a.className = "btn line"; a.href = "#top"; a.textContent = "Back to home";
   box.append(h, p, nxt, a);
   log.append(box); box.focus();
-  $("composer").hidden = true;
+  if (reduce) $("composer").hidden = true; else { $("composer").classList.add("leaving"); setTimeout(() => { $("composer").hidden = true; }, 160); }
   try { localStorage.removeItem(SAVE_KEY); } catch {}
 }
 
-function openChat() { $("ivStart").hidden = true; $("ivChat").hidden = false; }
+function openChat(instant) {
+  if (instant) { $("ivStart").hidden = true; $("ivChat").hidden = false; return; }
+  swap($("ivStart"), $("log"), () => { $("ivChat").hidden = false; });
+}
 
 const startRules = {
   "i-name": () => $("i-name").value.trim() ? "" : "Add your name.",
@@ -1169,9 +1252,9 @@ try {
   const saved = JSON.parse(localStorage.getItem(SAVE_KEY) || "null");
   if (saved && saved.messages && saved.messages.length && !saved.done) {
     iv = saved;
-    openChat();
+    openChat(true);
     bubble("sys", "Welcome back. Here's where we left off.");
-    iv.messages.forEach(m => bubble(m.role === "user" ? "me" : "ai", m.content));
+    iv.messages.forEach(m => bubble(m.role === "user" ? "me" : "ai", m.content, true));
     setCovered(iv.covered);
     if (iv.messages[iv.messages.length - 1].role === "user") askInterviewer(); else lockInput(false);
   }
