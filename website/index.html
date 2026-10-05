@@ -35,7 +35,7 @@
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scroll-padding-top: 88px; }
 body { background: var(--bg); color: var(--fg); font: 400 16px/1.65 var(--sans); -webkit-font-smoothing: antialiased; }
 body::after {
   content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 30; opacity: 0.05;
@@ -76,7 +76,7 @@ nav.top .wrap { display: flex; align-items: center; justify-content: space-betwe
 .logo { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 1.15rem; letter-spacing: -0.02em; color: var(--fg); text-decoration: none; }
 .logo svg { width: 26px; height: 26px; }
 .navlinks { display: flex; align-items: center; gap: 4px; }
-.navlinks a.nl { color: var(--muted); text-decoration: none; font-size: 0.93rem; font-weight: 500; padding: 7px 12px; border-radius: 999px; transition: color 0.25s, background-color 0.25s; }
+.navlinks a.nl { color: var(--muted); text-decoration: none; font-size: 0.93rem; font-weight: 500; padding: 11px 14px; border-radius: 999px; transition: color 0.25s, background-color 0.25s; }
 .navlinks a.nl:hover { color: var(--fg); }
 .navlinks a.nl.active { color: var(--fg); background: var(--sunk); }
 .navlinks .btn { padding: 9px 16px; font-size: 0.9rem; margin-left: 8px; }
@@ -158,7 +158,7 @@ section { padding-block: 104px 112px; scroll-margin-top: 64px; }
 .plan li svg { width: 16px; height: 16px; margin-top: 4px; stroke: var(--accent); fill: none; stroke-width: 1.75; }
 .plan .btn { justify-content: center; align-self: end; }
 .plan.pick { background: var(--accent); color: var(--accent-ink); box-shadow: var(--shadow); }
-.plan.pick .muted, .plan.pick .price small, .plan.pick .flag { color: color-mix(in srgb, var(--accent-ink) 78%, transparent); }
+.plan.pick .muted, .plan.pick .price small, .plan.pick .flag { color: color-mix(in srgb, var(--accent-ink) 92%, transparent); }
 .plan.pick ul { border-color: color-mix(in srgb, var(--accent-ink) 25%, transparent); }
 .plan.pick li svg { stroke: var(--accent-ink); }
 .plan.pick .btn { background: var(--accent-ink); color: var(--accent); }
@@ -203,7 +203,8 @@ textarea { min-height: 104px; resize: vertical; }
 .checks { display: flex; flex-wrap: wrap; gap: 8px; }
 .chk { position: relative; display: inline-flex; }
 .chk input { position: absolute; opacity: 0; inset: 0; cursor: pointer; margin: 0; }
-.chk span { display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px; border-radius: 10px; background: var(--bg); font-size: 0.92rem; font-weight: 500; transition: background-color 0.25s var(--ease), color 0.25s var(--ease), transform 0.2s var(--ease); }
+.chk, .chk input { cursor: pointer; }
+.chk span { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 10px 16px; border-radius: 10px; background: var(--bg); font-size: 0.92rem; font-weight: 500; transition: background-color 0.25s var(--ease), color 0.25s var(--ease), transform 0.2s var(--ease); }
 .chk span::before { content: ""; width: 14px; height: 14px; border-radius: 4px; box-shadow: inset 0 0 0 1.5px var(--muted); flex: none; }
 .chk input:checked + span { background: var(--accent-wash); color: var(--fg); }
 .chk input:checked + span::before { background: var(--accent); box-shadow: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.5 2.5L12 5.5' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
@@ -230,11 +231,86 @@ textarea { min-height: 104px; resize: vertical; }
 .toc a.active span { color: var(--accent); }
 .qblock { display: grid; gap: 22px; padding-block: 36px; border-top: 1px solid var(--line); scroll-margin-top: 84px; }
 .qblock:first-child { border-top: 0; padding-top: 0; }
-.qblock h3 { font-size: 1.35rem; display: flex; gap: 14px; align-items: baseline; }
-.qblock h3 span { font-family: var(--mono); font-size: 0.85rem; color: var(--accent); font-weight: 400; }
+.qblock h2.qh { font-size: 1.35rem; display: flex; gap: 14px; align-items: baseline; }
+.qblock h2.qh span { font-family: var(--mono); font-size: 0.85rem; color: var(--accent); font-weight: 400; }
 .summary { font-family: var(--mono); font-size: 0.84rem; line-height: 1.7; background: var(--bg); border-radius: var(--r-md); padding: 18px; display: grid; gap: 4px; }
 .summary b { color: var(--accent); font-weight: 500; }
 @media (max-width: 860px) { .intake-body { grid-template-columns: 1fr; } .toc { display: none; } }
+
+/* Trust row in hero */
+.trustrow { display: flex; flex-wrap: wrap; gap: 10px 22px; list-style: none; margin: 0; padding: 0; font-size: 0.92rem; }
+.trustrow li { display: inline-flex; align-items: center; gap: 8px; }
+.trustrow svg { width: 16px; height: 16px; stroke: var(--accent); fill: none; stroke-width: 2; flex: none; }
+
+/* Console pause control */
+.c-ctrl { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; border: 0; background: var(--raised); color: var(--muted); cursor: pointer; box-shadow: inset 0 0 0 1px var(--line); position: relative; }
+.c-ctrl::after { content: ""; position: absolute; inset: -6px; }
+.c-ctrl:hover { color: var(--fg); }
+.c-ctrl svg { width: 12px; height: 12px; fill: currentColor; }
+.c-meta { display: flex; align-items: center; gap: 10px; }
+
+/* Before / after proof */
+.ba { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.ba-col { border-radius: var(--r-lg); padding: 28px; display: grid; gap: 14px; align-content: start; min-width: 0; }
+.ba-col.before { background: var(--sunk); }
+.ba-col.after { background: var(--raised); box-shadow: var(--shadow), inset 0 0 0 1px var(--line); }
+.ba-tag { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: 0.95rem; }
+.ba-tag svg { width: 18px; height: 18px; fill: none; stroke-width: 2; }
+.before .ba-tag svg { stroke: var(--muted); }
+.after .ba-tag svg { stroke: var(--accent); }
+.ask { font-family: var(--mono); font-size: 0.82rem; color: var(--muted); }
+.mail { font-size: 0.95rem; line-height: 1.6; background: var(--bg); border-radius: var(--r-md); padding: 18px; }
+.before .mail { background: var(--raised); color: var(--muted); }
+.ba-notes { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 0.9rem; color: var(--muted); }
+.ba-notes li { display: grid; grid-template-columns: 18px 1fr; gap: 6px; }
+.ba-notes svg { width: 14px; height: 14px; margin-top: 5px; fill: none; stroke-width: 2; }
+.before .ba-notes svg { stroke: var(--muted); }
+.after .ba-notes svg { stroke: var(--accent); }
+@media (max-width: 800px) { .ba { grid-template-columns: 1fr; } .ba-col { padding: 22px; } }
+
+/* Comparison table */
+.compare-wrap { margin-top: 40px; overflow-x: auto; border-radius: var(--r-md); box-shadow: inset 0 0 0 1px var(--line); background: var(--raised); }
+.compare { width: 100%; min-width: 640px; border-collapse: collapse; font-size: 0.93rem; }
+.compare caption { text-align: left; padding: 18px 20px 6px; font-weight: 600; font-size: 1.05rem; }
+.compare th, .compare td { padding: 13px 20px; text-align: left; border-bottom: 1px solid var(--line); }
+.compare thead th { font-weight: 600; font-size: 0.88rem; color: var(--muted); }
+.compare tbody th { font-weight: 500; }
+.compare td { font-variant-numeric: tabular-nums; }
+.compare tr:last-child th, .compare tr:last-child td { border-bottom: 0; }
+.compare .col-pick { background: var(--accent-wash); }
+.yes, .no { display: inline-flex; align-items: center; gap: 6px; }
+.yes svg, .no svg { width: 16px; height: 16px; fill: none; stroke-width: 2; }
+.yes svg { stroke: var(--accent); }
+.no { color: var(--muted); }
+.no svg { stroke: var(--muted); }
+
+/* Forms: required marks, error summary, loading */
+.req { color: var(--error); margin-left: 2px; }
+.req-note { font-size: 0.85rem; color: var(--muted); }
+.errsum { background: color-mix(in srgb, var(--error) 10%, var(--raised)); border-radius: var(--r-md); padding: 16px 18px; display: grid; gap: 6px; }
+.errsum:focus { outline: 2px solid var(--error); outline-offset: 2px; }
+.errsum p { font-weight: 600; }
+.errsum ul { margin: 0; padding-left: 18px; }
+.errsum a { color: var(--error); }
+.btn[aria-busy=true] { opacity: 0.7; cursor: progress; }
+.btn[aria-busy=true] svg { animation: nudge 0.8s ease-in-out infinite; }
+@keyframes nudge { 50% { transform: translateX(4px); } }
+
+/* Intake progress */
+.progress { display: grid; gap: 8px; margin-top: 8px; }
+.progress-bar { height: 6px; border-radius: 99px; background: var(--sunk); overflow: hidden; }
+.progress-bar i { display: block; height: 100%; width: 100%; background: var(--accent); transform-origin: left; transform: scaleX(0); transition: transform 0.4s var(--ease); }
+.progress-txt { font-family: var(--mono); font-size: 0.78rem; color: var(--muted); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+/* Mobile sticky CTA */
+.mcta { display: none; }
+@media (max-width: 760px) {
+  .mcta { display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; gap: 12px; align-items: center; justify-content: space-between; padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px)); background: color-mix(in srgb, var(--raised) 92%, transparent); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-top: 1px solid var(--line); transition: transform 0.3s var(--ease); }
+  .mcta.off { transform: translateY(110%); }
+  .mcta p { font-size: 0.88rem; color: var(--muted); }
+  .mcta .btn { padding: 12px 18px; }
+  footer { padding-bottom: 104px; }
+}
 
 footer { border-top: 1px solid var(--line); padding-block: 36px 44px; font-size: 0.9rem; color: var(--muted); }
 footer .wrap { display: flex; justify-content: space-between; align-items: center; gap: 16px 32px; flex-wrap: wrap; }
@@ -283,12 +359,21 @@ footer a:hover { color: var(--fg); }
           <a class="btn" href="#book">Book your setup <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
           <a class="textlink" href="#packages">See packages and prices</a>
         </div>
-        <div class="works rise" style="--i:3"><span>Claude</span><span>ChatGPT</span><span>Gemini</span><span>Gmail</span><span>Outlook</span><span>Drive</span><span>Notion</span><span>Slack</span></div>
+        <ul class="trustrow rise" style="--i:3" aria-label="How every setup works">
+          <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>Pay after the session</li>
+          <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>You never share passwords</li>
+          <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>Plain words, no tech skills needed</li>
+        </ul>
+        <div class="works rise" style="--i:4"><span>Claude</span><span>ChatGPT</span><span>Gemini</span><span>Gmail</span><span>Outlook</span><span>Drive</span><span>Notion</span><span>Slack</span></div>
       </div>
 
       <div class="console rise" style="--i:2" aria-label="Example of a finished setup">
         <div class="console-in">
-          <div class="c-head"><span>example setup</span><span class="c-who" id="c-who">Real estate agent, Miami</span></div>
+          <div class="c-head"><span class="c-who" id="c-who">Real estate agent, Miami</span>
+            <span class="c-meta">example setup
+              <button class="c-ctrl" id="c-ctrl" type="button" aria-label="Pause examples" aria-pressed="false"><svg viewBox="0 0 12 12" aria-hidden="true"><rect x="2" y="1.5" width="2.6" height="9" rx="1"/><rect x="7.4" y="1.5" width="2.6" height="9" rx="1"/></svg></button>
+            </span>
+          </div>
           <div>
             <p class="c-label">Custom instructions</p>
             <p class="typed" id="typed" aria-live="off">I sell homes in Miami. Write warm, short emails in English or Spanish to match the client. End every email with one clear next step.</p>
@@ -306,6 +391,36 @@ footer a:hover { color: var(--fg); }
       </div>
     </div>
   </header>
+
+  <section id="proof" style="background:var(--raised)">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Same request. Very different answer.</h2>
+        <p class="lead">This is what a setup changes. Both answers come from the same AI, asked the same thing.</p>
+      </div>
+      <p class="ask" style="margin-bottom:16px">The request: "Reply to Carla, she wants to move Thursday's house viewing to Saturday."</p>
+      <div class="ba">
+        <div class="ba-col before">
+          <span class="ba-tag"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5"/><path d="M7 13l6-6"/></svg>Before setup</span>
+          <p class="mail">Dear Carla, Thank you for reaching out. I hope this message finds you well. I would be more than happy to accommodate your request to reschedule. Please let me know what time works best for you on Saturday, and I will do my best to arrange it. Best regards.</p>
+          <ul class="ba-notes">
+            <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 8h8"/></svg>Doesn't know your calendar, so it asks her again</li>
+            <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 8h8"/></svg>Stiff tone you'd have to rewrite</li>
+            <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 8h8"/></svg>No clear next step</li>
+          </ul>
+        </div>
+        <div class="ba-col after">
+          <span class="ba-tag"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5.5"/></svg>After setup</span>
+          <p class="mail">Hi Carla, no problem at all. Saturday I'm free at 10:00 or 14:30 at the Brickell apartment. Which one works for you? I'll send the parking details once you confirm.</p>
+          <ul class="ba-notes">
+            <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>Checked your calendar and offered real times</li>
+            <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>Short and warm, the way you write</li>
+            <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>Ends with one clear next step</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <section id="get">
     <div class="wrap">
@@ -424,6 +539,23 @@ footer a:hover { color: var(--fg); }
           <a class="btn" href="#book" data-pkg="Care plan">Add Care plan</a>
         </article>
       </div>
+      <div class="compare-wrap">
+        <table class="compare">
+          <caption>Compare the setup packages</caption>
+          <thead>
+            <tr><th scope="col">What's included</th><th scope="col">Starter</th><th scope="col" class="col-pick">Pro</th><th scope="col">Team</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Price</th><td>$199</td><td class="col-pick">$599</td><td>from $1,500</td></tr>
+            <tr><th scope="row">AI tools set up</th><td>1</td><td class="col-pick">Up to 3</td><td>Up to 3, for 5 people</td></tr>
+            <tr><th scope="row">Custom instructions</th><td><span class="yes"><svg viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg>Included</span></td><td class="col-pick"><span class="yes"><svg viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg>Included</span></td><td><span class="yes"><svg viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg>Per person</span></td></tr>
+            <tr><th scope="row">Connections (Gmail, Drive...)</th><td>2</td><td class="col-pick">All key tools</td><td>All key tools</td></tr>
+            <tr><th scope="row">Custom skills, GPTs or Gems</th><td><span class="no"><svg viewBox="0 0 16 16"><path d="M4 8h8"/></svg>Not included</span></td><td class="col-pick">3</td><td>Shared team skills</td></tr>
+            <tr><th scope="row">Session length</th><td>60 min</td><td class="col-pick">90 min</td><td>Setup plus training</td></tr>
+            <tr><th scope="row">2 week tune up</th><td><span class="no"><svg viewBox="0 0 16 16"><path d="M4 8h8"/></svg>Not included</span></td><td class="col-pick"><span class="yes"><svg viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg>Included</span></td><td><span class="yes"><svg viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg>Included</span></td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </section>
 
@@ -457,6 +589,7 @@ footer a:hover { color: var(--fg); }
         <div class="qa"><h3>Do I need to be technical?</h3><p class="muted">No. If you can use email, you're ready. Everything is explained in plain words.</p></div>
         <div class="qa"><h3>Which plan of the AI do I need?</h3><p class="muted">Free plans cover the basics. Connecting email and files, and building custom skills, usually needs the paid plan, around $20 a month. I'll tell you before we start.</p></div>
         <div class="qa"><h3>Which AI should I choose?</h3><p class="muted">Leave it open when you book. Your questionnaire answers tell me which one fits your work best.</p></div>
+        <div class="qa"><h3>What if something stops working later?</h3><p class="muted">AI tools change often. The Care plan covers that each month, or you can book a single tune up whenever you need one.</p></div>
         <div class="qa"><h3>Is it online?</h3><p class="muted">Yes, by video call with screen share. Most people are done in one session.</p></div>
       </div>
     </div>
@@ -475,9 +608,10 @@ footer a:hover { color: var(--fg); }
       </div>
       <div>
         <form class="formcard" id="bookForm" novalidate>
+          <p class="req-note">Fields marked <span class="req">*</span> are required.</p>
           <div class="fgrid">
-            <div class="field"><label for="b-name">Full name</label><input type="text" id="b-name" name="name" autocomplete="name" required><span class="ferr" id="b-name-err" hidden></span></div>
-            <div class="field"><label for="b-email">Email</label><input type="email" id="b-email" name="email" autocomplete="email" required><span class="ferr" id="b-email-err" hidden></span></div>
+            <div class="field"><label for="b-name">Full name<span class="req" aria-hidden="true">*</span></label><input aria-describedby="b-name-err" type="text" id="b-name" name="name" autocomplete="name" required><span class="ferr" id="b-name-err" role="alert" hidden></span></div>
+            <div class="field"><label for="b-email">Email<span class="req" aria-hidden="true">*</span></label><input aria-describedby="b-email-err" type="email" id="b-email" name="email" autocomplete="email" required><span class="ferr" id="b-email-err" role="alert" hidden></span></div>
             <div class="field"><label for="b-phone">Phone or WhatsApp</label><input type="tel" id="b-phone" name="phone" autocomplete="tel"><span class="help">Optional</span></div>
             <div class="field"><label for="b-pkg">Package</label>
               <select id="b-pkg" name="package"><option>Not sure yet</option><option>Starter</option><option>Pro</option><option>Team</option><option>Care plan</option></select>
@@ -497,7 +631,7 @@ footer a:hover { color: var(--fg); }
             </div>
             <div class="field full"><label for="b-notes">What should AI help you with most?</label><textarea id="b-notes" name="notes" placeholder="Example: answering client emails faster and keeping my calendar in order"></textarea><span class="help">Optional</span></div>
           </div>
-          <div><button class="btn accent" type="submit">Send booking request <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button></div>
+          <div><button class="btn accent" id="bookBtn" type="submit">Send booking request <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button></div>
         </form>
         <div class="done" id="bookDone" hidden>
           <div class="ok"><svg viewBox="0 0 24 24"><path d="M6 12.5l4 4 8-9"/></svg></div>
@@ -516,7 +650,8 @@ footer a:hover { color: var(--fg); }
     <div class="intake-head">
       <a class="back" href="#top"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13 8H3M7 4L3 8l4 4"/></svg>Back to home</a>
       <h1 style="font-size:clamp(2rem,4.2vw,3rem)">Before your setup</h1>
-      <p class="lead">About 10 minutes. Your answers let me prepare your instructions, connections and skills in advance, so the call is spent setting things up.</p>
+      <p class="lead">About 10 minutes. Your answers let me prepare your instructions, connections and skills in advance, so the call is spent setting things up. Your answers save on this device as you type.</p>
+      <div class="progress" aria-hidden="true"><div class="progress-bar"><i id="progBar"></i></div><p class="progress-txt"><span id="progTxt">0 of 6 sections started</span><span>About 10 minutes</span></p></div>
     </div>
   </div>
   <div class="wrap intake-body">
@@ -530,11 +665,12 @@ footer a:hover { color: var(--fg); }
     </aside>
     <div style="min-width:0">
       <form id="intakeForm" novalidate>
+        <div class="errsum" id="intakeSum" tabindex="-1" role="alert" hidden><p>Please fix these before sending:</p><ul id="intakeSumList"></ul></div>
         <div class="qblock" id="q-you">
-          <h3><span>01</span>About you</h3>
+          <h2 class="qh"><span>01</span>About you</h2>
           <div class="fgrid">
-            <div class="field"><label for="i-name">Full name</label><input type="text" id="i-name" name="name" autocomplete="name" required><span class="ferr" id="i-name-err" hidden></span></div>
-            <div class="field"><label for="i-email">Email</label><input type="email" id="i-email" name="email" autocomplete="email" required><span class="ferr" id="i-email-err" hidden></span></div>
+            <div class="field"><label for="i-name">Full name<span class="req" aria-hidden="true">*</span></label><input aria-describedby="i-name-err" type="text" id="i-name" name="name" autocomplete="name" required><span class="ferr" id="i-name-err" role="alert" hidden></span></div>
+            <div class="field"><label for="i-email">Email<span class="req" aria-hidden="true">*</span></label><input aria-describedby="i-email-err" type="email" id="i-email" name="email" autocomplete="email" required><span class="ferr" id="i-email-err" role="alert" hidden></span></div>
             <div class="field"><label for="i-role">Job title or role</label><input type="text" id="i-role" name="role" placeholder="Example: real estate agent"></div>
             <div class="field"><label for="i-industry">Industry</label><input type="text" id="i-industry" name="industry" placeholder="Example: property, health, marketing"></div>
             <div class="field full"><label for="i-day">Describe a normal workday in 2 or 3 lines</label><textarea id="i-day" name="workday"></textarea></div>
@@ -542,7 +678,7 @@ footer a:hover { color: var(--fg); }
         </div>
 
         <div class="qblock" id="q-ai">
-          <h3><span>02</span>Your AI today</h3>
+          <h2 class="qh"><span>02</span>Your AI today</h2>
           <fieldset>
             <legend>Which do you already have? <span class="help">Pick all that apply</span></legend>
             <div class="checks">
@@ -562,7 +698,7 @@ footer a:hover { color: var(--fg); }
         </div>
 
         <div class="qblock" id="q-tasks">
-          <h3><span>03</span>Your tasks</h3>
+          <h2 class="qh"><span>03</span>Your tasks</h2>
           <p class="muted" style="margin-top:-8px">These become your custom skills or GPTs. The more specific, the better.</p>
           <div class="fgrid">
             <div class="field full"><label for="i-t1">Task that takes most of your time</label><input type="text" id="i-t1" name="task1" placeholder="Example: replying to new client inquiries"></div>
@@ -573,7 +709,7 @@ footer a:hover { color: var(--fg); }
         </div>
 
         <div class="qblock" id="q-tools">
-          <h3><span>04</span>Your tools</h3>
+          <h2 class="qh"><span>04</span>Your tools</h2>
           <fieldset>
             <legend>Which do you use for work? <span class="help">Pick all that apply</span></legend>
             <div class="checks">
@@ -599,7 +735,7 @@ footer a:hover { color: var(--fg); }
         </div>
 
         <div class="qblock" id="q-style">
-          <h3><span>05</span>Your style</h3>
+          <h2 class="qh"><span>05</span>Your style</h2>
           <fieldset>
             <legend>How should your AI write for you?</legend>
             <div class="checks">
@@ -618,7 +754,7 @@ footer a:hover { color: var(--fg); }
         </div>
 
         <div class="qblock" id="q-privacy">
-          <h3><span>06</span>Privacy</h3>
+          <h2 class="qh"><span>06</span>Privacy</h2>
           <fieldset>
             <legend>Is there anything AI should never touch?</legend>
             <div class="checks">
@@ -632,12 +768,12 @@ footer a:hover { color: var(--fg); }
             <select id="i-policy" name="policy"><option>I don't know</option><option>No rules</option><option>Yes, some tools are allowed</option><option>I'm self employed</option></select>
           </div>
           <div class="field">
-            <label class="chk wide"><input type="checkbox" id="i-consent" name="consent" value="yes"><span>I understand I will log in myself and never share passwords</span></label>
-            <span class="ferr" id="i-consent-err" hidden></span>
+            <label class="chk wide"><input type="checkbox" id="i-consent" name="consent" value="yes" aria-describedby="i-consent-err"><span>I understand I will log in myself and never share passwords</span></label>
+            <span class="ferr" id="i-consent-err" role="alert" hidden></span>
           </div>
         </div>
 
-        <div style="padding-top:12px"><button class="btn accent" type="submit">Send my answers <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button></div>
+        <div style="padding-top:12px"><button class="btn accent" id="intakeBtn" type="submit">Send my answers <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button></div>
       </form>
       <div class="done" id="intakeDone" hidden>
         <div class="ok"><svg viewBox="0 0 24 24"><path d="M6 12.5l4 4 8-9"/></svg></div>
@@ -648,6 +784,8 @@ footer a:hover { color: var(--fg); }
     </div>
   </div>
 </main>
+
+<div class="mcta" id="mcta"><p>Setups from $199. Pay after.</p><a class="btn accent" href="#book">Book a setup</a></div>
 
 <footer>
   <div class="wrap">
@@ -663,36 +801,45 @@ const FORM_ENDPOINT = "";
 const home = document.getElementById("view-home");
 const intake = document.getElementById("view-intake");
 const navLinks = document.querySelectorAll("a.nl[data-sec]");
+const mcta = document.getElementById("mcta");
+let wasIntake = false;
 
 function route() {
   const h = location.hash.slice(1);
   const isIntake = h === "intake" || h.startsWith("q-");
   home.hidden = isIntake;
   intake.hidden = !isIntake;
+  mcta.hidden = isIntake;
   if (isIntake) navLinks.forEach(a => a.classList.toggle("active", a.dataset.sec === "intake"));
-  if (h === "intake") window.scrollTo(0, 0);
-  else if (h) { const el = document.getElementById(h); if (el) el.scrollIntoView(); }
+  if (h === "intake") {
+    window.scrollTo(0, 0);
+    // Move focus to the new view for keyboard and screen reader users
+    if (!wasIntake) { const t = intake.querySelector("h1"); t.tabIndex = -1; t.focus({ preventScroll: true }); }
+  } else if (h) { const el = document.getElementById(h); if (el) el.scrollIntoView(); }
+  wasIntake = isIntake;
 }
 window.addEventListener("hashchange", route);
 route();
 
-// Active nav link and intake TOC follow the section in view
+// Active nav link, intake TOC, and mobile CTA follow the section in view
 const spy = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (!e.isIntersecting) return;
     const id = e.target.id;
     if (!home.hidden) navLinks.forEach(a => a.classList.toggle("active", a.dataset.sec === id));
     document.querySelectorAll(".toc a").forEach(a => a.classList.toggle("active", a.dataset.q === id));
+    mcta.classList.toggle("off", id === "top" || id === "book");
   });
 }, { rootMargin: "-45% 0px -50% 0px" });
-["top", "get", "how", "packages", "privacy", "faq", "book"].forEach(id => spy.observe(document.getElementById(id)));
+["top", "proof", "get", "how", "packages", "privacy", "faq", "book"].forEach(id => spy.observe(document.getElementById(id)));
 document.querySelectorAll(".qblock").forEach(el => spy.observe(el));
+mcta.classList.add("off");
 
 document.querySelectorAll("[data-pkg]").forEach(a => a.addEventListener("click", () => {
   document.getElementById("b-pkg").value = a.dataset.pkg;
 }));
 
-// Hero console: cycles through example clients
+// Hero console: cycles through example clients, with pause control
 const profiles = [
   { who: "Real estate agent, Miami", text: "I sell homes in Miami. Write warm, short emails in English or Spanish to match the client. End every email with one clear next step.",
     rows: [["Gmail", "live"], ["Google Calendar", "live"], ["Skill: Friday client follow ups", "ready"]] },
@@ -702,10 +849,14 @@ const profiles = [
     rows: [["Gmail", "live"], ["Notion", "live"], ["Skill: proposal from brief", "ready"]] }
 ];
 const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const consoleEl = document.querySelector(".console");
 const typedEl = document.getElementById("typed");
 const whoEl = document.getElementById("c-who");
 const rowsEl = document.getElementById("c-rows");
-let pi = 0;
+const ctrl = document.getElementById("c-ctrl");
+const PAUSE_ICON = ctrl.innerHTML;
+const PLAY_ICON = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5v9l7.5-4.5z"/></svg>';
+let pi = 0, timer = null, typing = null, userPaused = reduce, hoverPaused = false;
 
 function setRows(rows) {
   [...rowsEl.children].forEach((r, i) => {
@@ -713,31 +864,48 @@ function setRows(rows) {
     r.querySelector(".state").lastChild.textContent = rows[i][1];
   });
 }
-function typeOut(text, done) {
-  let i = 0;
-  const caret = document.createElement("span");
-  caret.className = "caret";
-  typedEl.textContent = "";
-  const node = document.createTextNode("");
-  typedEl.append(node, caret);
-  const t = setInterval(() => {
-    i += 2;
-    node.data = text.slice(0, i);
-    if (i >= text.length) { clearInterval(t); setTimeout(() => { caret.remove(); done(); }, 2600); }
-  }, 28);
+function showFull(p) {
+  // Always land on a complete, readable state
+  clearInterval(typing); typing = null;
+  whoEl.textContent = p.who; typedEl.textContent = p.text; setRows(p.rows);
+  [...rowsEl.children].forEach(r => r.classList.remove("swap"));
 }
-function cycle() {
+function paused() { return userPaused || hoverPaused || document.hidden; }
+function schedule(ms) { clearTimeout(timer); if (!paused()) timer = setTimeout(next, ms); }
+function next() {
+  if (paused()) return;
   pi = (pi + 1) % profiles.length;
   const p = profiles[pi];
   [...rowsEl.children].forEach(r => r.classList.add("swap"));
-  setTimeout(() => {
+  timer = setTimeout(() => {
     whoEl.textContent = p.who;
     setRows(p.rows);
     [...rowsEl.children].forEach((r, i) => setTimeout(() => r.classList.remove("swap"), i * 90));
-    typeOut(p.text, () => setTimeout(cycle, 1400));
-  }, 400);
+    let i = 0;
+    const node = document.createTextNode(""), caret = document.createElement("span");
+    caret.className = "caret";
+    typedEl.textContent = ""; typedEl.append(node, caret);
+    typing = setInterval(() => {
+      i += 2; node.data = p.text.slice(0, i);
+      if (i >= p.text.length) { clearInterval(typing); typing = null; caret.remove(); schedule(4000); }
+    }, 28);
+  }, 300);
 }
-if (!reduce) setTimeout(cycle, 4200);
+function pauseNow() { clearTimeout(timer); showFull(profiles[pi]); }
+function setUserPaused(v) {
+  userPaused = v;
+  ctrl.setAttribute("aria-pressed", String(v));
+  ctrl.setAttribute("aria-label", v ? "Play examples" : "Pause examples");
+  ctrl.innerHTML = v ? PLAY_ICON : PAUSE_ICON;
+  if (v) pauseNow(); else schedule(1200);
+}
+ctrl.addEventListener("click", () => setUserPaused(!userPaused));
+consoleEl.addEventListener("mouseenter", () => { hoverPaused = true; pauseNow(); });
+consoleEl.addEventListener("mouseleave", () => { hoverPaused = false; schedule(2500); });
+consoleEl.addEventListener("focusin", () => { hoverPaused = true; pauseNow(); });
+consoleEl.addEventListener("focusout", () => { hoverPaused = false; schedule(2500); });
+document.addEventListener("visibilitychange", () => document.hidden ? pauseNow() : schedule(2500));
+if (reduce) setUserPaused(true); else schedule(4200);
 
 // Forms
 function collect(form) {
@@ -746,61 +914,132 @@ function collect(form) {
   return data;
 }
 const validEmail = s => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
-function fieldError(id, msg) {
-  const input = document.getElementById(id), err = document.getElementById(id + "-err");
-  if (msg) { err.textContent = msg; err.hidden = false; input.setAttribute("aria-invalid", "true"); }
-  else { err.hidden = true; input.removeAttribute("aria-invalid"); }
-  return !msg;
+const RULES = {
+  "b-name": el => el.value.trim() ? "" : "Add your name so I know who to reply to.",
+  "b-email": el => validEmail(el.value.trim()) ? "" : "Enter an email like name@example.com.",
+  "i-name": el => el.value.trim() ? "" : "Add your name.",
+  "i-email": el => validEmail(el.value.trim()) ? "" : "Enter an email like name@example.com.",
+  "i-consent": el => el.checked ? "" : "Tick this box to continue."
+};
+function check(id) {
+  const el = document.getElementById(id), err = document.getElementById(id + "-err");
+  const msg = RULES[id](el);
+  err.textContent = msg; err.hidden = !msg;
+  if (msg) el.setAttribute("aria-invalid", "true"); else el.removeAttribute("aria-invalid");
+  return msg;
 }
+// Validate when the person leaves a field, then live once it has shown an error
+Object.keys(RULES).forEach(id => {
+  const el = document.getElementById(id);
+  el.addEventListener("blur", () => { if (el.type !== "checkbox" && el.value) check(id); });
+  el.addEventListener(el.type === "checkbox" ? "change" : "input", () => { if (el.hasAttribute("aria-invalid")) check(id); });
+});
+function busy(btn, on) {
+  btn.disabled = on;
+  btn.setAttribute("aria-busy", String(on));
+  btn.firstChild.textContent = on ? "Sending " : btn.dataset.label;
+}
+document.querySelectorAll("#bookBtn, #intakeBtn").forEach(b => b.dataset.label = b.firstChild.textContent);
+
 async function send(type, data) {
-  if (!FORM_ENDPOINT) return;
+  if (!FORM_ENDPOINT) { await new Promise(r => setTimeout(r, 500)); return true; }
   try {
-    await fetch(FORM_ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify({ type, ...data }) });
-  } catch (e) { /* page still confirms; failed deliveries show up on the form service side */ }
+    const res = await fetch(FORM_ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify({ type, ...data }) });
+    return res.ok;
+  } catch (e) { return false; }
 }
 
 document.getElementById("bookForm").addEventListener("submit", async e => {
   e.preventDefault();
-  const f = e.target, d = collect(f);
-  const ok = [
-    fieldError("b-name", (d.name || "").trim() ? "" : "Add your name so I know who to reply to."),
-    fieldError("b-email", validEmail(d.email || "") ? "" : "Enter an email like name@example.com.")
-  ].every(Boolean);
-  if (!ok) { f.querySelector("[aria-invalid=true]").focus(); return; }
-  await send("booking", d);
+  const f = e.target, btn = document.getElementById("bookBtn");
+  const bad = ["b-name", "b-email"].filter(check);
+  if (bad.length) { document.getElementById(bad[0]).focus(); return; }
+  const d = collect(f);
+  busy(btn, true);
+  const ok = await send("booking", d);
+  busy(btn, false);
+  if (!ok) { showSendError(f, btn); return; }
   document.getElementById("bookDoneName").textContent = d.name.trim().split(" ")[0];
   f.hidden = true;
-  document.getElementById("bookDone").hidden = false;
+  const done = document.getElementById("bookDone");
+  done.hidden = false; done.tabIndex = -1; done.focus();
 });
 
-document.getElementById("intakeForm").addEventListener("submit", async e => {
+function showSendError(form, btn) {
+  let el = form.querySelector(".send-err");
+  if (!el) { el = document.createElement("p"); el.className = "ferr send-err"; el.setAttribute("role", "alert"); btn.parentElement.append(el); }
+  el.textContent = " Your answers didn't send. Check your internet connection and press the button again.";
+}
+
+// Intake: autosave draft on this device, progress, error summary
+const iform = document.getElementById("intakeForm");
+const DRAFT_KEY = "joogo-intake-draft";
+function saveDraft() {
+  try { localStorage.setItem(DRAFT_KEY, JSON.stringify(collect(iform))); } catch (e) {}
+}
+function loadDraft() {
+  let d = null;
+  try { d = JSON.parse(localStorage.getItem(DRAFT_KEY) || "null"); } catch (e) {}
+  if (!d) return;
+  [...iform.elements].forEach(el => {
+    if (!el.name || !(el.name in d)) return;
+    const v = d[el.name];
+    if (el.type === "checkbox") el.checked = [].concat(v).includes(el.value);
+    else el.value = v;
+  });
+}
+function progress() {
+  const blocks = [...iform.querySelectorAll(".qblock")];
+  const started = blocks.filter(b => [...b.querySelectorAll("input, textarea")].some(el => el.type === "checkbox" ? el.checked : el.value.trim())).length;
+  document.getElementById("progBar").style.transform = `scaleX(${started / blocks.length})`;
+  document.getElementById("progTxt").textContent = `${started} of ${blocks.length} sections started`;
+}
+let saveT;
+iform.addEventListener("input", () => { progress(); clearTimeout(saveT); saveT = setTimeout(saveDraft, 400); });
+iform.addEventListener("change", () => { progress(); saveDraft(); });
+loadDraft(); progress();
+
+iform.addEventListener("submit", async e => {
   e.preventDefault();
-  const f = e.target, d = collect(f);
-  const ok = [
-    fieldError("i-name", (d.name || "").trim() ? "" : "Add your name."),
-    fieldError("i-email", validEmail(d.email || "") ? "" : "Enter an email like name@example.com."),
-    fieldError("i-consent", d.consent ? "" : "Tick this box to continue.")
-  ].every(Boolean);
-  if (!ok) { f.querySelector("[aria-invalid=true]").focus(); return; }
-  await send("intake", d);
-  const list = v => [].concat(v || []).join(", ") || "not given";
+  const btn = document.getElementById("intakeBtn");
+  const sum = document.getElementById("intakeSum"), list = document.getElementById("intakeSumList");
+  const bad = ["i-name", "i-email", "i-consent"].filter(check);
+  if (bad.length) {
+    list.textContent = "";
+    bad.forEach(id => {
+      const li = document.createElement("li"), a = document.createElement("a");
+      a.href = "#" + id; a.textContent = document.getElementById(id + "-err").textContent;
+      a.addEventListener("click", ev => { ev.preventDefault(); document.getElementById(id).focus(); });
+      li.append(a); list.append(li);
+    });
+    sum.hidden = false; sum.focus();
+    return;
+  }
+  sum.hidden = true;
+  const d = collect(iform);
+  busy(btn, true);
+  const ok = await send("intake", d);
+  busy(btn, false);
+  if (!ok) { showSendError(iform, btn); return; }
+  try { localStorage.removeItem(DRAFT_KEY); } catch (e) {}
+  const listOf = v => [].concat(v || []).join(", ") || "not given";
   const tasks = [d.task1, d.task2, d.task3].filter(t => t && t.trim());
   const s = document.getElementById("intakeSummary");
   s.textContent = "";
   [
     ["Role", d.role || "not given"],
     ["Skills to build", tasks.length ? tasks.join(" / ") : "we'll pick them together"],
-    ["Tools to connect", list(d.tools)],
-    ["Writing style", list(d.style)],
-    ["Keep private", list(d.privacy)]
+    ["Tools to connect", listOf(d.tools)],
+    ["Writing style", listOf(d.style)],
+    ["Keep private", listOf(d.privacy)]
   ].forEach(([k, v]) => {
     const line = document.createElement("div");
     const key = document.createElement("b"); key.textContent = k + ": ";
     line.append(key, document.createTextNode(v));
     s.append(line);
   });
-  f.hidden = true;
-  document.getElementById("intakeDone").hidden = false;
-  window.scrollTo(0, 0);
+  iform.hidden = true;
+  const done = document.getElementById("intakeDone");
+  done.hidden = false; window.scrollTo(0, 0); done.tabIndex = -1; done.focus({ preventScroll: true });
 });
 </script>
