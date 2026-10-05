@@ -1,332 +1,323 @@
 <title>Joogo AI Setup</title>
-<meta name="description" content="Personal setup for Claude, ChatGPT and Gemini: your instructions, your tools, your repeat tasks.">
+<meta name="description" content="Personal setup for Claude, ChatGPT and Gemini. A 10 minute AI interview, then one call, and your AI works the way you do.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..900&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: asymmetric split hero with a live "setup console", bento of deliverables, sticky split sections; one emerald accent on cool zinc neutrals. Intake lives at #intake. */
+/* Layout: Swiss grid. Massive uppercase display type, hairline cell borders, sharp corners, black bands for rhythm, one electric blue. Interview lives at #interview. */
 :root {
-  --bg: #F4F5F4;
-  --raised: #FFFFFF;
-  --sunk: #EBEDEC;
-  --fg: #151917;
-  --muted: #5C6460;
-  --line: #DCE0DE;
-  --accent: #1B7A5E;
-  --accent-ink: #FFFFFF;
-  --accent-wash: #E3F0EB;
-  --shadow: 0 24px 48px -22px rgba(22, 60, 47, 0.28);
-  --error: #B4322A;
-  --sans: "Geist", "Helvetica Neue", system-ui, sans-serif;
+  --bg: #FFFFFF;
+  --fg: #0B0B0C;
+  --muted: #5E5E66;
+  --line: #E4E4E8;
+  --soft: #F4F4F6;
+  --blue: #2340FF;
+  --blue-ink: #FFFFFF;
+  --band: #0B0B0C;
+  --band-fg: #FFFFFF;
+  --error: #C4281C;
+  --display: "Archivo", "Arial Black", Impact, sans-serif;
+  --sans: "Geist", "Helvetica Neue", Arial, sans-serif;
   --mono: "Geist Mono", ui-monospace, Menlo, monospace;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
-  --r-lg: 28px; --r-md: 16px; --r-sm: 10px;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #111413; --raised: #181C1A; --sunk: #0C0E0D; --fg: #E9ECEA; --muted: #98A19C; --line: #2A302D;
-    --accent: #4CBF98; --accent-ink: #08201A; --accent-wash: #16302A; --shadow: 0 24px 48px -22px rgba(0, 0, 0, 0.6); --error: #F08A80;
+    --bg: #09090A; --fg: #F5F5F7; --muted: #A0A0AA; --line: #26262B; --soft: #141417;
+    --blue: #5068FF; --blue-ink: #FFFFFF; --band: #F5F5F7; --band-fg: #09090A; --error: #FF7A6E;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #111413; --raised: #181C1A; --sunk: #0C0E0D; --fg: #E9ECEA; --muted: #98A19C; --line: #2A302D;
-  --accent: #4CBF98; --accent-ink: #08201A; --accent-wash: #16302A; --shadow: 0 24px 48px -22px rgba(0, 0, 0, 0.6); --error: #F08A80;
+  --bg: #09090A; --fg: #F5F5F7; --muted: #A0A0AA; --line: #26262B; --soft: #141417;
+  --blue: #5068FF; --blue-ink: #FFFFFF; --band: #F5F5F7; --band-fg: #09090A; --error: #FF7A6E;
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 88px; }
-body { background: var(--bg); color: var(--fg); font: 400 16px/1.65 var(--sans); -webkit-font-smoothing: antialiased; }
-body::after {
-  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 30; opacity: 0.05;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-.wrap { max-width: 1240px; margin: 0 auto; padding-inline: 24px; }
-@media (max-width: 640px) { .wrap { padding-inline: 16px; } }
-h1, h2, h3 { margin: 0; text-wrap: balance; font-weight: 600; }
-h1 { font-size: clamp(2.3rem, 5vw, 3.75rem); line-height: 1.02; letter-spacing: -0.035em; }
-h2 { font-size: clamp(1.75rem, 3.2vw, 2.6rem); line-height: 1.08; letter-spacing: -0.03em; }
-h3 { font-size: 1.15rem; line-height: 1.3; letter-spacing: -0.01em; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+body { background: var(--bg); color: var(--fg); font: 400 16px/1.6 var(--sans); -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 1320px; margin: 0 auto; padding-inline: 32px; }
+@media (max-width: 700px) { .wrap { padding-inline: 16px; } }
+h1, h2, h3 { margin: 0; text-wrap: balance; }
+.disp { font-family: var(--display); font-weight: 850; font-stretch: 112%; text-transform: uppercase; letter-spacing: -0.02em; line-height: 0.9; }
+h2.disp { font-size: clamp(2.4rem, 6.4vw, 5.6rem); }
+h3 { font-size: 1.15rem; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3; }
 p { margin: 0; text-wrap: pretty; }
 .muted { color: var(--muted); }
-.lead { font-size: 1.125rem; color: var(--muted); max-width: 54ch; }
-a { color: var(--accent); }
-:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
-.skip { position: absolute; left: 16px; top: -60px; background: var(--fg); color: var(--bg); padding: 10px 14px; border-radius: var(--r-sm); z-index: 40; }
+.lead { font-size: 1.15rem; line-height: 1.55; color: var(--muted); max-width: 52ch; }
+.mono { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.02em; }
+.blue { color: var(--blue); }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+.skip { position: absolute; left: 16px; top: -80px; background: var(--fg); color: var(--bg); padding: 12px 16px; z-index: 50; }
 .skip:focus { top: 12px; }
 
-/* Buttons */
-.btn {
-  display: inline-flex; align-items: center; gap: 10px; font: 500 0.98rem var(--sans); padding: 13px 22px; border-radius: 999px;
-  border: 0; background: var(--fg); color: var(--bg); text-decoration: none; cursor: pointer;
-  transition: transform 0.3s var(--ease), background-color 0.3s var(--ease);
-}
-.btn:hover { transform: translateY(-1px); background: var(--accent); color: var(--accent-ink); }
-.btn:active { transform: scale(0.98); }
-.btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.75; transition: transform 0.3s var(--ease); }
-.btn:hover svg { transform: translateX(3px); }
-.btn.accent { background: var(--accent); color: var(--accent-ink); }
-.btn.accent:hover { background: var(--fg); color: var(--bg); }
-.textlink { font-weight: 500; color: var(--fg); text-decoration: none; border-bottom: 1px solid var(--line); padding-bottom: 2px; transition: border-color 0.3s var(--ease); }
-.textlink:hover { border-color: var(--accent); }
+/* Buttons: square, heavy */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 52px; padding: 0 24px; border: 2px solid var(--fg); background: var(--fg); color: var(--bg); font: 600 0.98rem var(--sans); text-decoration: none; cursor: pointer; transition: background-color 0.2s var(--ease), border-color 0.2s var(--ease), color 0.2s var(--ease), transform 0.15s var(--ease); }
+.btn:hover { background: var(--blue); border-color: var(--blue); color: var(--blue-ink); }
+.btn:active { transform: translateY(1px); }
+.btn.blue { background: var(--blue); border-color: var(--blue); color: var(--blue-ink); }
+.btn.blue:hover { background: var(--fg); border-color: var(--fg); color: var(--bg); }
+.btn.line { background: transparent; color: var(--fg); }
+.btn.line:hover { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.btn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; transition: transform 0.2s var(--ease); }
+.btn:hover svg { transform: translateX(4px); }
+.btn[disabled] { opacity: 0.55; cursor: progress; }
 
 /* Nav */
-nav.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--bg) 82%, transparent); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent); }
-nav.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px; }
-.logo { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 1.15rem; letter-spacing: -0.02em; color: var(--fg); text-decoration: none; }
-.logo svg { width: 26px; height: 26px; }
-.navlinks { display: flex; align-items: center; gap: 4px; }
-.navlinks a.nl { color: var(--muted); text-decoration: none; font-size: 0.93rem; font-weight: 500; padding: 11px 14px; border-radius: 999px; transition: color 0.25s, background-color 0.25s; }
+nav.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); border-bottom: 1px solid var(--line); }
+nav.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 64px; }
+.logo { font-family: var(--display); font-weight: 900; font-stretch: 125%; font-size: 1.35rem; letter-spacing: -0.01em; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+.logo i { width: 12px; height: 12px; background: var(--blue); display: inline-block; }
+.navlinks { display: flex; align-items: center; gap: 4px; height: 100%; }
+.navlinks a.nl { display: inline-flex; align-items: center; height: 100%; padding: 0 14px; color: var(--muted); text-decoration: none; font-size: 0.93rem; font-weight: 500; border-bottom: 2px solid transparent; transition: color 0.2s; }
 .navlinks a.nl:hover { color: var(--fg); }
-.navlinks a.nl.active { color: var(--fg); background: var(--sunk); }
-.navlinks .btn { padding: 9px 16px; font-size: 0.9rem; margin-left: 8px; }
-@media (max-width: 760px) { .navlinks a.nl.hide-sm { display: none; } }
+.navlinks a.nl.active { color: var(--fg); border-bottom-color: var(--blue); }
+.navlinks .btn { min-height: 44px; padding: 0 18px; margin-left: 10px; font-size: 0.9rem; }
+@media (max-width: 820px) { .navlinks a.nl.hide-sm { display: none; } }
 
-section { padding-block: 104px 112px; scroll-margin-top: 64px; }
-@media (max-width: 760px) { section { padding-block: 72px 80px; } }
+/* Grid lines */
+.cells { display: grid; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+.cells > * { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); min-width: 0; }
+section { padding-block: 120px; scroll-margin-top: 64px; }
+@media (max-width: 760px) { section { padding-block: 80px; } }
+.sec-head { display: grid; grid-template-columns: 1fr minmax(0, 420px); gap: 32px; align-items: end; margin-bottom: 56px; }
+.sec-head .lead { justify-self: end; }
+@media (max-width: 900px) { .sec-head { grid-template-columns: 1fr; } .sec-head .lead { justify-self: start; } }
 
 /* Hero */
-.hero { padding-block: 72px 96px; }
-.hero .wrap { display: grid; grid-template-columns: 1.08fr 0.92fr; gap: 64px; align-items: center; }
-.hero .copy { display: grid; gap: 26px; min-width: 0; }
-.hero h1 span { color: var(--accent); }
-.cta-row { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
-.works { display: flex; gap: 8px 18px; flex-wrap: wrap; font-family: var(--mono); font-size: 0.8rem; color: var(--muted); padding-top: 8px; border-top: 1px solid var(--line); }
-@media (max-width: 900px) { .hero .wrap { grid-template-columns: 1fr; gap: 48px; } }
+.hero { padding-block: 56px 0; }
+.hero h1 { font-family: var(--display); font-weight: 900; font-stretch: 118%; text-transform: uppercase; font-size: clamp(3.4rem, 12.2vw, 11.5rem); line-height: 0.84; letter-spacing: -0.035em; }
+.hero h1 span { display: block; }
+.hero-row { display: grid; grid-template-columns: 1.15fr 0.85fr 1fr; margin-top: 56px; }
+.hero-row > div { padding: 28px 28px 32px 0; display: grid; gap: 18px; align-content: start; }
+.hero-row > div + div { padding-left: 28px; }
+.hero-row .ctas { display: flex; flex-direction: column; gap: 10px; align-items: stretch; }
+.checks-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.checks-list li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; font-weight: 500; }
+.checks-list svg { width: 18px; height: 18px; margin-top: 3px; stroke: var(--blue); fill: none; stroke-width: 2.5; }
+@media (max-width: 960px) {
+  .hero-row { grid-template-columns: 1fr; }
+  .hero-row > div, .hero-row > div + div { padding: 24px 0; border-right: 0 !important; }
+}
 
-.console { position: relative; background: var(--raised); border-radius: var(--r-lg); box-shadow: var(--shadow), inset 0 0 0 1px var(--line); padding: 10px; min-width: 0; }
-.console-in { background: var(--bg); border-radius: 20px; padding: 22px; display: grid; gap: 20px; }
-.c-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-family: var(--mono); font-size: 0.76rem; color: var(--muted); }
-.c-who { color: var(--fg); }
-.c-label { font-size: 0.8rem; color: var(--muted); margin-bottom: 8px; font-weight: 500; }
-.typed { font-family: var(--mono); font-size: 0.82rem; line-height: 1.6; color: var(--fg); min-height: 6.4em; background: var(--raised); border-radius: var(--r-sm); padding: 14px 16px; box-shadow: inset 0 0 0 1px var(--line); }
-.typed .caret { display: inline-block; width: 7px; height: 1.05em; background: var(--accent); vertical-align: text-bottom; margin-left: 2px; animation: blink 1s steps(2) infinite; }
-.c-rows { display: grid; gap: 6px; }
-.c-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 14px; background: var(--raised); border-radius: var(--r-sm); font-size: 0.9rem; box-shadow: inset 0 0 0 1px var(--line); transition: opacity 0.4s var(--ease), transform 0.4s var(--ease); }
-.c-row.swap { opacity: 0; transform: translateY(4px); }
-.state { display: inline-flex; align-items: center; gap: 7px; font-family: var(--mono); font-size: 0.74rem; color: var(--muted); white-space: nowrap; }
-.dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); position: relative; }
-.dot::after { content: ""; position: absolute; inset: -4px; border-radius: 50%; background: var(--accent); opacity: 0.25; animation: breathe 2.4s var(--ease) infinite; }
-.dot.idle { background: var(--line); }
-.dot.idle::after { display: none; }
-.toast { position: absolute; right: -14px; bottom: 34px; background: var(--fg); color: var(--bg); font-size: 0.8rem; font-weight: 500; padding: 9px 14px; border-radius: 12px; box-shadow: var(--shadow); transform-origin: right center; }
-@media (max-width: 640px) { .toast { right: 10px; bottom: -16px; } }
-@keyframes blink { 50% { opacity: 0; } }
-@keyframes breathe { 0%, 100% { transform: scale(0.6); opacity: 0.35; } 50% { transform: scale(1.4); opacity: 0; } }
-@keyframes pop { 0% { transform: scale(0.85); opacity: 0; } 60% { transform: scale(1.04); opacity: 1; } 100% { transform: scale(1); } }
+/* Marquee band */
+.band { background: var(--band); color: var(--band-fg); overflow: hidden; }
+.marquee { display: flex; width: max-content; animation: slide 38s linear infinite; }
+.marquee ul { display: flex; list-style: none; margin: 0; padding: 0; }
+.marquee li { display: flex; align-items: center; gap: 28px; padding: 22px 0 22px 28px; font-family: var(--display); font-weight: 800; font-stretch: 112%; text-transform: uppercase; font-size: clamp(1.3rem, 2.6vw, 2.1rem); letter-spacing: -0.01em; white-space: nowrap; }
+.marquee li::after { content: ""; width: 12px; height: 12px; background: var(--blue); }
+@keyframes slide { to { transform: translateX(-50%); } }
+.band:hover .marquee { animation-play-state: paused; }
 
-/* Deliverables bento */
-.sec-head { display: grid; gap: 14px; max-width: 640px; margin-bottom: 48px; }
-.bento { display: grid; grid-template-columns: 1.35fr 1fr 1fr; grid-template-rows: auto auto; gap: 14px; }
-.tile { background: var(--raised); border-radius: var(--r-lg); padding: 30px; display: flex; flex-direction: column; gap: 12px; box-shadow: inset 0 0 0 1px var(--line); min-width: 0; }
-.tile p { color: var(--muted); max-width: 46ch; }
-.tile.big { grid-row: span 2; justify-content: space-between; gap: 28px; }
-.tile.wide { grid-column: span 2; display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 24px; }
-.quote { font-family: var(--mono); font-size: 0.84rem; line-height: 1.7; background: var(--bg); border-radius: var(--r-md); padding: 18px; color: var(--fg); }
-.quote b { color: var(--accent); font-weight: 500; }
-.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; }
-.chips span { font-family: var(--mono); font-size: 0.74rem; padding: 5px 9px; border-radius: 6px; background: var(--bg); color: var(--fg); }
-.cal { display: grid; grid-template-columns: repeat(7, 22px); gap: 5px; }
-.cal i { width: 22px; height: 22px; border-radius: 6px; background: var(--bg); }
-.cal i.on { background: var(--accent); }
-.cal i.mid { background: var(--accent-wash); }
-@media (max-width: 960px) { .bento { grid-template-columns: 1fr 1fr; } .tile.big { grid-row: auto; grid-column: span 2; } }
-@media (max-width: 640px) { .bento { grid-template-columns: 1fr; } .tile.big, .tile.wide { grid-column: auto; } .tile.wide { grid-template-columns: 1fr; } .tile { padding: 24px; } }
+/* Proof */
+.ba { grid-template-columns: 1fr 1fr; }
+.ba > div { padding: 32px; display: grid; gap: 18px; align-content: start; }
+.ba .tag { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.ba .tag b { font-family: var(--display); font-weight: 850; font-stretch: 112%; text-transform: uppercase; font-size: 1.5rem; letter-spacing: -0.01em; }
+.ba .after { background: var(--soft); }
+.ba .after .tag b { color: var(--blue); }
+.mail { font-size: 1.02rem; line-height: 1.6; border-left: 3px solid var(--line); padding-left: 18px; }
+.after .mail { border-left-color: var(--blue); }
+.before .mail { color: var(--muted); }
+.notes { list-style: none; margin: 0; padding: 16px 0 0; border-top: 1px solid var(--line); display: grid; gap: 8px; font-size: 0.93rem; }
+.notes li { display: grid; grid-template-columns: 22px 1fr; gap: 6px; }
+.notes svg { width: 16px; height: 16px; margin-top: 4px; fill: none; stroke-width: 2.5; }
+.before .notes svg { stroke: var(--muted); }
+.after .notes svg { stroke: var(--blue); }
+.ask { margin-bottom: 20px; }
+@media (max-width: 860px) { .ba { grid-template-columns: 1fr; } .ba > div { padding: 24px; } }
 
-/* Split sections */
-.split { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 64px; align-items: start; }
-.split .stick { position: sticky; top: 104px; display: grid; gap: 16px; }
-@media (max-width: 900px) { .split { grid-template-columns: 1fr; gap: 36px; } .split .stick { position: static; } }
+/* Deliverables */
+.get { grid-template-columns: repeat(4, 1fr); }
+.get > div { padding: 32px 28px 36px; display: grid; gap: 14px; align-content: start; transition: background-color 0.25s var(--ease); }
+.get > div:hover { background: var(--soft); }
+.get .n { font-family: var(--display); font-weight: 900; font-stretch: 112%; font-size: 4.2rem; line-height: 0.85; color: var(--blue); letter-spacing: -0.03em; }
+.get p { color: var(--muted); }
+@media (max-width: 1080px) { .get { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 600px) { .get { grid-template-columns: 1fr; } }
 
-.steps { display: grid; }
-.step { display: grid; grid-template-columns: 96px 1fr; gap: 20px; padding-block: 30px; border-top: 1px solid var(--line); }
-.step:last-child { border-bottom: 1px solid var(--line); }
-.step .n { font-family: var(--mono); font-size: 2.6rem; font-weight: 400; line-height: 1; color: var(--accent); letter-spacing: -0.04em; }
-.step .t { display: grid; gap: 8px; }
-.step .dur { font-family: var(--mono); font-size: 0.78rem; color: var(--muted); }
-@media (max-width: 520px) { .step { grid-template-columns: 1fr; gap: 10px; } }
+/* How it works */
+.how { grid-template-columns: 1fr; }
+.how > div { display: grid; grid-template-columns: 140px 1fr 1.1fr; gap: 32px; padding: 36px 32px; align-items: start; }
+.how .n { font-family: var(--display); font-weight: 900; font-stretch: 112%; font-size: 3.4rem; line-height: 0.85; letter-spacing: -0.03em; }
+.how .t { display: grid; gap: 10px; }
+.how .t p { color: var(--muted); max-width: 46ch; }
+.how .t .btn { margin-top: 8px; }
+@media (max-width: 960px) { .how > div { grid-template-columns: 1fr; gap: 16px; padding: 28px 24px; } .how > div > div:empty { display: none; } }
+
+.chatmock { border: 1px solid var(--line); background: var(--bg); display: grid; }
+.chatmock .cm-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+.chatmock .cm-body { padding: 16px; display: grid; gap: 10px; align-content: start; }
+.bub { max-width: 88%; padding: 10px 14px; font-size: 0.92rem; line-height: 1.5; }
+.bub.ai { background: var(--soft); justify-self: start; }
+.bub.me { background: var(--blue); color: var(--blue-ink); justify-self: end; }
+.live { display: inline-flex; align-items: center; gap: 8px; }
+.live i { width: 8px; height: 8px; background: var(--blue); animation: pulse 1.6s ease-in-out infinite; }
+@keyframes pulse { 50% { opacity: 0.25; } }
 
 /* Packages */
-.plans { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
-.plan { display: grid; grid-template-rows: subgrid; grid-row: span 5; gap: 18px; background: var(--raised); border-radius: var(--r-lg); padding: 28px; box-shadow: inset 0 0 0 1px var(--line); }
-.plan .ph { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
-.flag { font-family: var(--mono); font-size: 0.72rem; color: var(--accent); }
-.price { font-size: 2.5rem; font-weight: 600; letter-spacing: -0.04em; line-height: 1; font-variant-numeric: tabular-nums; }
-.price small { font-size: 0.9rem; font-weight: 400; color: var(--muted); letter-spacing: 0; }
-.plan ul { list-style: none; margin: 0; padding: 18px 0 0; border-top: 1px solid var(--line); display: grid; gap: 10px; align-content: start; font-size: 0.94rem; }
-.plan li { display: grid; grid-template-columns: 18px 1fr; gap: 8px; }
-.plan li svg { width: 16px; height: 16px; margin-top: 4px; stroke: var(--accent); fill: none; stroke-width: 1.75; }
-.plan .btn { justify-content: center; align-self: end; }
-.plan.pick { background: var(--accent); color: var(--accent-ink); box-shadow: var(--shadow); }
-.plan.pick .muted, .plan.pick .price small, .plan.pick .flag { color: color-mix(in srgb, var(--accent-ink) 92%, transparent); }
-.plan.pick ul { border-color: color-mix(in srgb, var(--accent-ink) 25%, transparent); }
-.plan.pick li svg { stroke: var(--accent-ink); }
-.plan.pick .btn { background: var(--accent-ink); color: var(--accent); }
-.plan.pick .btn:hover { background: var(--fg); color: var(--bg); }
-@media (max-width: 1080px) { .plans { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 600px) { .plans { grid-template-columns: 1fr; } .plan { padding: 24px; } }
+.plans { grid-template-columns: repeat(4, 1fr); }
+.plan { display: grid; grid-template-rows: subgrid; grid-row: span 5; gap: 18px; padding: 32px 28px; }
+.plan .ph { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.plan .ph h3 { font-family: var(--display); font-weight: 850; font-stretch: 112%; text-transform: uppercase; font-size: 1.4rem; }
+.price { font-family: var(--display); font-weight: 900; font-stretch: 105%; font-size: 3.4rem; line-height: 0.9; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.price small { font-family: var(--sans); font-size: 0.9rem; font-weight: 500; letter-spacing: 0; color: var(--muted); margin-left: 6px; }
+.plan ul { list-style: none; margin: 0; padding: 18px 0 0; border-top: 1px solid var(--line); display: grid; gap: 10px; align-content: start; font-size: 0.95rem; }
+.plan li { display: grid; grid-template-columns: 20px 1fr; gap: 8px; }
+.plan li svg { width: 16px; height: 16px; margin-top: 4px; stroke: var(--blue); fill: none; stroke-width: 2.5; }
+.plan .btn { align-self: end; width: 100%; }
+.plan.pick { background: var(--blue); color: var(--blue-ink); }
+.plan.pick .muted, .plan.pick .price small, .plan.pick .mono { color: var(--blue-ink); }
+.plan.pick ul { border-top-color: rgba(255, 255, 255, 0.35); }
+.plan.pick li svg { stroke: var(--blue-ink); }
+.plan.pick .btn { background: #FFFFFF; border-color: #FFFFFF; color: #0B0B0C; }
+.plan.pick .btn:hover { background: #0B0B0C; border-color: #0B0B0C; color: #FFFFFF; }
+@media (max-width: 1080px) { .plans { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 600px) { .plans { grid-template-columns: 1fr; } .plan { padding: 26px 22px; } }
 
-/* Privacy */
-.rules { display: grid; gap: 0; }
-.rule { display: grid; grid-template-columns: 48px 1fr; gap: 18px; padding-block: 26px; border-top: 1px solid var(--line); }
-.rule:last-child { border-bottom: 1px solid var(--line); }
-.rule .ic { width: 48px; height: 48px; border-radius: 14px; background: var(--accent-wash); display: grid; place-items: center; }
-.rule svg { width: 24px; height: 24px; stroke: var(--accent); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
-.rule .t { display: grid; gap: 6px; }
+.compare-wrap { margin-top: 48px; overflow-x: auto; border: 1px solid var(--line); }
+.compare { width: 100%; min-width: 660px; border-collapse: collapse; font-size: 0.94rem; }
+.compare caption { text-align: left; padding: 20px 22px 8px; font-family: var(--display); font-weight: 850; font-stretch: 112%; text-transform: uppercase; font-size: 1.3rem; }
+.compare th, .compare td { padding: 14px 22px; text-align: left; border-bottom: 1px solid var(--line); }
+.compare thead th { font-family: var(--mono); font-weight: 500; font-size: 0.78rem; color: var(--muted); }
+.compare tbody th { font-weight: 500; }
+.compare td { font-variant-numeric: tabular-nums; }
+.compare tr:last-child > * { border-bottom: 0; }
+.compare .pk { background: color-mix(in srgb, var(--blue) 9%, var(--bg)); }
+.no { color: var(--muted); }
 
-/* FAQ list */
-.faq { display: grid; }
-.qa { display: grid; grid-template-columns: 1fr 1.3fr; gap: 32px; padding-block: 26px; border-top: 1px solid var(--line); }
-.qa:last-child { border-bottom: 1px solid var(--line); }
-.qa h3 { font-size: 1.05rem; }
-@media (max-width: 760px) { .qa { grid-template-columns: 1fr; gap: 8px; } }
+/* Privacy + FAQ */
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+@media (max-width: 960px) { .two { grid-template-columns: 1fr; gap: 40px; } }
+.rows { grid-template-columns: 1fr; border-left: 0; }
+.rows > div { padding: 24px 0 26px; display: grid; grid-template-columns: 56px 1fr; gap: 16px; border-right: 0; }
+.rows .k { font-family: var(--mono); font-size: 0.8rem; color: var(--blue); padding-top: 4px; }
+.rows .t { display: grid; gap: 6px; }
+
+/* Book (black band) */
+.dark { background: var(--band); color: var(--band-fg); }
+.dark .lead { color: var(--band-fg); opacity: 0.75; }
+.book { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+.book-steps { list-style: none; margin: 32px 0 0; padding: 0; display: grid; border-top: 1px solid color-mix(in srgb, var(--band-fg) 22%, transparent); }
+.book-steps li { display: grid; grid-template-columns: 48px 1fr; gap: 12px; padding: 18px 0; border-bottom: 1px solid color-mix(in srgb, var(--band-fg) 22%, transparent); }
+.book-steps .mono { color: var(--blue); padding-top: 3px; }
+@media (max-width: 960px) { .book { grid-template-columns: 1fr; gap: 40px; } }
 
 /* Forms */
-.formcard { background: var(--raised); border-radius: var(--r-lg); padding: 34px; display: grid; gap: 24px; box-shadow: var(--shadow), inset 0 0 0 1px var(--line); min-width: 0; }
-.fgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.formcard { background: var(--bg); color: var(--fg); padding: 32px; display: grid; gap: 22px; min-width: 0; }
+.fgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
 .fgrid .full { grid-column: 1 / -1; }
 @media (max-width: 640px) { .fgrid { grid-template-columns: 1fr; } .formcard { padding: 22px; } }
 .field { display: grid; gap: 8px; min-width: 0; }
 .field > label, legend { font-weight: 500; font-size: 0.93rem; }
-.help { font-size: 0.84rem; color: var(--muted); font-weight: 400; }
+.help { font-size: 0.84rem; color: var(--muted); }
+.req { color: var(--error); margin-left: 2px; }
 fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 legend { padding: 0; margin-bottom: 10px; }
 input[type=text], input[type=email], input[type=tel], input[type=date], select, textarea {
-  font: 400 1rem var(--sans); color: var(--fg); background: var(--bg); border: 1px solid transparent; border-radius: 12px; padding: 12px 14px; width: 100%;
-  transition: border-color 0.25s var(--ease), background-color 0.25s var(--ease);
+  font: 400 1rem var(--sans); color: var(--fg); background: var(--bg); border: 1px solid var(--line); border-radius: 0; min-height: 48px; padding: 12px 14px; width: 100%;
+  transition: border-color 0.2s var(--ease);
 }
-input:hover, select:hover, textarea:hover { border-color: var(--line); }
-input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); background: var(--raised); }
+input:hover, select:hover, textarea:hover { border-color: var(--muted); }
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--blue); box-shadow: inset 0 0 0 1px var(--blue); }
 input[aria-invalid=true] { border-color: var(--error); }
-textarea { min-height: 104px; resize: vertical; }
-.ferr { font-size: 0.85rem; color: var(--error); font-weight: 500; }
-.checks { display: flex; flex-wrap: wrap; gap: 8px; }
-.chk { position: relative; display: inline-flex; }
-.chk input { position: absolute; opacity: 0; inset: 0; cursor: pointer; margin: 0; }
-.chk, .chk input { cursor: pointer; }
-.chk span { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 10px 16px; border-radius: 10px; background: var(--bg); font-size: 0.92rem; font-weight: 500; transition: background-color 0.25s var(--ease), color 0.25s var(--ease), transform 0.2s var(--ease); }
-.chk span::before { content: ""; width: 14px; height: 14px; border-radius: 4px; box-shadow: inset 0 0 0 1.5px var(--muted); flex: none; }
-.chk input:checked + span { background: var(--accent-wash); color: var(--fg); }
-.chk input:checked + span::before { background: var(--accent); box-shadow: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.5 2.5L12 5.5' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
-.chk input:active + span { transform: scale(0.98); }
-.chk input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
-.chk.wide span { white-space: normal; }
-.done { display: grid; gap: 14px; background: var(--raised); border-radius: var(--r-lg); padding: 34px; box-shadow: var(--shadow), inset 0 0 0 1px var(--line); }
-.done .ok { width: 44px; height: 44px; border-radius: 12px; background: var(--accent-wash); display: grid; place-items: center; animation: pop 0.6s var(--ease) both; }
-.done .ok svg { width: 22px; height: 22px; stroke: var(--accent); fill: none; stroke-width: 2; }
-.book-notes { display: grid; gap: 0; margin-top: 12px; }
-.book-notes div { display: grid; grid-template-columns: 110px 1fr; gap: 12px; padding-block: 14px; border-top: 1px solid var(--line); font-size: 0.94rem; }
-.book-notes dt, .book-notes span:first-child { font-family: var(--mono); font-size: 0.78rem; color: var(--muted); padding-top: 2px; }
+textarea { min-height: 100px; resize: vertical; }
+.ferr { font-size: 0.86rem; color: var(--error); font-weight: 500; }
+.opts { display: flex; flex-wrap: wrap; gap: 8px; }
+.opt { position: relative; display: inline-flex; cursor: pointer; }
+.opt input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+.opt span { display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border: 1px solid var(--line); font-weight: 500; font-size: 0.93rem; transition: background-color 0.2s, border-color 0.2s, color 0.2s; }
+.opt input:checked + span { background: var(--fg); border-color: var(--fg); color: var(--bg); }
+.opt input:focus-visible + span { outline: 2px solid var(--blue); outline-offset: 2px; }
+.opt.wide span { white-space: normal; padding-block: 10px; }
+.done { background: var(--bg); color: var(--fg); padding: 32px; display: grid; gap: 14px; }
+.done h3 { font-family: var(--display); font-weight: 850; font-stretch: 112%; text-transform: uppercase; font-size: 2rem; line-height: 0.95; }
 
-/* Intake */
-.intake-head { padding-block: 56px 16px; display: grid; gap: 16px; max-width: 760px; }
-.back { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); text-decoration: none; font-weight: 500; font-size: 0.93rem; }
-.back:hover { color: var(--fg); }
-.back svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.75; }
-.intake-body { display: grid; grid-template-columns: 220px 1fr; gap: 56px; padding-block: 32px 112px; align-items: start; }
-.toc { position: sticky; top: 96px; display: grid; gap: 2px; }
-.toc a { display: grid; grid-template-columns: 28px 1fr; color: var(--muted); text-decoration: none; padding: 8px 0; font-size: 0.92rem; transition: color 0.25s; }
-.toc a span { font-family: var(--mono); font-size: 0.78rem; padding-top: 2px; }
-.toc a:hover, .toc a.active { color: var(--fg); }
-.toc a.active span { color: var(--accent); }
-.qblock { display: grid; gap: 22px; padding-block: 36px; border-top: 1px solid var(--line); scroll-margin-top: 84px; }
-.qblock:first-child { border-top: 0; padding-top: 0; }
-.qblock h2.qh { font-size: 1.35rem; display: flex; gap: 14px; align-items: baseline; }
-.qblock h2.qh span { font-family: var(--mono); font-size: 0.85rem; color: var(--accent); font-weight: 400; }
-.summary { font-family: var(--mono); font-size: 0.84rem; line-height: 1.7; background: var(--bg); border-radius: var(--r-md); padding: 18px; display: grid; gap: 4px; }
-.summary b { color: var(--accent); font-weight: 500; }
-@media (max-width: 860px) { .intake-body { grid-template-columns: 1fr; } .toc { display: none; } }
-
-/* Trust row in hero */
-.trustrow { display: flex; flex-wrap: wrap; gap: 10px 22px; list-style: none; margin: 0; padding: 0; font-size: 0.92rem; }
-.trustrow li { display: inline-flex; align-items: center; gap: 8px; }
-.trustrow svg { width: 16px; height: 16px; stroke: var(--accent); fill: none; stroke-width: 2; flex: none; }
-
-/* Console pause control */
-.c-ctrl { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; border: 0; background: var(--raised); color: var(--muted); cursor: pointer; box-shadow: inset 0 0 0 1px var(--line); position: relative; }
-.c-ctrl::after { content: ""; position: absolute; inset: -6px; }
-.c-ctrl:hover { color: var(--fg); }
-.c-ctrl svg { width: 12px; height: 12px; fill: currentColor; }
-.c-meta { display: flex; align-items: center; gap: 10px; }
-
-/* Before / after proof */
-.ba { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.ba-col { border-radius: var(--r-lg); padding: 28px; display: grid; gap: 14px; align-content: start; min-width: 0; }
-.ba-col.before { background: var(--sunk); }
-.ba-col.after { background: var(--raised); box-shadow: var(--shadow), inset 0 0 0 1px var(--line); }
-.ba-tag { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: 0.95rem; }
-.ba-tag svg { width: 18px; height: 18px; fill: none; stroke-width: 2; }
-.before .ba-tag svg { stroke: var(--muted); }
-.after .ba-tag svg { stroke: var(--accent); }
-.ask { font-family: var(--mono); font-size: 0.82rem; color: var(--muted); }
-.mail { font-size: 0.95rem; line-height: 1.6; background: var(--bg); border-radius: var(--r-md); padding: 18px; }
-.before .mail { background: var(--raised); color: var(--muted); }
-.ba-notes { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 0.9rem; color: var(--muted); }
-.ba-notes li { display: grid; grid-template-columns: 18px 1fr; gap: 6px; }
-.ba-notes svg { width: 14px; height: 14px; margin-top: 5px; fill: none; stroke-width: 2; }
-.before .ba-notes svg { stroke: var(--muted); }
-.after .ba-notes svg { stroke: var(--accent); }
-@media (max-width: 800px) { .ba { grid-template-columns: 1fr; } .ba-col { padding: 22px; } }
-
-/* Comparison table */
-.compare-wrap { margin-top: 40px; overflow-x: auto; border-radius: var(--r-md); box-shadow: inset 0 0 0 1px var(--line); background: var(--raised); }
-.compare { width: 100%; min-width: 640px; border-collapse: collapse; font-size: 0.93rem; }
-.compare caption { text-align: left; padding: 18px 20px 6px; font-weight: 600; font-size: 1.05rem; }
-.compare th, .compare td { padding: 13px 20px; text-align: left; border-bottom: 1px solid var(--line); }
-.compare thead th { font-weight: 600; font-size: 0.88rem; color: var(--muted); }
-.compare tbody th { font-weight: 500; }
-.compare td { font-variant-numeric: tabular-nums; }
-.compare tr:last-child th, .compare tr:last-child td { border-bottom: 0; }
-.compare .col-pick { background: var(--accent-wash); }
-.yes, .no { display: inline-flex; align-items: center; gap: 6px; }
-.yes svg, .no svg { width: 16px; height: 16px; fill: none; stroke-width: 2; }
-.yes svg { stroke: var(--accent); }
-.no { color: var(--muted); }
-.no svg { stroke: var(--muted); }
-
-/* Forms: required marks, error summary, loading */
-.req { color: var(--error); margin-left: 2px; }
-.req-note { font-size: 0.85rem; color: var(--muted); }
-.errsum { background: color-mix(in srgb, var(--error) 10%, var(--raised)); border-radius: var(--r-md); padding: 16px 18px; display: grid; gap: 6px; }
-.errsum:focus { outline: 2px solid var(--error); outline-offset: 2px; }
-.errsum p { font-weight: 600; }
-.errsum ul { margin: 0; padding-left: 18px; }
-.errsum a { color: var(--error); }
-.btn[aria-busy=true] { opacity: 0.7; cursor: progress; }
-.btn[aria-busy=true] svg { animation: nudge 0.8s ease-in-out infinite; }
-@keyframes nudge { 50% { transform: translateX(4px); } }
-
-/* Intake progress */
-.progress { display: grid; gap: 8px; margin-top: 8px; }
-.progress-bar { height: 6px; border-radius: 99px; background: var(--sunk); overflow: hidden; }
-.progress-bar i { display: block; height: 100%; width: 100%; background: var(--accent); transform-origin: left; transform: scaleX(0); transition: transform 0.4s var(--ease); }
-.progress-txt { font-family: var(--mono); font-size: 0.78rem; color: var(--muted); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+/* Footer */
+footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: hidden; }
+.wordmark { font-family: var(--display); font-weight: 900; font-stretch: 125%; text-transform: uppercase; font-size: clamp(4rem, 19vw, 17rem); line-height: 0.8; letter-spacing: -0.04em; }
+.wordmark span { color: var(--blue); }
+.foot-row { display: flex; justify-content: space-between; gap: 16px 32px; flex-wrap: wrap; margin-top: 32px; color: var(--muted); font-size: 0.9rem; }
+.foot-row nav { display: flex; gap: 22px; flex-wrap: wrap; }
+.foot-row a { text-decoration: none; }
+.foot-row a:hover { color: var(--fg); }
 
 /* Mobile sticky CTA */
 .mcta { display: none; }
 @media (max-width: 760px) {
-  .mcta { display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; gap: 12px; align-items: center; justify-content: space-between; padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px)); background: color-mix(in srgb, var(--raised) 92%, transparent); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-top: 1px solid var(--line); transition: transform 0.3s var(--ease); }
+  .mcta { display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px)); background: var(--bg); border-top: 1px solid var(--line); transition: transform 0.25s var(--ease); }
   .mcta.off { transform: translateY(110%); }
-  .mcta p { font-size: 0.88rem; color: var(--muted); }
-  .mcta .btn { padding: 12px 18px; }
-  footer { padding-bottom: 104px; }
+  .mcta p { font-size: 0.86rem; color: var(--muted); }
+  .mcta .btn { min-height: 46px; padding: 0 18px; }
+  footer { padding-bottom: 110px; }
 }
 
-footer { border-top: 1px solid var(--line); padding-block: 36px 44px; font-size: 0.9rem; color: var(--muted); }
-footer .wrap { display: flex; justify-content: space-between; align-items: center; gap: 16px 32px; flex-wrap: wrap; }
-footer nav { display: flex; gap: 20px; flex-wrap: wrap; }
-footer a { color: var(--muted); text-decoration: none; }
-footer a:hover { color: var(--fg); }
+/* ===== Interview view ===== */
+.iv { display: grid; grid-template-columns: 380px 1fr; min-height: calc(100dvh - 64px); border-bottom: 1px solid var(--line); }
+.iv-side { border-right: 1px solid var(--line); padding: 40px 32px; display: grid; gap: 28px; align-content: start; }
+.iv-side h1 { font-family: var(--display); font-weight: 900; font-stretch: 112%; text-transform: uppercase; font-size: clamp(2.4rem, 4vw, 3.4rem); line-height: 0.88; letter-spacing: -0.03em; }
+.back { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); text-decoration: none; font-weight: 500; font-size: 0.93rem; min-height: 44px; }
+.back:hover { color: var(--fg); }
+.back svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
+.topics { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.topics li { display: grid; grid-template-columns: 28px 1fr auto; gap: 10px; align-items: center; padding: 13px 0; border-bottom: 1px solid var(--line); font-weight: 500; color: var(--muted); transition: color 0.3s; }
+.topics li .box { width: 18px; height: 18px; border: 1.5px solid var(--line); display: grid; place-items: center; transition: background-color 0.3s, border-color 0.3s; }
+.topics li .box svg { width: 12px; height: 12px; stroke: var(--blue-ink); fill: none; stroke-width: 3; opacity: 0; }
+.topics li.on { color: var(--fg); }
+.topics li.on .box { background: var(--blue); border-color: var(--blue); }
+.topics li.on .box svg { opacity: 1; }
+.topics li .st { font-family: var(--mono); font-size: 0.74rem; }
+.meter { height: 4px; background: var(--soft); }
+.meter i { display: block; height: 100%; background: var(--blue); transform-origin: left; transform: scaleX(0); transition: transform 0.5s var(--ease); }
+.iv-note { font-size: 0.88rem; color: var(--muted); display: grid; grid-template-columns: 20px 1fr; gap: 8px; }
+.iv-note svg { width: 16px; height: 16px; margin-top: 3px; stroke: var(--muted); fill: none; stroke-width: 2; }
 
-/* Load-in cascade: resting state is fully visible */
+.iv-main { display: grid; grid-template-rows: 1fr auto; min-width: 0; }
+.iv-start { padding: 40px; display: grid; align-content: center; justify-items: start; gap: 24px; max-width: 680px; }
+.iv-start h2 { font-family: var(--display); font-weight: 850; font-stretch: 112%; text-transform: uppercase; font-size: clamp(1.9rem, 3.2vw, 2.6rem); line-height: 0.95; letter-spacing: -0.02em; }
+.demo-note { border: 1px dashed var(--muted); padding: 12px 14px; font-size: 0.88rem; color: var(--muted); }
+.log { padding: 32px 40px; display: flex; flex-direction: column; gap: 14px; overflow-y: auto; max-height: calc(100dvh - 64px - 112px); }
+.msg { max-width: min(620px, 86%); padding: 14px 18px; line-height: 1.55; white-space: pre-wrap; overflow-wrap: anywhere; }
+.msg.ai { align-self: flex-start; background: var(--soft); }
+.msg.me { align-self: flex-end; background: var(--blue); color: var(--blue-ink); }
+.msg.sys { align-self: stretch; max-width: none; border: 1px solid var(--line); color: var(--muted); }
+.msg.err { align-self: stretch; max-width: none; border: 1px solid var(--error); color: var(--error); white-space: normal; }
+.typing { display: inline-flex; gap: 5px; padding: 18px; align-self: flex-start; background: var(--soft); }
+.typing i { width: 7px; height: 7px; background: var(--muted); animation: pulse 1s ease-in-out infinite; }
+.typing i:nth-child(2) { animation-delay: 0.15s; }
+.typing i:nth-child(3) { animation-delay: 0.3s; }
+.composer { border-top: 1px solid var(--line); padding: 16px 40px 20px; display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: end; background: var(--bg); }
+.composer textarea { min-height: 52px; max-height: 180px; resize: none; }
+.composer .btn { min-height: 52px; min-width: 56px; padding: 0 18px; }
+.composer .hint { grid-column: 1 / -1; font-size: 0.8rem; color: var(--muted); }
+.linkbtn { background: none; border: 0; padding: 4px 0; font: inherit; color: inherit; text-decoration: underline; cursor: pointer; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.recap { display: grid; gap: 14px; border: 2px solid var(--blue); padding: 24px; align-self: stretch; justify-items: start; }
+.recap h3 { font-family: var(--display); font-weight: 850; font-stretch: 112%; text-transform: uppercase; font-size: 1.6rem; line-height: 0.95; }
+@media (max-width: 900px) {
+  .iv { grid-template-columns: 1fr; }
+  .iv-side { border-right: 0; border-bottom: 1px solid var(--line); padding: 20px 16px; gap: 14px; }
+  .iv-side .topics, .iv-side .iv-note, .iv-side .back + h1 + p { display: none; }
+  .iv-start, .log { padding: 24px 16px; }
+  .log { max-height: none; }
+  .composer { padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px)); position: sticky; bottom: 0; }
+}
+
+/* Motion */
 @media (prefers-reduced-motion: no-preference) {
-  .rise { animation: rise 0.9s var(--ease) both; animation-delay: calc(var(--i, 0) * 90ms); }
-  .toast { animation: pop 0.7s var(--ease) 1.2s both; }
-  @keyframes rise { from { opacity: 0.001; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  .hero h1 span { animation: rise 0.9s var(--ease) both; }
+  .hero h1 span:nth-child(2) { animation-delay: 0.08s; }
+  .hero h1 span:nth-child(3) { animation-delay: 0.16s; }
+  .msg, .recap { animation: rise 0.4s var(--ease) both; }
+  @keyframes rise { from { transform: translateY(18px); opacity: 0.001; } to { transform: none; opacity: 1; } }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .dot::after, .typed .caret { animation: none; }
+  .marquee { animation: none; flex-wrap: wrap; width: auto; }
+  .marquee ul[aria-hidden] { display: none; }
+  .live i, .typing i { animation: none; }
 }
 </style>
 
@@ -334,712 +325,577 @@ footer a:hover { color: var(--fg); }
 
 <nav class="top" aria-label="Main">
   <div class="wrap">
-    <a class="logo" href="#top" aria-label="Joogo home">
-      <svg viewBox="0 0 26 26" aria-hidden="true"><rect x="1" y="1" width="24" height="24" rx="8" fill="var(--fg)"/><path d="M8 13.5l3.2 3.2L18 9.5" fill="none" stroke="var(--bg)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      Joogo
-    </a>
+    <a class="logo" href="#top" aria-label="Joogo home"><i></i>JOOGO</a>
     <div class="navlinks">
       <a class="nl hide-sm" href="#how" data-sec="how">How it works</a>
       <a class="nl hide-sm" href="#packages" data-sec="packages">Packages</a>
-      <a class="nl" href="#intake" data-sec="intake">Questionnaire</a>
-      <a class="btn accent" href="#book">Book a setup</a>
+      <a class="nl" href="#interview" data-sec="interview">Interview</a>
+      <a class="btn blue" href="#book">Book a setup</a>
     </div>
   </div>
 </nav>
 
-<!-- ============ HOME ============ -->
+<!-- ================= HOME ================= -->
 <main id="view-home">
   <span id="main"></span>
   <header class="hero" id="top">
     <div class="wrap">
-      <div class="copy">
-        <h1 class="rise" style="--i:0">Your AI, set up around <span>the way you actually work.</span></h1>
-        <p class="lead rise" style="--i:1">You already pay for Claude, ChatGPT or Gemini. In one guided session I give it your voice, connect it to your email and files, and teach it the tasks you repeat every week.</p>
-        <div class="cta-row rise" style="--i:2">
-          <a class="btn" href="#book">Book your setup <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
-          <a class="textlink" href="#packages">See packages and prices</a>
+      <h1><span>Your AI.</span><span>Set up.</span><span class="blue">In one call.</span></h1>
+      <div class="hero-row cells" style="border-left:0">
+        <div>
+          <p class="lead">You already pay for Claude, ChatGPT or Gemini. I set it up around your real job: your voice, your inbox, your files, and the tasks you repeat every week.</p>
         </div>
-        <ul class="trustrow rise" style="--i:3" aria-label="How every setup works">
-          <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>Pay after the session</li>
-          <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>You never share passwords</li>
-          <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>Plain words, no tech skills needed</li>
-        </ul>
-        <div class="works rise" style="--i:4"><span>Claude</span><span>ChatGPT</span><span>Gemini</span><span>Gmail</span><span>Outlook</span><span>Drive</span><span>Notion</span><span>Slack</span></div>
-      </div>
-
-      <div class="console rise" style="--i:2" aria-label="Example of a finished setup">
-        <div class="console-in">
-          <div class="c-head"><span class="c-who" id="c-who">Real estate agent, Miami</span>
-            <span class="c-meta">example setup
-              <button class="c-ctrl" id="c-ctrl" type="button" aria-label="Pause examples" aria-pressed="false"><svg viewBox="0 0 12 12" aria-hidden="true"><rect x="2" y="1.5" width="2.6" height="9" rx="1"/><rect x="7.4" y="1.5" width="2.6" height="9" rx="1"/></svg></button>
-            </span>
-          </div>
-          <div>
-            <p class="c-label">Custom instructions</p>
-            <p class="typed" id="typed" aria-live="off">I sell homes in Miami. Write warm, short emails in English or Spanish to match the client. End every email with one clear next step.</p>
-          </div>
-          <div>
-            <p class="c-label">Connected</p>
-            <div class="c-rows" id="c-rows">
-              <div class="c-row"><span>Gmail</span><span class="state"><i class="dot"></i>live</span></div>
-              <div class="c-row"><span>Google Calendar</span><span class="state"><i class="dot"></i>live</span></div>
-              <div class="c-row"><span>Skill: Friday client follow ups</span><span class="state"><i class="dot"></i>ready</span></div>
-            </div>
-          </div>
+        <div class="ctas">
+          <a class="btn blue" href="#book">Book your setup <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5"/></svg></a>
+          <a class="btn line" href="#packages">See prices</a>
         </div>
-        <div class="toast" role="presentation">Draft ready in 12 seconds</div>
+        <div style="border-right:0">
+          <ul class="checks-list">
+            <li><svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3.5 9.5l3.5 3.5 7.5-8"/></svg>Pay after the session</li>
+            <li><svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3.5 9.5l3.5 3.5 7.5-8"/></svg>You never share passwords</li>
+            <li><svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3.5 9.5l3.5 3.5 7.5-8"/></svg>No tech skills needed</li>
+          </ul>
+        </div>
       </div>
     </div>
   </header>
 
-  <section id="proof" style="background:var(--raised)">
+  <div class="band" aria-label="Works with Claude, ChatGPT, Gemini, Gmail, Outlook, Google Drive, Notion and Slack">
+    <div class="marquee">
+      <ul><li>Claude</li><li>ChatGPT</li><li>Gemini</li><li>Gmail</li><li>Outlook</li><li>Google Drive</li><li>Notion</li><li>Slack</li></ul>
+      <ul aria-hidden="true"><li>Claude</li><li>ChatGPT</li><li>Gemini</li><li>Gmail</li><li>Outlook</li><li>Google Drive</li><li>Notion</li><li>Slack</li></ul>
+    </div>
+  </div>
+
+  <section id="proof">
     <div class="wrap">
       <div class="sec-head">
-        <h2>Same request. Very different answer.</h2>
-        <p class="lead">This is what a setup changes. Both answers come from the same AI, asked the same thing.</p>
+        <h2 class="disp">Same ask.<br><span class="blue">Better answer.</span></h2>
+        <p class="lead">Same AI, same request. The only difference is the setup.</p>
       </div>
-      <p class="ask" style="margin-bottom:16px">The request: "Reply to Carla, she wants to move Thursday's house viewing to Saturday."</p>
-      <div class="ba">
-        <div class="ba-col before">
-          <span class="ba-tag"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5"/><path d="M7 13l6-6"/></svg>Before setup</span>
+      <p class="mono muted ask">Request: "Reply to Carla, she wants to move Thursday's viewing to Saturday."</p>
+      <div class="ba cells">
+        <div class="before">
+          <div class="tag"><b>Before</b><span class="mono muted">generic AI</span></div>
           <p class="mail">Dear Carla, Thank you for reaching out. I hope this message finds you well. I would be more than happy to accommodate your request to reschedule. Please let me know what time works best for you on Saturday, and I will do my best to arrange it. Best regards.</p>
-          <ul class="ba-notes">
-            <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 8h8"/></svg>Doesn't know your calendar, so it asks her again</li>
+          <ul class="notes">
+            <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 8h8"/></svg>Can't see your calendar, so it asks her again</li>
             <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 8h8"/></svg>Stiff tone you'd have to rewrite</li>
             <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 8h8"/></svg>No clear next step</li>
           </ul>
         </div>
-        <div class="ba-col after">
-          <span class="ba-tag"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5"/><path d="M6.5 10.5l2.5 2.5 4.5-5.5"/></svg>After setup</span>
-          <p class="mail">Hi Carla, no problem at all. Saturday I'm free at 10:00 or 14:30 at the Brickell apartment. Which one works for you? I'll send the parking details once you confirm.</p>
-          <ul class="ba-notes">
-            <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>Checked your calendar and offered real times</li>
-            <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>Short and warm, the way you write</li>
-            <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>Ends with one clear next step</li>
+        <div class="after">
+          <div class="tag"><b>After</b><span class="mono muted">set up by Joogo</span></div>
+          <p class="mail">Hi Carla, no problem at all. Saturday I'm free at 10:00 or 14:30 at the Brickell apartment. Which works for you? I'll send parking details once you confirm.</p>
+          <ul class="notes">
+            <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7"/></svg>Checked your calendar and offered real times</li>
+            <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7"/></svg>Short and warm, the way you write</li>
+            <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7"/></svg>Ends with one clear next step</li>
           </ul>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="get">
+  <section id="get" style="padding-top:0">
     <div class="wrap">
       <div class="sec-head">
-        <h2>What you leave the session with</h2>
+        <h2 class="disp">What you<br>walk away with</h2>
         <p class="lead">Everything lives in your own account. No new apps to learn.</p>
       </div>
-      <div class="bento">
-        <article class="tile big">
-          <div style="display:grid;gap:12px">
-            <h3>Instructions that sound like you</h3>
-            <p>Your role, your clients, your tone and your languages are saved once. Every chat starts already knowing who you are, so the answers stop sounding generic.</p>
-          </div>
-          <div class="quote"><b>Role:</b> dental office manager, 3 dentists<br><b>Tone:</b> friendly, never pushy<br><b>Always:</b> confirm date, time and what to bring<br><b>Never:</b> give medical advice</div>
-        </article>
-        <article class="tile">
-          <h3>Your tools, connected</h3>
-          <p>It reads your inbox, calendar and files when you ask, with only the access you approve.</p>
-          <div class="chips"><span>Gmail</span><span>Outlook</span><span>Calendar</span><span>Drive</span><span>OneDrive</span><span>Notion</span></div>
-        </article>
-        <article class="tile">
-          <h3>Skills for repeat work</h3>
-          <p>Custom skills, GPTs or Gems for the 3 tasks you do most. One sentence, and the work is done your way.</p>
-        </article>
-        <article class="tile wide">
-          <div style="display:grid;gap:10px">
-            <h3>A cheat sheet and a tune up</h3>
-            <p>A one page guide with your best prompts. Two weeks later we meet again and fix anything that feels off.</p>
-          </div>
-          <div class="cal" aria-label="Session on day 1, tune up on day 14">
-            <i class="on"></i><i class="mid"></i><i class="mid"></i><i class="mid"></i><i class="mid"></i><i></i><i></i>
-            <i class="mid"></i><i class="mid"></i><i class="mid"></i><i class="mid"></i><i class="mid"></i><i></i><i class="on"></i>
-          </div>
-        </article>
+      <div class="get cells">
+        <div><p class="n">01</p><h3>Instructions that sound like you</h3><p>Your role, clients, tone and languages saved once. Every chat starts already knowing you.</p></div>
+        <div><p class="n">02</p><h3>Your tools, connected</h3><p>Email, calendar and files, with only the access you approve.</p></div>
+        <div><p class="n">03</p><h3>Skills for repeat work</h3><p>Custom skills, GPTs or Gems for the 3 tasks you do most.</p></div>
+        <div><p class="n">04</p><h3>Cheat sheet and tune up</h3><p>A one page guide, and a check in two weeks later to fix what feels off.</p></div>
       </div>
     </div>
   </section>
 
-  <section id="how" style="background:var(--raised)">
-    <div class="wrap split">
-      <div class="stick">
-        <h2>How it works</h2>
-        <p class="lead">About two hours of your time in total, spread over two weeks.</p>
-      </div>
-      <div class="steps">
-        <div class="step">
-          <p class="n">01</p>
-          <div class="t"><p class="dur">10 minutes, on your own</p><h3>Tell me about your work</h3><p class="muted">A short questionnaire about your job, your tools and the tasks that take most of your week.</p></div>
-        </div>
-        <div class="step">
-          <p class="n">02</p>
-          <div class="t"><p class="dur">60 to 90 minutes, video call</p><h3>We set it up together</h3><p class="muted">You log in and share your screen. I guide every setting: instructions, memory, connections and custom skills.</p></div>
-        </div>
-        <div class="step">
-          <p class="n">03</p>
-          <div class="t"><p class="dur">20 minutes, two weeks later</p><h3>Use it, then we tune it</h3><p class="muted">You work with it for two weeks. Then we adjust what didn't fit and add what you found you need.</p></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="packages">
+  <section id="how" style="padding-top:0">
     <div class="wrap">
       <div class="sec-head">
-        <h2>Packages</h2>
-        <p class="lead">One time price. The Care plan is optional.</p>
+        <h2 class="disp">How it<br>works</h2>
+        <p class="lead">About two hours of your time in total, spread over two weeks.</p>
       </div>
-      <div class="plans">
+      <div class="how cells">
+        <div>
+          <p class="n blue">01</p>
+          <div class="t"><p class="mono">10 minutes, whenever suits you</p><h3>Chat with the Joogo interviewer</h3><p>An AI assistant asks about your work, your tools and the tasks that eat your week. One question at a time, in your language. I get the notes before we meet.</p>
+            <div><a class="btn line" href="#interview">Try the interview <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5"/></svg></a></div>
+          </div>
+          <div class="chatmock" aria-hidden="true">
+            <div class="cm-head"><span class="mono">Joogo interviewer</span><span class="mono live"><i></i>live</span></div>
+            <div class="cm-body">
+              <p class="bub ai">Hi Ana. What does a normal workday look like for you?</p>
+              <p class="bub me">I run the front desk at a dental clinic. Lots of calls and emails.</p>
+              <p class="bub ai">Which emails take the longest to answer? Give me one example.</p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <p class="n">02</p>
+          <div class="t"><p class="mono">60 to 90 minutes, video call</p><h3>We set it up together</h3><p>You log in and share your screen. Your instructions and skills are already prepared from the interview, so we spend the call building.</p></div>
+          <div></div>
+        </div>
+        <div>
+          <p class="n">03</p>
+          <div class="t"><p class="mono">20 minutes, two weeks later</p><h3>Use it, then we tune it</h3><p>You work with it for two weeks. Then we adjust what didn't fit and add what you found you need.</p></div>
+          <div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="packages" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 class="disp">Packages</h2>
+        <p class="lead">One time price. Pay after the session. The Care plan is optional.</p>
+      </div>
+      <div class="plans cells">
         <article class="plan">
           <div class="ph"><h3>Starter</h3></div>
           <p class="price">$199</p>
           <p class="muted">One AI tool, set up right.</p>
           <ul>
-            <li><svg viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg>Claude, ChatGPT or Gemini</li>
-            <li><svg viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg>Profile and custom instructions</li>
-            <li><svg viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg>2 connections, like Gmail and Calendar</li>
-            <li><svg viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg>60 minute session and cheat sheet</li>
+            <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>Claude, ChatGPT or Gemini</li>
+            <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>Profile and custom instructions</li>
+            <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>2 connections, like Gmail and Calendar</li>
+            <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>60 minute session and cheat sheet</li>
           </ul>
-          <a class="btn" href="#book" data-pkg="Starter">Choose Starter</a>
+          <a class="btn line" href="#book" data-pkg="Starter">Choose Starter</a>
         </article>
         <article class="plan pick">
-          <div class="ph"><h3>Pro</h3><span class="flag">Most chosen</span></div>
+          <div class="ph"><h3>Pro</h3><span class="mono">Most chosen</span></div>
           <p class="price">$599</p>
           <p class="muted">Built around your top tasks.</p>
           <ul>
-            <li><svg viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg>Up to 3 AI tools</li>
-            <li><svg viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg>All key connections</li>
-            <li><svg viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg>3 custom skills, GPTs or Gems</li>
-            <li><svg viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg>90 minute session and 2 week tune up</li>
-            <li><svg viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg>Prompt library for your job</li>
+            <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>Up to 3 AI tools</li>
+            <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>All key connections</li>
+            <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>3 custom skills, GPTs or Gems</li>
+            <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>90 minute session and 2 week tune up</li>
+            <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>Prompt library for your job</li>
           </ul>
           <a class="btn" href="#book" data-pkg="Pro">Choose Pro</a>
         </article>
         <article class="plan">
           <div class="ph"><h3>Team</h3></div>
-          <p class="price">$1,500 <small>from</small></p>
+          <p class="price">$1,500<small>from</small></p>
           <p class="muted">For small businesses.</p>
           <ul>
-            <li><svg viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg>Up to 5 people</li>
-            <li><svg viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg>Shared projects and skills</li>
-            <li><svg viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg>Team training session</li>
-            <li><svg viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg>Simple AI usage guidelines</li>
+            <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>Up to 5 people</li>
+            <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>Shared projects and skills</li>
+            <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>Team training session</li>
+            <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>Simple AI usage guidelines</li>
           </ul>
-          <a class="btn" href="#book" data-pkg="Team">Choose Team</a>
+          <a class="btn line" href="#book" data-pkg="Team">Choose Team</a>
         </article>
         <article class="plan">
-          <div class="ph"><h3>Care plan</h3></div>
-          <p class="price">$79 <small>per month</small></p>
+          <div class="ph"><h3>Care</h3></div>
+          <p class="price">$79<small>/ month</small></p>
           <p class="muted">Stays sharp as AI changes.</p>
           <ul>
-            <li><svg viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg>Monthly 30 minute check in</li>
-            <li><svg viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg>New features set up for you</li>
-            <li><svg viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg>1 new skill or automation a month</li>
-            <li><svg viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg>Cancel anytime</li>
+            <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>Monthly 30 minute check in</li>
+            <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>New features set up for you</li>
+            <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>1 new skill or automation a month</li>
+            <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>Cancel anytime</li>
           </ul>
-          <a class="btn" href="#book" data-pkg="Care plan">Add Care plan</a>
+          <a class="btn line" href="#book" data-pkg="Care plan">Add Care plan</a>
         </article>
       </div>
       <div class="compare-wrap">
         <table class="compare">
-          <caption>Compare the setup packages</caption>
-          <thead>
-            <tr><th scope="col">What's included</th><th scope="col">Starter</th><th scope="col" class="col-pick">Pro</th><th scope="col">Team</th></tr>
-          </thead>
+          <caption>Compare packages</caption>
+          <thead><tr><th scope="col">Included</th><th scope="col">Starter</th><th scope="col" class="pk">Pro</th><th scope="col">Team</th></tr></thead>
           <tbody>
-            <tr><th scope="row">Price</th><td>$199</td><td class="col-pick">$599</td><td>from $1,500</td></tr>
-            <tr><th scope="row">AI tools set up</th><td>1</td><td class="col-pick">Up to 3</td><td>Up to 3, for 5 people</td></tr>
-            <tr><th scope="row">Custom instructions</th><td><span class="yes"><svg viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg>Included</span></td><td class="col-pick"><span class="yes"><svg viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg>Included</span></td><td><span class="yes"><svg viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg>Per person</span></td></tr>
-            <tr><th scope="row">Connections (Gmail, Drive...)</th><td>2</td><td class="col-pick">All key tools</td><td>All key tools</td></tr>
-            <tr><th scope="row">Custom skills, GPTs or Gems</th><td><span class="no"><svg viewBox="0 0 16 16"><path d="M4 8h8"/></svg>Not included</span></td><td class="col-pick">3</td><td>Shared team skills</td></tr>
-            <tr><th scope="row">Session length</th><td>60 min</td><td class="col-pick">90 min</td><td>Setup plus training</td></tr>
-            <tr><th scope="row">2 week tune up</th><td><span class="no"><svg viewBox="0 0 16 16"><path d="M4 8h8"/></svg>Not included</span></td><td class="col-pick"><span class="yes"><svg viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg>Included</span></td><td><span class="yes"><svg viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7"/></svg>Included</span></td></tr>
+            <tr><th scope="row">Price</th><td>$199</td><td class="pk">$599</td><td>from $1,500</td></tr>
+            <tr><th scope="row">AI tools set up</th><td>1</td><td class="pk">Up to 3</td><td>Up to 3, for 5 people</td></tr>
+            <tr><th scope="row">AI interview before the call</th><td>Yes</td><td class="pk">Yes</td><td>Yes, per person</td></tr>
+            <tr><th scope="row">Connections</th><td>2</td><td class="pk">All key tools</td><td>All key tools</td></tr>
+            <tr><th scope="row">Custom skills, GPTs or Gems</th><td class="no">Not included</td><td class="pk">3</td><td>Shared team skills</td></tr>
+            <tr><th scope="row">Session length</th><td>60 min</td><td class="pk">90 min</td><td>Setup plus training</td></tr>
+            <tr><th scope="row">2 week tune up</th><td class="no">Not included</td><td class="pk">Yes</td><td>Yes</td></tr>
           </tbody>
         </table>
       </div>
     </div>
   </section>
 
-  <section id="privacy" style="background:var(--raised)">
-    <div class="wrap split">
-      <div class="stick">
-        <h2>Your accounts stay yours</h2>
-        <p class="lead">We connect your email and files, so privacy is part of every session.</p>
+  <section id="privacy" style="padding-top:0">
+    <div class="wrap two">
+      <div style="display:grid;gap:20px">
+        <h2 class="disp">Your accounts<br>stay yours</h2>
+        <p class="lead">We connect your email and files, so privacy is built into every step.</p>
       </div>
-      <div class="rules">
-        <div class="rule">
-          <div class="ic"><svg viewBox="0 0 24 24"><path d="M7.5 10.5a4.5 4.5 0 0 1 9 0v1.5"/><path d="M5 10.5a7 7 0 0 1 14 0v3"/><path d="M12 10.5v4a3 3 0 0 1-3 3"/><path d="M9.5 21a7 7 0 0 0 6.5-7v-1.5"/></svg></div>
-          <div class="t"><h3>I never ask for passwords</h3><p class="muted">You log in yourself while I guide you on screen share.</p></div>
-        </div>
-        <div class="rule">
-          <div class="ic"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="14" rx="3"/><circle cx="12" cy="12" r="3"/><path d="M12 9V7.5M15 12h1.5"/></svg></div>
-          <div class="t"><h3>Only the access you approve</h3><p class="muted">We connect only the tools you pick, with the lowest permission that does the job.</p></div>
-        </div>
-        <div class="rule">
-          <div class="ic"><svg viewBox="0 0 24 24"><path d="M5 7h14M10 11v6M14 11v6M6.5 7l1 12.5h9L17.5 7M9.5 7V4.5h5V7"/></svg></div>
-          <div class="t"><h3>Nothing kept afterwards</h3><p class="muted">I don't save your data, notes or screenshots. Your setup lives in your accounts only.</p></div>
-        </div>
+      <div class="cells rows">
+        <div><span class="k">01</span><div class="t"><h3>No passwords, ever</h3><p class="muted">You log in yourself while I guide you on screen share.</p></div></div>
+        <div><span class="k">02</span><div class="t"><h3>Only the access you approve</h3><p class="muted">We connect only the tools you pick, with the lowest permission that does the job.</p></div></div>
+        <div><span class="k">03</span><div class="t"><h3>The interview stays private</h3><p class="muted">Your answers go only to me, to prepare your session. The interviewer never asks for passwords or card details.</p></div></div>
+        <div><span class="k">04</span><div class="t"><h3>Nothing kept from the call</h3><p class="muted">No screenshots or copies. Your setup lives in your accounts only.</p></div></div>
       </div>
     </div>
   </section>
 
-  <section id="faq">
-    <div class="wrap">
-      <div class="sec-head"><h2>Common questions</h2></div>
-      <div class="faq">
-        <div class="qa"><h3>Do I need to be technical?</h3><p class="muted">No. If you can use email, you're ready. Everything is explained in plain words.</p></div>
-        <div class="qa"><h3>Which plan of the AI do I need?</h3><p class="muted">Free plans cover the basics. Connecting email and files, and building custom skills, usually needs the paid plan, around $20 a month. I'll tell you before we start.</p></div>
-        <div class="qa"><h3>Which AI should I choose?</h3><p class="muted">Leave it open when you book. Your questionnaire answers tell me which one fits your work best.</p></div>
-        <div class="qa"><h3>What if something stops working later?</h3><p class="muted">AI tools change often. The Care plan covers that each month, or you can book a single tune up whenever you need one.</p></div>
-        <div class="qa"><h3>Is it online?</h3><p class="muted">Yes, by video call with screen share. Most people are done in one session.</p></div>
+  <section id="faq" style="padding-top:0">
+    <div class="wrap two">
+      <h2 class="disp">Questions</h2>
+      <div class="cells rows">
+        <div><span class="k">Q</span><div class="t"><h3>Do I need to be technical?</h3><p class="muted">No. If you can use email, you're ready.</p></div></div>
+        <div><span class="k">Q</span><div class="t"><h3>Which AI plan do I need?</h3><p class="muted">Free plans cover the basics. Connecting email and files, and custom skills, usually need the paid plan, around $20 a month. I'll tell you before we start.</p></div></div>
+        <div><span class="k">Q</span><div class="t"><h3>Is the interviewer a real person?</h3><p class="muted">No, it's an AI assistant that takes notes for me. I read everything and prepare your session personally.</p></div></div>
+        <div><span class="k">Q</span><div class="t"><h3>What if something stops working later?</h3><p class="muted">AI tools change often. The Care plan covers that, or book a single tune up any time.</p></div></div>
       </div>
     </div>
   </section>
 
-  <section id="book" style="background:var(--raised)">
-    <div class="wrap split">
-      <div class="stick">
-        <h2>Book your setup</h2>
-        <p class="lead">Send a request. I reply within one business day.</p>
-        <div class="book-notes">
-          <div><span>Next</span><span>I confirm a time by email</span></div>
-          <div><span>Then</span><span>You fill in the 10 minute questionnaire</span></div>
-          <div><span>Payment</span><span>After the session, not before</span></div>
-        </div>
+  <section id="book" class="dark">
+    <div class="wrap book">
+      <div>
+        <h2 class="disp">Book<br>your setup</h2>
+        <p class="lead" style="margin-top:24px">Send a request. I reply within one business day.</p>
+        <ol class="book-steps">
+          <li><span class="mono">01</span><span>Send this form</span></li>
+          <li><span class="mono">02</span><span>Chat with the Joogo interviewer, about 10 minutes</span></li>
+          <li><span class="mono">03</span><span>I confirm a time, prepared with your notes</span></li>
+          <li><span class="mono">04</span><span>Pay after the session, not before</span></li>
+        </ol>
       </div>
       <div>
         <form class="formcard" id="bookForm" novalidate>
-          <p class="req-note">Fields marked <span class="req">*</span> are required.</p>
+          <p class="help">Fields marked <span class="req">*</span> are required.</p>
           <div class="fgrid">
-            <div class="field"><label for="b-name">Full name<span class="req" aria-hidden="true">*</span></label><input aria-describedby="b-name-err" type="text" id="b-name" name="name" autocomplete="name" required><span class="ferr" id="b-name-err" role="alert" hidden></span></div>
-            <div class="field"><label for="b-email">Email<span class="req" aria-hidden="true">*</span></label><input aria-describedby="b-email-err" type="email" id="b-email" name="email" autocomplete="email" required><span class="ferr" id="b-email-err" role="alert" hidden></span></div>
+            <div class="field"><label for="b-name">Full name<span class="req" aria-hidden="true">*</span></label><input type="text" id="b-name" name="name" autocomplete="name" aria-describedby="b-name-err" required><span class="ferr" id="b-name-err" role="alert" hidden></span></div>
+            <div class="field"><label for="b-email">Email<span class="req" aria-hidden="true">*</span></label><input type="email" id="b-email" name="email" autocomplete="email" aria-describedby="b-email-err" required><span class="ferr" id="b-email-err" role="alert" hidden></span></div>
             <div class="field"><label for="b-phone">Phone or WhatsApp</label><input type="tel" id="b-phone" name="phone" autocomplete="tel"><span class="help">Optional</span></div>
             <div class="field"><label for="b-pkg">Package</label>
               <select id="b-pkg" name="package"><option>Not sure yet</option><option>Starter</option><option>Pro</option><option>Team</option><option>Care plan</option></select>
             </div>
             <fieldset class="full">
               <legend>Which AI do you want set up?</legend>
-              <div class="checks">
-                <label class="chk"><input type="checkbox" id="b-ai-claude" name="ai" value="Claude"><span>Claude</span></label>
-                <label class="chk"><input type="checkbox" id="b-ai-chatgpt" name="ai" value="ChatGPT"><span>ChatGPT</span></label>
-                <label class="chk"><input type="checkbox" id="b-ai-gemini" name="ai" value="Gemini"><span>Gemini</span></label>
-                <label class="chk"><input type="checkbox" id="b-ai-unsure" name="ai" value="Help me choose"><span>Help me choose</span></label>
+              <div class="opts">
+                <label class="opt"><input type="checkbox" id="b-ai-claude" name="ai" value="Claude"><span>Claude</span></label>
+                <label class="opt"><input type="checkbox" id="b-ai-chatgpt" name="ai" value="ChatGPT"><span>ChatGPT</span></label>
+                <label class="opt"><input type="checkbox" id="b-ai-gemini" name="ai" value="Gemini"><span>Gemini</span></label>
+                <label class="opt"><input type="checkbox" id="b-ai-unsure" name="ai" value="Help me choose"><span>Help me choose</span></label>
               </div>
             </fieldset>
             <div class="field"><label for="b-date">Preferred date</label><input type="date" id="b-date" name="date"></div>
             <div class="field"><label for="b-time">Best time</label>
               <select id="b-time" name="time"><option>Morning</option><option>Afternoon</option><option>Evening</option></select>
             </div>
-            <div class="field full"><label for="b-notes">What should AI help you with most?</label><textarea id="b-notes" name="notes" placeholder="Example: answering client emails faster and keeping my calendar in order"></textarea><span class="help">Optional</span></div>
+            <div class="field full"><label for="b-notes">What should AI help you with most?</label><textarea id="b-notes" name="notes" placeholder="Example: answering client emails faster"></textarea><span class="help">Optional</span></div>
           </div>
-          <div><button class="btn accent" id="bookBtn" type="submit">Send booking request <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button></div>
+          <div><button class="btn blue" id="bookBtn" type="submit"><span>Send booking request</span> <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5"/></svg></button></div>
+          <p class="ferr" id="bookSendErr" role="alert" hidden></p>
         </form>
-        <div class="done" id="bookDone" hidden>
-          <div class="ok"><svg viewBox="0 0 24 24"><path d="M6 12.5l4 4 8-9"/></svg></div>
-          <h3>Request received</h3>
-          <p class="muted">Thanks, <span id="bookDoneName"></span>. I'll email you within one business day to confirm a time. You can save time on the call by filling in the questionnaire now.</p>
-          <div><a class="btn" href="#intake">Open the questionnaire <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></div>
+        <div class="done" id="bookDone" tabindex="-1" hidden>
+          <h3>Request<br>received</h3>
+          <p class="muted">Thanks, <span id="bookDoneName"></span>. Next, a quick chat with the Joogo interviewer so I can prepare your session.</p>
+          <div><a class="btn blue" href="#interview">Start the interview <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5"/></svg></a></div>
         </div>
       </div>
     </div>
   </section>
 </main>
 
-<!-- ============ INTAKE ============ -->
-<main id="view-intake" hidden>
-  <div class="wrap">
-    <div class="intake-head">
+<!-- ================= INTERVIEW ================= -->
+<main id="view-interview" hidden>
+  <div class="iv">
+    <aside class="iv-side">
       <a class="back" href="#top"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13 8H3M7 4L3 8l4 4"/></svg>Back to home</a>
-      <h1 style="font-size:clamp(2rem,4.2vw,3rem)">Before your setup</h1>
-      <p class="lead">About 10 minutes. Your answers let me prepare your instructions, connections and skills in advance, so the call is spent setting things up. Your answers save on this device as you type.</p>
-      <div class="progress" aria-hidden="true"><div class="progress-bar"><i id="progBar"></i></div><p class="progress-txt"><span id="progTxt">0 of 6 sections started</span><span>About 10 minutes</span></p></div>
-    </div>
-  </div>
-  <div class="wrap intake-body">
-    <aside class="toc" aria-label="Sections">
-      <a href="#q-you" data-q="q-you"><span>01</span>About you</a>
-      <a href="#q-ai" data-q="q-ai"><span>02</span>Your AI today</a>
-      <a href="#q-tasks" data-q="q-tasks"><span>03</span>Your tasks</a>
-      <a href="#q-tools" data-q="q-tools"><span>04</span>Your tools</a>
-      <a href="#q-style" data-q="q-style"><span>05</span>Your style</a>
-      <a href="#q-privacy" data-q="q-privacy"><span>06</span>Privacy</a>
+      <h1 tabindex="-1" id="ivTitle">Before<br>your <span class="blue">setup</span></h1>
+      <p class="muted">A short chat with the Joogo interviewer, about 10 minutes. It takes notes so your session is spent building.</p>
+      <div style="display:grid;gap:10px">
+        <div class="meter" aria-hidden="true"><i id="ivMeter"></i></div>
+        <p class="mono muted" id="ivCount">0 of 6 topics covered</p>
+      </div>
+      <ul class="topics" id="topics">
+        <li data-t="role"><span class="box"><svg viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5L10 3.5"/></svg></span>Your work<span class="st"></span></li>
+        <li data-t="ai_today"><span class="box"><svg viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5L10 3.5"/></svg></span>Your AI today<span class="st"></span></li>
+        <li data-t="tasks"><span class="box"><svg viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5L10 3.5"/></svg></span>Your top tasks<span class="st"></span></li>
+        <li data-t="tools"><span class="box"><svg viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5L10 3.5"/></svg></span>Your tools<span class="st"></span></li>
+        <li data-t="style"><span class="box"><svg viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5L10 3.5"/></svg></span>Your writing style<span class="st"></span></li>
+        <li data-t="privacy"><span class="box"><svg viewBox="0 0 12 12"><path d="M2 6.5l2.5 2.5L10 3.5"/></svg></span>Privacy<span class="st"></span></li>
+      </ul>
+      <p class="iv-note"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="7" width="10" height="7"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"/></svg>Never share passwords or card numbers here. Your answers go only to your consultant.</p>
     </aside>
-    <div style="min-width:0">
-      <form id="intakeForm" novalidate>
-        <div class="errsum" id="intakeSum" tabindex="-1" role="alert" hidden><p>Please fix these before sending:</p><ul id="intakeSumList"></ul></div>
-        <div class="qblock" id="q-you">
-          <h2 class="qh"><span>01</span>About you</h2>
-          <div class="fgrid">
-            <div class="field"><label for="i-name">Full name<span class="req" aria-hidden="true">*</span></label><input aria-describedby="i-name-err" type="text" id="i-name" name="name" autocomplete="name" required><span class="ferr" id="i-name-err" role="alert" hidden></span></div>
-            <div class="field"><label for="i-email">Email<span class="req" aria-hidden="true">*</span></label><input aria-describedby="i-email-err" type="email" id="i-email" name="email" autocomplete="email" required><span class="ferr" id="i-email-err" role="alert" hidden></span></div>
-            <div class="field"><label for="i-role">Job title or role</label><input type="text" id="i-role" name="role" placeholder="Example: real estate agent"></div>
-            <div class="field"><label for="i-industry">Industry</label><input type="text" id="i-industry" name="industry" placeholder="Example: property, health, marketing"></div>
-            <div class="field full"><label for="i-day">Describe a normal workday in 2 or 3 lines</label><textarea id="i-day" name="workday"></textarea></div>
-          </div>
-        </div>
 
-        <div class="qblock" id="q-ai">
-          <h2 class="qh"><span>02</span>Your AI today</h2>
-          <fieldset>
-            <legend>Which do you already have? <span class="help">Pick all that apply</span></legend>
-            <div class="checks">
-              <label class="chk"><input type="checkbox" id="i-have-cf" name="have" value="Claude free"><span>Claude free</span></label>
-              <label class="chk"><input type="checkbox" id="i-have-cp" name="have" value="Claude paid"><span>Claude paid</span></label>
-              <label class="chk"><input type="checkbox" id="i-have-gf" name="have" value="ChatGPT free"><span>ChatGPT free</span></label>
-              <label class="chk"><input type="checkbox" id="i-have-gp" name="have" value="ChatGPT paid"><span>ChatGPT paid</span></label>
-              <label class="chk"><input type="checkbox" id="i-have-mf" name="have" value="Gemini free"><span>Gemini free</span></label>
-              <label class="chk"><input type="checkbox" id="i-have-mp" name="have" value="Gemini paid"><span>Gemini paid</span></label>
-              <label class="chk"><input type="checkbox" id="i-have-none" name="have" value="None yet"><span>None yet</span></label>
-            </div>
-          </fieldset>
-          <div class="field"><label for="i-freq">How often do you use AI now?</label>
-            <select id="i-freq" name="frequency"><option>Never or almost never</option><option>A few times a month</option><option>A few times a week</option><option>Every day</option></select>
-          </div>
-          <div class="field"><label for="i-frustr">What frustrates you about it today?</label><textarea id="i-frustr" name="frustrations" placeholder="Example: answers sound generic, I keep repeating who I am"></textarea><span class="help">Optional</span></div>
-        </div>
-
-        <div class="qblock" id="q-tasks">
-          <h2 class="qh"><span>03</span>Your tasks</h2>
-          <p class="muted" style="margin-top:-8px">These become your custom skills or GPTs. The more specific, the better.</p>
-          <div class="fgrid">
-            <div class="field full"><label for="i-t1">Task that takes most of your time</label><input type="text" id="i-t1" name="task1" placeholder="Example: replying to new client inquiries"></div>
-            <div class="field full"><label for="i-t2">Second task</label><input type="text" id="i-t2" name="task2" placeholder="Example: writing a weekly report for my manager"></div>
-            <div class="field full"><label for="i-t3">Third task</label><input type="text" id="i-t3" name="task3" placeholder="Example: turning meeting notes into action items"></div>
-            <div class="field full"><label for="i-dream">If AI could do one thing for you perfectly, what would it be?</label><textarea id="i-dream" name="dream"></textarea></div>
-          </div>
-        </div>
-
-        <div class="qblock" id="q-tools">
-          <h2 class="qh"><span>04</span>Your tools</h2>
-          <fieldset>
-            <legend>Which do you use for work? <span class="help">Pick all that apply</span></legend>
-            <div class="checks">
-              <label class="chk"><input type="checkbox" id="i-tl-gmail" name="tools" value="Gmail"><span>Gmail</span></label>
-              <label class="chk"><input type="checkbox" id="i-tl-outlook" name="tools" value="Outlook"><span>Outlook</span></label>
-              <label class="chk"><input type="checkbox" id="i-tl-gcal" name="tools" value="Google Calendar"><span>Google Calendar</span></label>
-              <label class="chk"><input type="checkbox" id="i-tl-gdrive" name="tools" value="Google Drive"><span>Google Drive</span></label>
-              <label class="chk"><input type="checkbox" id="i-tl-onedrive" name="tools" value="OneDrive or SharePoint"><span>OneDrive or SharePoint</span></label>
-              <label class="chk"><input type="checkbox" id="i-tl-notion" name="tools" value="Notion"><span>Notion</span></label>
-              <label class="chk"><input type="checkbox" id="i-tl-slack" name="tools" value="Slack"><span>Slack</span></label>
-              <label class="chk"><input type="checkbox" id="i-tl-teams" name="tools" value="Microsoft Teams"><span>Teams</span></label>
-              <label class="chk"><input type="checkbox" id="i-tl-wa" name="tools" value="WhatsApp Business"><span>WhatsApp Business</span></label>
-              <label class="chk"><input type="checkbox" id="i-tl-crm" name="tools" value="A CRM"><span>A CRM</span></label>
-              <label class="chk"><input type="checkbox" id="i-tl-canva" name="tools" value="Canva"><span>Canva</span></label>
-            </div>
-          </fieldset>
-          <div class="fgrid">
-            <div class="field"><label for="i-tl-other">Anything else?</label><input type="text" id="i-tl-other" name="toolsOther" placeholder="Example: HubSpot, Shopify, QuickBooks"><span class="help">Optional</span></div>
-            <div class="field"><label for="i-device">Main device for work</label>
-              <select id="i-device" name="device"><option>Windows computer</option><option>Mac</option><option>Mostly phone</option><option>A mix</option></select>
-            </div>
-          </div>
-        </div>
-
-        <div class="qblock" id="q-style">
-          <h2 class="qh"><span>05</span>Your style</h2>
-          <fieldset>
-            <legend>How should your AI write for you?</legend>
-            <div class="checks">
-              <label class="chk"><input type="checkbox" id="i-st-short" name="style" value="Short and direct"><span>Short and direct</span></label>
-              <label class="chk"><input type="checkbox" id="i-st-warm" name="style" value="Warm and friendly"><span>Warm and friendly</span></label>
-              <label class="chk"><input type="checkbox" id="i-st-formal" name="style" value="Formal"><span>Formal</span></label>
-              <label class="chk"><input type="checkbox" id="i-st-detail" name="style" value="Detailed"><span>Detailed</span></label>
-              <label class="chk"><input type="checkbox" id="i-st-bullets" name="style" value="Bullet points"><span>Bullet points</span></label>
-            </div>
-          </fieldset>
-          <div class="fgrid">
-            <div class="field"><label for="i-lang">Languages you work in</label><input type="text" id="i-lang" name="languages" placeholder="Example: English and Spanish"></div>
-            <div class="field"><label for="i-avoid">Words or habits to avoid</label><input type="text" id="i-avoid" name="avoid" placeholder="Example: no emojis, no jargon"><span class="help">Optional</span></div>
-            <div class="field full"><label for="i-sample">Paste a short email you wrote that sounds like you</label><textarea id="i-sample" name="sample"></textarea><span class="help">Optional. Remove any private details first.</span></div>
-          </div>
-        </div>
-
-        <div class="qblock" id="q-privacy">
-          <h2 class="qh"><span>06</span>Privacy</h2>
-          <fieldset>
-            <legend>Is there anything AI should never touch?</legend>
-            <div class="checks">
-              <label class="chk"><input type="checkbox" id="i-pv-client" name="privacy" value="Client personal data"><span>Client personal data</span></label>
-              <label class="chk"><input type="checkbox" id="i-pv-fin" name="privacy" value="Financial documents"><span>Financial documents</span></label>
-              <label class="chk"><input type="checkbox" id="i-pv-health" name="privacy" value="Health information"><span>Health information</span></label>
-              <label class="chk"><input type="checkbox" id="i-pv-personal" name="privacy" value="Personal email"><span>Personal email</span></label>
-            </div>
-          </fieldset>
-          <div class="field"><label for="i-policy">Does your company have rules about using AI?</label>
-            <select id="i-policy" name="policy"><option>I don't know</option><option>No rules</option><option>Yes, some tools are allowed</option><option>I'm self employed</option></select>
-          </div>
-          <div class="field">
-            <label class="chk wide"><input type="checkbox" id="i-consent" name="consent" value="yes" aria-describedby="i-consent-err"><span>I understand I will log in myself and never share passwords</span></label>
+    <div class="iv-main">
+      <form class="iv-start" id="ivStart" novalidate>
+        <h2>Let's get to know your work</h2>
+        <p class="demo-note" id="demoNote" hidden>Demo mode: this preview uses sample questions and doesn't send answers anywhere.</p>
+        <div class="fgrid" style="width:100%">
+          <div class="field"><label for="i-name">Your name<span class="req" aria-hidden="true">*</span></label><input type="text" id="i-name" name="name" autocomplete="name" aria-describedby="i-name-err"><span class="ferr" id="i-name-err" role="alert" hidden></span></div>
+          <div class="field"><label for="i-email">Email<span class="req" aria-hidden="true">*</span></label><input type="email" id="i-email" name="email" autocomplete="email" aria-describedby="i-email-err"><span class="ferr" id="i-email-err" role="alert" hidden></span></div>
+          <div class="field full">
+            <label class="opt wide"><input type="checkbox" id="i-consent" name="consent" aria-describedby="i-consent-err"><span>I understand I'm chatting with an AI assistant, and my answers go to my consultant</span></label>
             <span class="ferr" id="i-consent-err" role="alert" hidden></span>
           </div>
         </div>
-
-        <div style="padding-top:12px"><button class="btn accent" id="intakeBtn" type="submit">Send my answers <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button></div>
+        <button class="btn blue" type="submit" id="ivGo"><span>Start the interview</span> <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5"/></svg></button>
       </form>
-      <div class="done" id="intakeDone" hidden>
-        <div class="ok"><svg viewBox="0 0 24 24"><path d="M6 12.5l4 4 8-9"/></svg></div>
-        <h3>Answers received</h3>
-        <p class="muted">I'll use them to prepare your setup before we meet. Here is what I'll focus on.</p>
-        <div class="summary" id="intakeSummary"></div>
+
+      <div id="ivChat" hidden style="display:contents">
+        <div class="log" id="log" role="log" aria-live="polite" aria-label="Interview conversation"></div>
+        <form class="composer" id="composer" novalidate>
+          <label for="reply" class="sr">Your answer</label>
+          <textarea id="reply" rows="1" placeholder="Type your answer" maxlength="2000"></textarea>
+          <button class="btn blue" type="submit" id="sendBtn" aria-label="Send answer"><svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5"/></svg></button>
+          <p class="hint">Enter to send, Shift and Enter for a new line. <button type="button" class="linkbtn" id="endBtn">Finish early</button></p>
+        </form>
       </div>
     </div>
   </div>
 </main>
 
-<div class="mcta" id="mcta"><p>Setups from $199. Pay after.</p><a class="btn accent" href="#book">Book a setup</a></div>
+<div class="mcta off" id="mcta"><p>Setups from $199. Pay after.</p><a class="btn blue" href="#book">Book</a></div>
 
 <footer>
   <div class="wrap">
-    <span>Joogo AI Setup. Not affiliated with Anthropic, OpenAI or Google.</span>
-    <nav aria-label="Footer"><a href="#privacy">Privacy</a><a href="#intake">Questionnaire</a><a href="#book">Book a setup</a></nav>
+    <p class="wordmark" aria-hidden="true">Joogo<span>.</span></p>
+    <div class="foot-row">
+      <span>Joogo AI Setup. Not affiliated with Anthropic, OpenAI or Google.</span>
+      <nav aria-label="Footer"><a href="#privacy">Privacy</a><a href="#interview">Interview</a><a href="#book">Book a setup</a></nav>
+    </div>
   </div>
 </footer>
 
 <script>
-// Paste a form endpoint here (Formspree, Tally, Google Apps Script) when the site goes live.
-const FORM_ENDPOINT = "";
+// Paste your Google Apps Script web app URL here to go live. Empty = demo mode.
+const JOOGO_API = "";
 
-const home = document.getElementById("view-home");
-const intake = document.getElementById("view-intake");
+const $ = id => document.getElementById(id);
+const home = $("view-home"), iview = $("view-interview"), mcta = $("mcta");
 const navLinks = document.querySelectorAll("a.nl[data-sec]");
-const mcta = document.getElementById("mcta");
-let wasIntake = false;
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+// ---------- Routing ----------
+let wasIv = false;
 function route() {
   const h = location.hash.slice(1);
-  const isIntake = h === "intake" || h.startsWith("q-");
-  home.hidden = isIntake;
-  intake.hidden = !isIntake;
-  mcta.hidden = isIntake;
-  if (isIntake) navLinks.forEach(a => a.classList.toggle("active", a.dataset.sec === "intake"));
-  if (h === "intake") {
+  const isIv = h === "interview";
+  home.hidden = isIv; iview.hidden = !isIv; mcta.hidden = isIv;
+  if (isIv) {
+    navLinks.forEach(a => a.classList.toggle("active", a.dataset.sec === "interview"));
     window.scrollTo(0, 0);
-    // Move focus to the new view for keyboard and screen reader users
-    if (!wasIntake) { const t = intake.querySelector("h1"); t.tabIndex = -1; t.focus({ preventScroll: true }); }
-  } else if (h) { const el = document.getElementById(h); if (el) el.scrollIntoView(); }
-  wasIntake = isIntake;
+    if (!wasIv) $("ivTitle").focus({ preventScroll: true });
+  } else if (h) { const el = $(h); if (el) el.scrollIntoView(); }
+  wasIv = isIv;
 }
-window.addEventListener("hashchange", route);
+addEventListener("hashchange", route);
 route();
 
-// Active nav link, intake TOC, and mobile CTA follow the section in view
-const spy = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (!e.isIntersecting) return;
-    const id = e.target.id;
-    if (!home.hidden) navLinks.forEach(a => a.classList.toggle("active", a.dataset.sec === id));
-    document.querySelectorAll(".toc a").forEach(a => a.classList.toggle("active", a.dataset.q === id));
-    mcta.classList.toggle("off", id === "top" || id === "book");
-  });
-}, { rootMargin: "-45% 0px -50% 0px" });
-["top", "proof", "get", "how", "packages", "privacy", "faq", "book"].forEach(id => spy.observe(document.getElementById(id)));
-document.querySelectorAll(".qblock").forEach(el => spy.observe(el));
-mcta.classList.add("off");
+const spy = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) return;
+  if (!home.hidden) navLinks.forEach(a => a.classList.toggle("active", a.dataset.sec === e.target.id));
+  mcta.classList.toggle("off", e.target.id === "top" || e.target.id === "book");
+}), { rootMargin: "-45% 0px -50% 0px" });
+["top", "proof", "get", "how", "packages", "privacy", "faq", "book"].forEach(id => spy.observe($(id)));
 
-document.querySelectorAll("[data-pkg]").forEach(a => a.addEventListener("click", () => {
-  document.getElementById("b-pkg").value = a.dataset.pkg;
-}));
+document.querySelectorAll("[data-pkg]").forEach(a => a.addEventListener("click", () => { $("b-pkg").value = a.dataset.pkg; }));
 
-// Hero console: cycles through example clients, with pause control
-const profiles = [
-  { who: "Real estate agent, Miami", text: "I sell homes in Miami. Write warm, short emails in English or Spanish to match the client. End every email with one clear next step.",
-    rows: [["Gmail", "live"], ["Google Calendar", "live"], ["Skill: Friday client follow ups", "ready"]] },
-  { who: "Dental office manager, 3 dentists", text: "I run the front desk of a dental clinic. Keep replies friendly and calm. Always confirm date, time and what to bring. Never give medical advice.",
-    rows: [["Outlook", "live"], ["OneDrive", "live"], ["Skill: appointment reminders", "ready"]] },
-  { who: "Freelance designer, Lisbon", text: "I design brands for small cafes. Write proposals in plain English, under one page. Quote prices in euros and list what is not included.",
-    rows: [["Gmail", "live"], ["Notion", "live"], ["Skill: proposal from brief", "ready"]] }
-];
-const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-const consoleEl = document.querySelector(".console");
-const typedEl = document.getElementById("typed");
-const whoEl = document.getElementById("c-who");
-const rowsEl = document.getElementById("c-rows");
-const ctrl = document.getElementById("c-ctrl");
-const PAUSE_ICON = ctrl.innerHTML;
-const PLAY_ICON = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5v9l7.5-4.5z"/></svg>';
-let pi = 0, timer = null, typing = null, userPaused = reduce, hoverPaused = false;
-
-function setRows(rows) {
-  [...rowsEl.children].forEach((r, i) => {
-    r.firstElementChild.textContent = rows[i][0];
-    r.querySelector(".state").lastChild.textContent = rows[i][1];
-  });
-}
-function showFull(p) {
-  // Always land on a complete, readable state
-  clearInterval(typing); typing = null;
-  whoEl.textContent = p.who; typedEl.textContent = p.text; setRows(p.rows);
-  [...rowsEl.children].forEach(r => r.classList.remove("swap"));
-}
-function paused() { return userPaused || hoverPaused || document.hidden; }
-function schedule(ms) { clearTimeout(timer); if (!paused()) timer = setTimeout(next, ms); }
-function next() {
-  if (paused()) return;
-  pi = (pi + 1) % profiles.length;
-  const p = profiles[pi];
-  [...rowsEl.children].forEach(r => r.classList.add("swap"));
-  timer = setTimeout(() => {
-    whoEl.textContent = p.who;
-    setRows(p.rows);
-    [...rowsEl.children].forEach((r, i) => setTimeout(() => r.classList.remove("swap"), i * 90));
-    let i = 0;
-    const node = document.createTextNode(""), caret = document.createElement("span");
-    caret.className = "caret";
-    typedEl.textContent = ""; typedEl.append(node, caret);
-    typing = setInterval(() => {
-      i += 2; node.data = p.text.slice(0, i);
-      if (i >= p.text.length) { clearInterval(typing); typing = null; caret.remove(); schedule(4000); }
-    }, 28);
-  }, 300);
-}
-function pauseNow() { clearTimeout(timer); showFull(profiles[pi]); }
-function setUserPaused(v) {
-  userPaused = v;
-  ctrl.setAttribute("aria-pressed", String(v));
-  ctrl.setAttribute("aria-label", v ? "Play examples" : "Pause examples");
-  ctrl.innerHTML = v ? PLAY_ICON : PAUSE_ICON;
-  if (v) pauseNow(); else schedule(1200);
-}
-ctrl.addEventListener("click", () => setUserPaused(!userPaused));
-consoleEl.addEventListener("mouseenter", () => { hoverPaused = true; pauseNow(); });
-consoleEl.addEventListener("mouseleave", () => { hoverPaused = false; schedule(2500); });
-consoleEl.addEventListener("focusin", () => { hoverPaused = true; pauseNow(); });
-consoleEl.addEventListener("focusout", () => { hoverPaused = false; schedule(2500); });
-document.addEventListener("visibilitychange", () => document.hidden ? pauseNow() : schedule(2500));
-if (reduce) setUserPaused(true); else schedule(4200);
-
-// Forms
-function collect(form) {
-  const data = {};
-  new FormData(form).forEach((v, k) => { data[k] = data[k] !== undefined ? [].concat(data[k], v) : v; });
-  return data;
+// ---------- Shared helpers ----------
+async function api(action, payload) {
+  const res = await fetch(JOOGO_API, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action, ...payload }) });
+  if (!res.ok) throw new Error("http_" + res.status);
+  return res.json();
 }
 const validEmail = s => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
-const RULES = {
-  "b-name": el => el.value.trim() ? "" : "Add your name so I know who to reply to.",
-  "b-email": el => validEmail(el.value.trim()) ? "" : "Enter an email like name@example.com.",
-  "i-name": el => el.value.trim() ? "" : "Add your name.",
-  "i-email": el => validEmail(el.value.trim()) ? "" : "Enter an email like name@example.com.",
-  "i-consent": el => el.checked ? "" : "Tick this box to continue."
-};
-function check(id) {
-  const el = document.getElementById(id), err = document.getElementById(id + "-err");
-  const msg = RULES[id](el);
+function fieldMsg(id, msg) {
+  const el = $(id), err = $(id + "-err");
   err.textContent = msg; err.hidden = !msg;
-  if (msg) el.setAttribute("aria-invalid", "true"); else el.removeAttribute("aria-invalid");
+  msg ? el.setAttribute("aria-invalid", "true") : el.removeAttribute("aria-invalid");
   return msg;
 }
-// Validate when the person leaves a field, then live once it has shown an error
-Object.keys(RULES).forEach(id => {
-  const el = document.getElementById(id);
-  el.addEventListener("blur", () => { if (el.type !== "checkbox" && el.value) check(id); });
-  el.addEventListener(el.type === "checkbox" ? "change" : "input", () => { if (el.hasAttribute("aria-invalid")) check(id); });
-});
-function busy(btn, on) {
+function busy(btn, on, label) {
   btn.disabled = on;
-  btn.setAttribute("aria-busy", String(on));
-  btn.firstChild.textContent = on ? "Sending " : btn.dataset.label;
-}
-document.querySelectorAll("#bookBtn, #intakeBtn").forEach(b => b.dataset.label = b.firstChild.textContent);
-
-async function send(type, data) {
-  if (!FORM_ENDPOINT) { await new Promise(r => setTimeout(r, 500)); return true; }
-  try {
-    const res = await fetch(FORM_ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify({ type, ...data }) });
-    return res.ok;
-  } catch (e) { return false; }
+  const s = btn.querySelector("span");
+  if (s) { if (!btn.dataset.label) btn.dataset.label = s.textContent; s.textContent = on ? label : btn.dataset.label; }
 }
 
-document.getElementById("bookForm").addEventListener("submit", async e => {
+// ---------- Booking ----------
+const bookRules = {
+  "b-name": () => $("b-name").value.trim() ? "" : "Add your name so I know who to reply to.",
+  "b-email": () => validEmail($("b-email").value.trim()) ? "" : "Enter an email like name@example.com."
+};
+Object.keys(bookRules).forEach(id => {
+  $(id).addEventListener("blur", () => { if ($(id).value) fieldMsg(id, bookRules[id]()); });
+  $(id).addEventListener("input", () => { if ($(id).hasAttribute("aria-invalid")) fieldMsg(id, bookRules[id]()); });
+});
+$("bookForm").addEventListener("submit", async e => {
   e.preventDefault();
-  const f = e.target, btn = document.getElementById("bookBtn");
-  const bad = ["b-name", "b-email"].filter(check);
-  if (bad.length) { document.getElementById(bad[0]).focus(); return; }
-  const d = collect(f);
-  busy(btn, true);
-  const ok = await send("booking", d);
+  const bad = Object.keys(bookRules).filter(id => fieldMsg(id, bookRules[id]()));
+  if (bad.length) return $(bad[0]).focus();
+  const d = {};
+  new FormData(e.target).forEach((v, k) => { d[k] = d[k] !== undefined ? [].concat(d[k], v) : v; });
+  const btn = $("bookBtn");
+  busy(btn, true, "Sending");
+  let ok = true;
+  if (JOOGO_API) { try { ok = (await api("booking", d)).ok; } catch { ok = false; } }
+  else await new Promise(r => setTimeout(r, 400));
   busy(btn, false);
-  if (!ok) { showSendError(f, btn); return; }
-  document.getElementById("bookDoneName").textContent = d.name.trim().split(" ")[0];
-  f.hidden = true;
-  const done = document.getElementById("bookDone");
-  done.hidden = false; done.tabIndex = -1; done.focus();
+  if (!ok) { $("bookSendErr").textContent = "Your request didn't send. Check your connection and press the button again."; $("bookSendErr").hidden = false; return; }
+  try { localStorage.setItem("joogo-contact", JSON.stringify({ name: d.name, email: d.email })); } catch {}
+  $("i-name").value = d.name; $("i-email").value = d.email;
+  $("bookDoneName").textContent = d.name.trim().split(" ")[0];
+  e.target.hidden = true; $("bookDone").hidden = false; $("bookDone").focus();
 });
 
-function showSendError(form, btn) {
-  let el = form.querySelector(".send-err");
-  if (!el) { el = document.createElement("p"); el.className = "ferr send-err"; el.setAttribute("role", "alert"); btn.parentElement.append(el); }
-  el.textContent = " Your answers didn't send. Check your internet connection and press the button again.";
-}
+// ---------- Interview ----------
+const TOPICS = ["role", "ai_today", "tasks", "tools", "style", "privacy"];
+const SAVE_KEY = "joogo-interview";
+let iv = { name: "", email: "", messages: [], covered: [], done: false };
+const log = $("log"), reply = $("reply");
+if (!JOOGO_API) $("demoNote").hidden = false;
 
-// Intake: autosave draft on this device, progress, error summary
-const iform = document.getElementById("intakeForm");
-const DRAFT_KEY = "joogo-intake-draft";
-function saveDraft() {
-  try { localStorage.setItem(DRAFT_KEY, JSON.stringify(collect(iform))); } catch (e) {}
-}
-function loadDraft() {
-  let d = null;
-  try { d = JSON.parse(localStorage.getItem(DRAFT_KEY) || "null"); } catch (e) {}
-  if (!d) return;
-  [...iform.elements].forEach(el => {
-    if (!el.name || !(el.name in d)) return;
-    const v = d[el.name];
-    if (el.type === "checkbox") el.checked = [].concat(v).includes(el.value);
-    else el.value = v;
+try {
+  const c = JSON.parse(localStorage.getItem("joogo-contact") || "null");
+  if (c) { $("i-name").value = c.name || ""; $("i-email").value = c.email || ""; }
+} catch {}
+
+function save() { try { localStorage.setItem(SAVE_KEY, JSON.stringify(iv)); } catch {} }
+function setCovered(list) {
+  iv.covered = [...new Set([...iv.covered, ...(list || [])])].filter(t => TOPICS.includes(t));
+  document.querySelectorAll("#topics li").forEach(li => {
+    const on = iv.covered.includes(li.dataset.t);
+    li.classList.toggle("on", on);
+    li.querySelector(".st").textContent = on ? "done" : "";
   });
+  $("ivMeter").style.transform = `scaleX(${iv.covered.length / TOPICS.length})`;
+  $("ivCount").textContent = `${iv.covered.length} of ${TOPICS.length} topics covered`;
 }
-function progress() {
-  const blocks = [...iform.querySelectorAll(".qblock")];
-  const started = blocks.filter(b => [...b.querySelectorAll("input, textarea")].some(el => el.type === "checkbox" ? el.checked : el.value.trim())).length;
-  document.getElementById("progBar").style.transform = `scaleX(${started / blocks.length})`;
-  document.getElementById("progTxt").textContent = `${started} of ${blocks.length} sections started`;
+function bubble(role, text) {
+  const p = document.createElement("p");
+  p.className = "msg " + role;
+  p.textContent = text;
+  log.append(p);
+  log.scrollTop = log.scrollHeight;
+  if (matchMedia("(max-width: 900px)").matches) p.scrollIntoView({ block: "end", behavior: reduce ? "auto" : "smooth" });
+  return p;
 }
-let saveT;
-iform.addEventListener("input", () => { progress(); clearTimeout(saveT); saveT = setTimeout(saveDraft, 400); });
-iform.addEventListener("change", () => { progress(); saveDraft(); });
-loadDraft(); progress();
-
-iform.addEventListener("submit", async e => {
-  e.preventDefault();
-  const btn = document.getElementById("intakeBtn");
-  const sum = document.getElementById("intakeSum"), list = document.getElementById("intakeSumList");
-  const bad = ["i-name", "i-email", "i-consent"].filter(check);
-  if (bad.length) {
-    list.textContent = "";
-    bad.forEach(id => {
-      const li = document.createElement("li"), a = document.createElement("a");
-      a.href = "#" + id; a.textContent = document.getElementById(id + "-err").textContent;
-      a.addEventListener("click", ev => { ev.preventDefault(); document.getElementById(id).focus(); });
-      li.append(a); list.append(li);
-    });
-    sum.hidden = false; sum.focus();
-    return;
+function typing(on) {
+  let t = log.querySelector(".typing");
+  if (on && !t) { t = document.createElement("div"); t.className = "typing"; t.setAttribute("aria-label", "Interviewer is typing"); t.innerHTML = "<i></i><i></i><i></i>"; log.append(t); log.scrollTop = log.scrollHeight; }
+  if (!on && t) t.remove();
+}
+function lockInput(on) { reply.disabled = on; $("sendBtn").disabled = on; }
+function showError(code, retry) {
+  const msgs = {
+    daily_limit: "The interviewer is fully booked today. Please try again tomorrow, or just book and I'll ask you on the call.",
+    busy: "The interviewer is busy right now. Wait a few seconds and try again.",
+    too_long: "That answer is a bit long. Try a shorter one.",
+    refusal: "The interviewer couldn't answer that. Try rephrasing, or carry on with the next topic."
+  };
+  const p = bubble("err", msgs[code] || "Something went wrong on our side. Check your connection and try again.");
+  if (retry) {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "btn line"; b.textContent = "Try again"; b.style.marginTop = "12px";
+    b.addEventListener("click", () => { p.remove(); retry(); });
+    p.append(document.createElement("br"), b);
   }
-  sum.hidden = true;
-  const d = collect(iform);
-  busy(btn, true);
-  const ok = await send("intake", d);
-  busy(btn, false);
-  if (!ok) { showSendError(iform, btn); return; }
-  try { localStorage.removeItem(DRAFT_KEY); } catch (e) {}
-  const listOf = v => [].concat(v || []).join(", ") || "not given";
-  const tasks = [d.task1, d.task2, d.task3].filter(t => t && t.trim());
-  const s = document.getElementById("intakeSummary");
-  s.textContent = "";
-  [
-    ["Role", d.role || "not given"],
-    ["Skills to build", tasks.length ? tasks.join(" / ") : "we'll pick them together"],
-    ["Tools to connect", listOf(d.tools)],
-    ["Writing style", listOf(d.style)],
-    ["Keep private", listOf(d.privacy)]
-  ].forEach(([k, v]) => {
-    const line = document.createElement("div");
-    const key = document.createElement("b"); key.textContent = k + ": ";
-    line.append(key, document.createTextNode(v));
-    s.append(line);
-  });
-  iform.hidden = true;
-  const done = document.getElementById("intakeDone");
-  done.hidden = false; window.scrollTo(0, 0); done.tabIndex = -1; done.focus({ preventScroll: true });
+}
+
+// Demo interviewer: used when JOOGO_API is empty so the page still works in previews
+const DEMO = [
+  ["role", n => `Hi ${n}, I'm the Joogo interviewer. I'll ask a few short questions so your consultant can prepare. First, what do you do for work, and what does a normal day look like?`],
+  ["ai_today", () => "Thanks. Which AI tools do you already use, if any, and what frustrates you about them?"],
+  ["tasks", () => "Which 3 tasks take most of your week? Give me one concrete example for the biggest one."],
+  ["tools", () => "Which tools do you work in every day? For example Gmail or Outlook, a calendar, Google Drive, Slack, a CRM."],
+  ["style", () => "How do you like to write? Short or detailed, formal or friendly, and in which languages?"],
+  ["privacy", () => "Last one. Is there anything AI should never touch, like client data or finances? And does your company have rules about AI?"],
+  [null, () => "That's everything I need, thank you. Your consultant will review your answers before the session."]
+];
+function demoTurn() {
+  const step = iv.messages.filter(m => m.role === "assistant").length;
+  const [topic, fn] = DEMO[Math.min(step, DEMO.length - 1)];
+  const covered = DEMO.slice(0, step).map(d => d[0]).filter(Boolean);
+  return { ok: true, message: fn(iv.name.split(" ")[0]), covered, done: !topic };
+}
+
+async function askInterviewer() {
+  lockInput(true); typing(true);
+  let r;
+  try {
+    r = JOOGO_API ? await api("chat", { name: iv.name, messages: iv.messages })
+                  : await new Promise(res => setTimeout(() => res(demoTurn()), 700));
+  } catch { r = { ok: false, error: "network" }; }
+  typing(false);
+  if (!r.ok) { lockInput(false); return showError(r.error, askInterviewer); }
+  iv.messages.push({ role: "assistant", content: r.message });
+  bubble("ai", r.message);
+  setCovered(r.covered);
+  save();
+  if (r.done) return finish();
+  lockInput(false); reply.focus();
+}
+
+async function finish() {
+  iv.done = true; save();
+  lockInput(true); typing(true);
+  let r;
+  try {
+    r = JOOGO_API ? await api("finish", { name: iv.name, email: iv.email, messages: iv.messages })
+                  : await new Promise(res => setTimeout(() => res({ ok: true, recap: "Thanks for your answers. Your consultant now has notes on your work, tools and top tasks, and will prepare your setup before the call." }), 900));
+  } catch { r = { ok: false, error: "network" }; }
+  typing(false);
+  if (!r.ok) return showError(r.error, finish);
+  const box = document.createElement("div");
+  box.className = "recap"; box.tabIndex = -1;
+  const h = document.createElement("h3"); h.textContent = "All done. Thank you.";
+  const p = document.createElement("p"); p.textContent = r.recap;
+  const nxt = document.createElement("p"); nxt.className = "muted"; nxt.textContent = "Your consultant has your notes and will confirm your session time by email.";
+  const a = document.createElement("a"); a.className = "btn line"; a.href = "#top"; a.textContent = "Back to home";
+  box.append(h, p, nxt, a);
+  log.append(box); box.focus();
+  $("composer").hidden = true;
+  try { localStorage.removeItem(SAVE_KEY); } catch {}
+}
+
+function openChat() { $("ivStart").hidden = true; $("ivChat").hidden = false; }
+
+const startRules = {
+  "i-name": () => $("i-name").value.trim() ? "" : "Add your name.",
+  "i-email": () => validEmail($("i-email").value.trim()) ? "" : "Enter an email like name@example.com.",
+  "i-consent": () => $("i-consent").checked ? "" : "Tick this box to start."
+};
+$("ivStart").addEventListener("submit", e => {
+  e.preventDefault();
+  const bad = Object.keys(startRules).filter(id => fieldMsg(id, startRules[id]()));
+  if (bad.length) return $(bad[0]).focus();
+  iv = { name: $("i-name").value.trim(), email: $("i-email").value.trim(), messages: [], covered: [], done: false };
+  openChat();
+  askInterviewer();
 });
+
+$("composer").addEventListener("submit", e => {
+  e.preventDefault();
+  const text = reply.value.trim();
+  if (!text || reply.disabled) return;
+  iv.messages.push({ role: "user", content: text });
+  bubble("me", text);
+  reply.value = ""; reply.style.height = "";
+  save();
+  askInterviewer();
+});
+reply.addEventListener("keydown", e => {
+  if (e.key === "Enter" && !e.shiftKey && !e.isComposing) { e.preventDefault(); $("composer").requestSubmit(); }
+});
+reply.addEventListener("input", () => { reply.style.height = "auto"; reply.style.height = Math.min(reply.scrollHeight, 180) + "px"; });
+$("endBtn").addEventListener("click", () => {
+  if (!iv.done && !reply.disabled && iv.messages.some(m => m.role === "user")) finish();
+});
+
+// Resume an unfinished interview on this device
+try {
+  const saved = JSON.parse(localStorage.getItem(SAVE_KEY) || "null");
+  if (saved && saved.messages && saved.messages.length && !saved.done) {
+    iv = saved;
+    openChat();
+    bubble("sys", "Welcome back. Here's where we left off.");
+    iv.messages.forEach(m => bubble(m.role === "user" ? "me" : "ai", m.content));
+    setCovered(iv.covered);
+    if (iv.messages[iv.messages.length - 1].role === "user") askInterviewer(); else lockInput(false);
+  }
+} catch {}
 </script>
