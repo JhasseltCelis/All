@@ -1,10 +1,10 @@
-# Turn on the Joogo AI interviewer
+# Turn on Charles, the AI For You agent
 
 About 20 minutes, one time. You need a Google account and a Telegram account.
 
 When it's done, every client interview reaches you three ways:
 * **Email** with a full briefing (summary, top tasks, skill ideas, what to prepare, questions to ask)
-* **Google Sheet** called "Joogo clients" (one row per interview, plus a Bookings tab)
+* **Google Sheet** called "AI For You clients" (one row per interview, plus a Bookings tab)
 * **Telegram** message on your phone
 
 ## 1. Get a Claude API key (5 min)
@@ -17,7 +17,7 @@ When it's done, every client interview reaches you three ways:
 
 ## 2. Create the script (5 min)
 
-1. Go to https://script.google.com and click **New project**. Name it "Joogo".
+1. Go to https://script.google.com and click **New project**. Name it "AI For You".
 2. Delete what's in the editor and paste everything from `backend/Code.gs`.
 3. Click the gear icon (**Project Settings**), scroll to **Script Properties**, and add:
 
@@ -26,7 +26,7 @@ When it's done, every client interview reaches you three ways:
 | ANTHROPIC_API_KEY | the key from step 1 |
 | OWNER_EMAIL | the email where you want briefings |
 
-4. Back in the editor, pick **setup** from the function menu and click **Run**. Google asks for permissions: click Allow. This creates your "Joogo clients" sheet in Google Drive.
+4. Back in the editor, pick **setup** from the function menu and click **Run**. Google asks for permissions: click Allow. This creates your "AI For You clients" sheet in Google Drive.
 
 ## 3. Connect Telegram (5 min)
 
@@ -42,7 +42,7 @@ When it's done, every client interview reaches you three ways:
 1. Click **Deploy**, then **New deployment**.
 2. Type: **Web app**. Execute as: **Me**. Who has access: **Anyone**.
 3. Click Deploy and copy the **Web app URL**.
-4. Send that URL to Claude, or paste it into `website/index.html` at the line `const JOOGO_API = "";`
+4. Send that URL to Claude, or paste it into `website/index.html` at the line `const AFY_API = "";`
 
 That's it. The booking form and the interviewer on your site now work for real.
 

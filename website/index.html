@@ -1,4 +1,4 @@
-<title>Joogo AI Setup</title>
+<title>AI For You</title>
 <meta name="description" content="Personal setup for Claude, ChatGPT and Gemini. A 10 minute AI interview, then one call, and your AI works the way you do.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -76,6 +76,9 @@ nav.top .wrap { display: flex; align-items: center; justify-content: space-betwe
 .navlinks a.nl.active { color: var(--fg); border-bottom-color: var(--blue); }
 .navlinks .btn { min-height: 44px; padding: 0 18px; margin-left: 10px; font-size: 0.9rem; }
 @media (max-width: 820px) { .navlinks a.nl.hide-sm { display: none; } }
+.logo, .navlinks .btn { white-space: nowrap; }
+@media (max-width: 440px) { .logo { font-size: 1.1rem; } .navlinks a.nl { padding: 0 10px; font-size: 0.88rem; } .navlinks .btn { padding: 0 14px; margin-left: 4px; } }
+@media (max-width: 370px) { .navlinks a.nl { display: none; } }
 
 /* Grid lines */
 .cells { display: grid; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
@@ -237,7 +240,7 @@ textarea { min-height: 100px; resize: vertical; }
 
 /* Footer */
 footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: hidden; }
-.wordmark { font-family: var(--display); font-weight: 900; font-stretch: 125%; text-transform: uppercase; font-size: clamp(4rem, 19vw, 17rem); line-height: 0.8; letter-spacing: -0.04em; }
+.wordmark { font-family: var(--display); font-weight: 900; font-stretch: 112%; text-transform: uppercase; font-size: clamp(2.8rem, 10.6vw, 9.6rem); white-space: nowrap; line-height: 0.8; letter-spacing: -0.04em; }
 .wordmark span { color: var(--blue); }
 .foot-row { display: flex; justify-content: space-between; gap: 16px 32px; flex-wrap: wrap; margin-top: 32px; color: var(--muted); font-size: 0.9rem; }
 .foot-row nav { display: flex; gap: 22px; flex-wrap: wrap; }
@@ -500,7 +503,7 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
 
 <nav class="top" aria-label="Main">
   <div class="wrap">
-    <a class="logo" href="#top" aria-label="Joogo home"><i></i>JOOGO</a>
+    <a class="logo" href="#top" aria-label="AI For You home"><i></i>AI FOR YOU</a>
     <div class="navlinks">
       <a class="nl hide-sm" href="#how" data-sec="how">How it works</a>
       <a class="nl hide-sm" href="#packages" data-sec="packages">Packages</a>
@@ -624,7 +627,7 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
           </ul>
         </div>
       </div>
-      <p class="fit-foot muted">Not sure which side you're on? Book anyway. The interviewer checks your plan, and I'll tell you honestly if you don't need me.</p>
+      <p class="fit-foot muted">Not sure which side you're on? Book anyway. Charles, our AI agent, checks your plan, and I'll tell you honestly if you don't need me.</p>
     </div>
   </section>
 
@@ -637,11 +640,11 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
       <div class="how cells">
         <div>
           <p class="n blue">01</p>
-          <div class="t"><p class="mono">10 minutes, whenever suits you</p><h3>Chat with the Joogo interviewer</h3><p>An AI assistant asks about your work, your tools and the tasks that eat your week. One question at a time, in your language. I get the notes before we meet.</p>
+          <div class="t"><p class="mono">10 minutes, whenever suits you</p><h3>Chat with Charles, our AI agent</h3><p>Charles asks about your work, your tools and the tasks that eat your week. One question at a time, in your language. I get the notes before we meet.</p>
             <div><a class="btn line" href="#interview">Try the interview <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5"/></svg></a></div>
           </div>
           <div class="chatmock" aria-hidden="true">
-            <div class="cm-head"><span class="mono">Joogo interviewer</span><span class="mono muted">example</span></div>
+            <div class="cm-head"><span class="mono">Charles, AI agent</span><span class="mono muted">example</span></div>
             <div class="cm-body">
               <p class="bub ai">Hi Ana. What does a normal workday look like for you?</p>
               <p class="bub me">I run the front desk at a dental clinic. Lots of calls and emails.</p>
@@ -752,7 +755,7 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
       <div class="cells rows">
         <div><span class="k">01</span><div class="t"><h3>No passwords, ever</h3><p class="muted">You log in yourself while I guide you on screen share.</p></div></div>
         <div><span class="k">02</span><div class="t"><h3>Only the access you approve</h3><p class="muted">We connect only the tools you pick, with the lowest permission that does the job.</p></div></div>
-        <div><span class="k">03</span><div class="t"><h3>The interview stays private</h3><p class="muted">Your answers go only to me, to prepare your session. The interviewer never asks for passwords or card details.</p></div></div>
+        <div><span class="k">03</span><div class="t"><h3>The interview stays private</h3><p class="muted">Your answers go only to me, to prepare your session. Charles never asks for passwords or card details.</p></div></div>
         <div><span class="k">04</span><div class="t"><h3>Nothing kept from the call</h3><p class="muted">No screenshots or copies. Your setup lives in your accounts only.</p></div></div>
       </div>
     </div>
@@ -764,7 +767,7 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
       <div class="cells rows">
         <div><span class="k">Q</span><div class="t"><h3>Do I need to be technical?</h3><p class="muted">No. If you can use email, you're ready.</p></div></div>
         <div><span class="k">Q</span><div class="t"><h3>Which AI plan do I need?</h3><p class="muted">A paid one. Claude, ChatGPT and Gemini all keep email connections, projects and custom skills on their paid plans, usually from about $20 a month. Higher tiers get even more out of a setup. On a free plan? Upgrade before the session and you're set.</p></div></div>
-        <div><span class="k">Q</span><div class="t"><h3>Is the interviewer a real person?</h3><p class="muted">No, it's an AI assistant that takes notes for me. I read everything and prepare your session personally.</p></div></div>
+        <div><span class="k">Q</span><div class="t"><h3>Is Charles a real person?</h3><p class="muted">No, Charles is our AI agent. He asks the questions and takes notes for me. I read everything and prepare your session personally.</p></div></div>
         <div><span class="k">Q</span><div class="t"><h3>I'm a developer. Should I book?</h3><p class="muted">Honestly, probably not. If you know what an API key is, you can set this up yourself, and you'd have more fun doing it. Send your non tech friends instead.</p></div></div>
         <div><span class="k">Q</span><div class="t"><h3>What if something stops working later?</h3><p class="muted">AI tools change often. The Care plan covers that, or book a single tune up any time.</p></div></div>
       </div>
@@ -778,7 +781,7 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
         <p class="lead" style="margin-top:24px">Send a request. I reply within one business day.</p>
         <ol class="book-steps">
           <li><span class="mono">01</span><span>Send this form</span></li>
-          <li><span class="mono">02</span><span>Chat with the Joogo interviewer, about 10 minutes</span></li>
+          <li><span class="mono">02</span><span>Chat with Charles, our AI agent, about 10 minutes</span></li>
           <li><span class="mono">03</span><span>I confirm a time, prepared with your notes</span></li>
           <li><span class="mono">04</span><span>Pay after the session, not before</span></li>
         </ol>
@@ -818,7 +821,7 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
         <div class="done" id="bookDone" tabindex="-1" hidden>
           <svg class="tick" viewBox="0 0 40 40" aria-hidden="true"><path d="M8 21l8 8 16-17"/></svg>
           <h3>Request<br>received</h3>
-          <p class="muted">Thanks, <span id="bookDoneName"></span>. Next, a quick chat with the Joogo interviewer so I can prepare your session.</p>
+          <p class="muted">Thanks, <span id="bookDoneName"></span>. Next, a quick chat with Charles, our AI agent, so I can prepare your session.</p>
           <div><a class="btn blue" href="#interview">Start the interview <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5"/></svg></a></div>
         </div>
       </div>
@@ -832,7 +835,7 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
     <aside class="iv-side">
       <a class="back" href="#top"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13 8H3M7 4L3 8l4 4"/></svg>Back to home</a>
       <h1 tabindex="-1" id="ivTitle">Before<br>your <span class="blue">setup</span></h1>
-      <p class="muted">A short chat with the Joogo interviewer, about 10 minutes. It takes notes so your session is spent building.</p>
+      <p class="muted">A short chat with Charles, our AI agent, about 10 minutes. He takes notes so your session is spent building.</p>
       <div style="display:grid;gap:10px">
         <div class="meter" aria-hidden="true"><i id="ivMeter"></i></div>
         <p class="mono muted" id="ivCount">0 of 6 topics covered</p>
@@ -850,17 +853,17 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
 
     <div class="iv-main">
       <form class="iv-start" id="ivStart" novalidate>
-        <h2>Let's get to know your work</h2>
+        <h2>Hi, I'm Charles. Let's get to know your work.</h2>
         <p class="demo-note" id="demoNote" hidden>Demo mode: this preview uses sample questions and doesn't send answers anywhere.</p>
         <div class="fgrid" style="width:100%">
           <div class="field"><label for="i-name">Your name<span class="req" aria-hidden="true">*</span></label><input type="text" id="i-name" name="name" autocomplete="name" aria-describedby="i-name-err"><span class="ferr" id="i-name-err" role="alert" hidden></span></div>
           <div class="field"><label for="i-email">Email<span class="req" aria-hidden="true">*</span></label><input type="email" id="i-email" name="email" autocomplete="email" aria-describedby="i-email-err"><span class="ferr" id="i-email-err" role="alert" hidden></span></div>
           <div class="field full">
-            <label class="opt wide"><input type="checkbox" id="i-consent" name="consent" aria-describedby="i-consent-err"><span>I understand I'm chatting with an AI assistant, and my answers go to my consultant</span></label>
+            <label class="opt wide"><input type="checkbox" id="i-consent" name="consent" aria-describedby="i-consent-err"><span>I understand Charles is an AI agent, and my answers go to my consultant</span></label>
             <span class="ferr" id="i-consent-err" role="alert" hidden></span>
           </div>
         </div>
-        <button class="btn blue" type="submit" id="ivGo"><span>Start the interview</span> <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5"/></svg></button>
+        <button class="btn blue" type="submit" id="ivGo"><span>Start chatting with Charles</span> <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5"/></svg></button>
       </form>
 
       <div id="ivChat" hidden style="display:contents">
@@ -880,9 +883,9 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
 
 <footer>
   <div class="wrap">
-    <p class="wordmark" aria-hidden="true">Joogo<span>.</span></p>
+    <p class="wordmark" aria-hidden="true">AI for you<span>.</span></p>
     <div class="foot-row">
-      <span>Joogo AI Setup. Not affiliated with Anthropic, OpenAI or Google.</span>
+      <span>AI For You. Personal AI setup. Not affiliated with Anthropic, OpenAI or Google.</span>
       <nav aria-label="Footer"><a href="#privacy">Privacy</a><a href="#interview">Interview</a><a href="#book">Book a setup</a></nav>
     </div>
   </div>
@@ -890,7 +893,7 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
 
 <script>
 // Paste your Google Apps Script web app URL here to go live. Empty = demo mode.
-const JOOGO_API = "";
+const AFY_API = "";
 
 const $ = id => document.getElementById(id);
 const home = $("view-home"), iview = $("view-interview"), mcta = $("mcta");
@@ -933,7 +936,7 @@ document.querySelectorAll("[data-pkg]").forEach(a => a.addEventListener("click",
 
 // ---------- Shared helpers ----------
 async function api(action, payload) {
-  const res = await fetch(JOOGO_API, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action, ...payload }) });
+  const res = await fetch(AFY_API, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action, ...payload }) });
   if (!res.ok) throw new Error("http_" + res.status);
   return res.json();
 }
@@ -1132,7 +1135,7 @@ function swap(from, to, before) {
 $("b-plan").addEventListener("change", e => {
   const note = $("planNote"), v = e.target.value;
   const msg = v === "Free" ? "Heads up: setups need a paid plan, because the useful features live there. You can still book, just upgrade before the session. Most people do it the day before."
-    : v === "Not sure" ? "No problem. The interviewer will help you check, and I'll tell you before we start."
+    : v === "Not sure" ? "No problem. Charles, our AI agent, will help you check, and I'll tell you before we start."
     : "";
   note.textContent = msg;
   note.classList.toggle("show", !!msg);
@@ -1156,11 +1159,11 @@ $("bookForm").addEventListener("submit", async e => {
   const btn = $("bookBtn");
   busy(btn, true, "Sending");
   let ok = true;
-  if (JOOGO_API) { try { ok = (await api("booking", d)).ok; } catch { ok = false; } }
+  if (AFY_API) { try { ok = (await api("booking", d)).ok; } catch { ok = false; } }
   else await new Promise(r => setTimeout(r, 400));
   busy(btn, false);
   if (!ok) { $("bookSendErr").textContent = "Your request didn't send. Check your connection and press the button again."; $("bookSendErr").hidden = false; return; }
-  try { localStorage.setItem("joogo-contact", JSON.stringify({ name: d.name, email: d.email })); } catch {}
+  try { localStorage.setItem("afy-contact", JSON.stringify({ name: d.name, email: d.email })); } catch {}
   $("i-name").value = d.name; $("i-email").value = d.email;
   $("bookDoneName").textContent = d.name.trim().split(" ")[0];
   swap(e.target, $("bookDone"));
@@ -1168,13 +1171,13 @@ $("bookForm").addEventListener("submit", async e => {
 
 // ---------- Interview ----------
 const TOPICS = ["role", "ai_today", "tasks", "tools", "style", "privacy"];
-const SAVE_KEY = "joogo-interview";
+const SAVE_KEY = "afy-interview";
 let iv = { name: "", email: "", messages: [], covered: [], done: false };
 const log = $("log"), reply = $("reply");
-if (!JOOGO_API) $("demoNote").hidden = false;
+if (!AFY_API) $("demoNote").hidden = false;
 
 try {
-  const c = JSON.parse(localStorage.getItem("joogo-contact") || "null");
+  const c = JSON.parse(localStorage.getItem("afy-contact") || "null");
   if (c) { $("i-name").value = c.name || ""; $("i-email").value = c.email || ""; }
 } catch {}
 
@@ -1202,16 +1205,16 @@ function bubble(role, text, restored) {
 }
 function typing(on) {
   let t = log.querySelector(".typing");
-  if (on && !t) { t = document.createElement("div"); t.className = "typing"; t.setAttribute("aria-label", "Interviewer is typing"); t.innerHTML = "<i></i><i></i><i></i>"; log.append(t); log.scrollTop = log.scrollHeight; }
+  if (on && !t) { t = document.createElement("div"); t.className = "typing"; t.setAttribute("aria-label", "Charles is typing"); t.innerHTML = "<i></i><i></i><i></i>"; log.append(t); log.scrollTop = log.scrollHeight; }
   if (!on && t) t.remove();
 }
 function lockInput(on) { reply.disabled = on; $("sendBtn").disabled = on; }
 function showError(code, retry) {
   const msgs = {
-    daily_limit: "The interviewer is fully booked today. Please try again tomorrow, or just book and I'll ask you on the call.",
-    busy: "The interviewer is busy right now. Wait a few seconds and try again.",
+    daily_limit: "Charles is fully booked today. Please try again tomorrow, or just book and I'll ask you on the call.",
+    busy: "Charles is busy right now. Wait a few seconds and try again.",
     too_long: "That answer is a bit long. Try a shorter one.",
-    refusal: "The interviewer couldn't answer that. Try rephrasing, or carry on with the next topic."
+    refusal: "Charles couldn't answer that. Try rephrasing, or carry on with the next topic."
   };
   const p = bubble("err", msgs[code] || "Something went wrong on our side. Check your connection and try again.");
   if (retry) {
@@ -1222,9 +1225,9 @@ function showError(code, retry) {
   }
 }
 
-// Demo interviewer: used when JOOGO_API is empty so the page still works in previews
+// Demo interviewer: used when AFY_API is empty so the page still works in previews
 const DEMO = [
-  ["role", n => `Hi ${n}, I'm the Joogo interviewer. I'll ask a few short questions so your consultant can prepare. First, what do you do for work, and what does a normal day look like?`],
+  ["role", n => `Hi ${n}, I'm Charles, the AI agent at AI For You. I'll ask a few short questions so your consultant can prepare. First, what do you do for work, and what does a normal day look like?`],
   ["ai_today", () => "Thanks. Which AI tools do you already use, if any, and what frustrates you about them?"],
   ["tasks", () => "Which 3 tasks take most of your week? Give me one concrete example for the biggest one."],
   ["tools", () => "Which tools do you work in every day? For example Gmail or Outlook, a calendar, Google Drive, Slack, a CRM."],
@@ -1243,7 +1246,7 @@ async function askInterviewer() {
   lockInput(true); typing(true);
   let r;
   try {
-    r = JOOGO_API ? await api("chat", { name: iv.name, messages: iv.messages })
+    r = AFY_API ? await api("chat", { name: iv.name, messages: iv.messages })
                   : await new Promise(res => setTimeout(() => res(demoTurn()), 700));
   } catch { r = { ok: false, error: "network" }; }
   typing(false);
@@ -1261,7 +1264,7 @@ async function finish() {
   lockInput(true); typing(true);
   let r;
   try {
-    r = JOOGO_API ? await api("finish", { name: iv.name, email: iv.email, messages: iv.messages })
+    r = AFY_API ? await api("finish", { name: iv.name, email: iv.email, messages: iv.messages })
                   : await new Promise(res => setTimeout(() => res({ ok: true, recap: "Thanks for your answers. Your consultant now has notes on your work, tools and top tasks, and will prepare your setup before the call." }), 900));
   } catch { r = { ok: false, error: "network" }; }
   typing(false);

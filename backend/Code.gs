@@ -1,5 +1,5 @@
 /**
- * Joogo backend (Google Apps Script web app)
+ * AI For You backend (Google Apps Script web app)
  *
  * Runs the AI intake interview with Claude, then sends the consultant a
  * summary by email, saves it to a Google Sheet and posts it to Telegram.
@@ -20,7 +20,7 @@ const MAX_TURNS = 40;          // client messages per interview
 const MAX_CHARS = 2000;        // per client message
 const TOPICS = ['role', 'ai_today', 'tasks', 'tools', 'style', 'privacy'];
 
-const INTERVIEW_PROMPT = `You are the intake interviewer for Joogo, a service where a consultant sets up Claude, ChatGPT or Gemini for busy professionals who are not technical. You are talking with a new client before their setup call.
+const INTERVIEW_PROMPT = `You are Charles, the AI intake agent for AI For You, a service where a consultant sets up Claude, ChatGPT or Gemini for busy professionals who are not technical. You are talking with a new client before their setup call.
 
 Your goal: in about 10 minutes, learn what the consultant needs to prepare a great setup. Cover these topics:
 - role: their job, industry and what a normal workday looks like
@@ -31,6 +31,7 @@ Your goal: in about 10 minutes, learn what the consultant needs to prepare a gre
 - privacy: information AI must never touch, and any company rules about AI
 
 How to talk:
+- Introduce yourself as Charles, the AI agent at AI For You, in your first message. If asked, be clear that you are an AI, not a person.
 - One question per message. Short, warm, plain words. Under 60 words.
 - When an answer is vague, ask one follow up for a concrete example before moving on.
 - Reply in the language the client writes in.
@@ -63,7 +64,7 @@ function doPost(e) {
 }
 
 function doGet() {
-  return json({ ok: true, service: 'joogo' });
+  return json({ ok: true, service: 'ai-for-you' });
 }
 
 // ---------- Interview ----------
@@ -265,7 +266,7 @@ function saveInterview(name, email, s, transcript) {
 
 function notifyOwner(subject, text, html) {
   const to = prop('OWNER_EMAIL');
-  if (to) MailApp.sendEmail({ to: to, subject: subject, body: text, htmlBody: html, name: 'Joogo' });
+  if (to) MailApp.sendEmail({ to: to, subject: subject, body: text, htmlBody: html, name: 'AI For You' });
 
   const token = prop('TELEGRAM_BOT_TOKEN'), chat = prop('TELEGRAM_CHAT_ID');
   if (token && chat) {
@@ -362,7 +363,7 @@ function sheet(name, headers) {
   let id = prop('SHEET_ID');
   let ss = id ? SpreadsheetApp.openById(id) : null;
   if (!ss) {
-    ss = SpreadsheetApp.create('Joogo clients');
+    ss = SpreadsheetApp.create('AI For You clients');
     PropertiesService.getScriptProperties().setProperty('SHEET_ID', ss.getId());
   }
   let sh = ss.getSheetByName(name);
@@ -382,7 +383,7 @@ function json(obj) { return ContentService.createTextOutput(JSON.stringify(obj))
 
 // ---------- Run these once from the editor ----------
 
-/** Creates the "Joogo clients" sheet and asks for permissions. */
+/** Creates the "AI For You clients" sheet and asks for permissions. */
 function setup() {
   sheet('Interviews', ['Received', 'Name', 'Email', 'Summary', 'Role', 'AI plan', 'Fit check', 'Package', 'Tasks', 'Tools', 'Style',
     'Privacy', 'Prep checklist', 'Open questions', 'Transcript']);
@@ -402,6 +403,6 @@ function findTelegramChatId() {
 
 /** Sends a test notification to email and Telegram. */
 function testNotifications() {
-  notifyOwner('Joogo test', 'If you can read this, notifications work.', '<p>If you can read this, notifications work.</p>');
+  notifyOwner('AI For You test', 'If you can read this, notifications work.', '<p>If you can read this, notifications work.</p>');
   console.log('Sent. Check your email and Telegram.');
 }
