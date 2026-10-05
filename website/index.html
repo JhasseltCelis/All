@@ -467,6 +467,12 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
 @keyframes draw { to { stroke-dashoffset: 0; } }
 @media (prefers-reduced-motion: reduce) { .done .tick path { stroke-dashoffset: 0; } }
 
+.scard.bonus { background: var(--blue); color: var(--blue-ink); border-color: var(--blue); }
+.scard.bonus .n { color: var(--blue-ink); }
+.scard.bonus > div > p { color: var(--blue-ink); opacity: 0.92; }
+.scard.bonus .vis { background: color-mix(in srgb, #000 14%, var(--blue)); border-left-color: rgba(255, 255, 255, 0.25); }
+.scard.bonus .skill { color: var(--fg); }
+
 /* ===== Honest fit check ===== */
 .fit { grid-template-columns: 1fr 1fr; }
 .fit > div { padding: 40px 36px 44px; display: grid; gap: 22px; align-content: start; }
@@ -564,7 +570,7 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
     <div class="wrap">
       <div class="sec-head">
         <h2 class="disp">Four layers.<br><span class="blue">One call.</span></h2>
-        <p class="lead">Everything lives in your own account. No new apps to learn.</p>
+        <p class="lead">Everything lives in your own account. No new apps to learn. Plus one bonus, so you're never stuck.</p>
       </div>
       <div class="stack" id="stack">
         <article class="scard" style="--i:0">
@@ -583,24 +589,14 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
           <div><p class="n">04</p><h3>A cheat sheet and a tune up</h3><p>A one page guide with your best prompts. Two weeks later we meet again and fix anything that feels off.</p></div>
           <div class="vis" style="gap:12px"><div class="cal" aria-label="Setup on day 1, tune up on day 14"><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="on"></i></div><div class="cal-cap"><span>Day 1: setup</span><span>Day 14: tune up</span></div></div>
         </article>
+        <article class="scard bonus" style="--i:4">
+          <div><p class="n">+</p><h3>Bonus: a helper that knows your setup</h3><p>I build a small assistant inside your ChatGPT or Claude that answers questions about your own setup, any time you forget how something works. Included with your one time payment, for 12 months.</p></div>
+          <div class="vis"><div class="skill"><span class="mono">You ask your setup helper</span><b>"How do I run my Friday follow ups again?"</b><span>Type "Do my Friday follow ups" in your Claude project. It checks this week's viewings and leaves the drafts in Gmail for you to review.</span><span class="mono">Works in ChatGPT as a custom GPT, or in Claude as a connector</span></div></div>
+        </article>
       </div>
     </div>
   </section>
 
-  <div class="ribbon" tabindex="0" aria-label="Skill ideas from real jobs, scroll sideways for more">
-    <ul>
-      <li><b>Friday client follow ups</b><span>real estate</span></li>
-      <li><b>Appointment changes</b><span>dental clinic</span></li>
-      <li><b>Lease summary memo</b><span>law firm</span></li>
-      <li><b>Proposal from a brief</b><span>freelancer</span></li>
-      <li><b>Weekly report for my manager</b><span>marketing</span></li>
-      <li><b>Meeting notes to action items</b><span>any job</span></li>
-      <li><b>Invoice reminder emails</b><span>small business</span></li>
-      <li><b>Listing descriptions</b><span>real estate</span></li>
-      <li><b>Session recap for clients</b><span>coaching</span></li>
-      <li><b>Reply in the client's language</b><span>any job</span></li>
-    </ul>
-  </div>
 
   <section id="fit" style="padding-top:0">
     <div class="wrap">
@@ -683,6 +679,7 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
             <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>Profile and custom instructions</li>
             <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>2 connections, like Gmail and Calendar</li>
             <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>60 minute session and cheat sheet</li>
+            <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>Bonus: setup helper for 12 months</li>
           </ul>
           <a class="btn line" href="#book" data-pkg="Starter">Choose Starter</a>
         </article>
@@ -695,6 +692,7 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
             <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>All key connections</li>
             <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>3 custom skills, GPTs or Gems</li>
             <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>90 minute session and 2 week tune up</li>
+            <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>Bonus: setup helper for 12 months</li>
             <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>Prompt library for your job</li>
           </ul>
           <a class="btn" href="#book" data-pkg="Pro">Choose Pro</a>
@@ -708,6 +706,7 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
             <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>Shared projects and skills</li>
             <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>Team training session</li>
             <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>Simple AI usage guidelines</li>
+            <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>Bonus: setup helper for 12 months</li>
           </ul>
           <a class="btn line" href="#book" data-pkg="Team">Choose Team</a>
         </article>
@@ -735,6 +734,7 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
             <tr><th scope="row">Connections</th><td>2</td><td class="pk">All key tools</td><td>All key tools</td></tr>
             <tr><th scope="row">Custom skills, GPTs or Gems</th><td class="no">Not included</td><td class="pk">3</td><td>Shared team skills</td></tr>
             <tr><th scope="row">Session length</th><td>60 min</td><td class="pk">90 min</td><td>Setup plus training</td></tr>
+            <tr><th scope="row">Bonus setup helper</th><td>12 months</td><td class="pk">12 months</td><td>12 months, whole team</td></tr>
             <tr><th scope="row">Works with free AI plans</th><td class="no">No</td><td class="pk no">No</td><td class="no">No</td></tr>
             <tr><th scope="row">2 week tune up</th><td class="no">Not included</td><td class="pk">Yes</td><td>Yes</td></tr>
           </tbody>
