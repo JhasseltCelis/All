@@ -2,7 +2,7 @@
 
 About 20 minutes, one time. You need a Google account and a Telegram account.
 
-When it's done, every client interview reaches you three ways:
+When it's done, every quick booking and every finished chat with Charles reaches you three ways:
 * **Email** with a full briefing (summary, top tasks, skill ideas, what to prepare, questions to ask)
 * **Google Sheet** called "AI For You clients" (one row per interview, plus a Bookings tab)
 * **Telegram** message on your phone
@@ -44,10 +44,29 @@ When it's done, every client interview reaches you three ways:
 3. Click Deploy and copy the **Web app URL**.
 4. Send that URL to Claude, or paste it into `website/index.html` at the line `const AFY_API = "";`
 
-That's it. The booking form and the interviewer on your site now work for real.
+## 5. Let Charles chat on Telegram (2 min, free)
+
+1. In the script editor, run **setupTelegramBot**.
+2. The log shows your bot's name. Clients who pick Telegram now get an "Open Telegram" button, and Charles chats with them there.
+3. Run it again whenever you create a new deployment URL.
+
+## 6. Let Charles chat on WhatsApp (optional, about 1 hour)
+
+This needs a Meta WhatsApp Business account. Until it's set up, WhatsApp leads still reach you by email and Telegram with a one tap link to message them yourself.
+
+1. In Meta for Developers, create an app with **WhatsApp**, and add and verify a phone number for AI For You.
+2. Create a message **template** for Charles's first message, for example:
+   "Hi {{1}}, I'm Charles, the AI agent at AI For You. Thanks for booking! Can I ask you a few quick questions to prepare your setup?"
+   Wait for Meta to approve it.
+3. Add Script Properties: **WHATSAPP_TOKEN** (a permanent access token), **WHATSAPP_PHONE_NUMBER_ID**, **WHATSAPP_TEMPLATE** (the template name) and, if it isn't English, **WHATSAPP_TEMPLATE_LANG** (for example `es`).
+4. Run **setupWhatsApp**. Paste the Callback URL and Verify token it prints into Meta's WhatsApp webhook settings, and subscribe to **messages**.
+
+**Cost:** replies inside a conversation the client is having are free. Charles's first message (the template) costs a few cents, depending on the country.
+
+**Good to know:** Google Apps Script answers webhooks in an unusual way. Telegram handles it fine. If Meta ever warns that the webhook is failing, tell Claude and we'll add a small free relay in front of it.
 
 ## Changing things later
 
 * **Daily limit:** add Script Property `DAILY_LIMIT`, for example 50.
 * **What the interviewer asks:** edit `INTERVIEW_PROMPT` near the top of the script, then Deploy, Manage deployments, Edit, New version.
-* **WhatsApp instead of Telegram:** possible, but it needs a paid WhatsApp Business provider. Ask Claude when you want it.
+* **See every conversation:** the "Leads" tab in your sheet has each quick booking, its status (new, talking, done) and the chat so far.
