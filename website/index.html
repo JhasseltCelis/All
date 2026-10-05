@@ -1,0 +1,662 @@
+<title>Joogo AI Setup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one narrow column of sections, hero pairs the promise with a live-looking "setup panel"; intake is a separate view (#intake). */
+:root {
+  --bg: #F3F5F7;
+  --surface: #FFFFFF;
+  --fg: #13201D;
+  --muted: #5A6763;
+  --line: #DCE2E0;
+  --accent: #0E7C66;
+  --accent-ink: #FFFFFF;
+  --accent-soft: #DDEFEA;
+  --mark: #F2C14E;
+  --ok: #0E7C66;
+  --error: #B3261E;
+  --display: "Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
+  --body: "Instrument Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  --r: 14px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0F1614; --surface: #17211E; --fg: #E8EEEC; --muted: #9AA8A4; --line: #2A3733;
+    --accent: #3CC2A2; --accent-ink: #062019; --accent-soft: #173A32; --mark: #F2C14E; --ok: #3CC2A2; --error: #FF8A80;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0F1614; --surface: #17211E; --fg: #E8EEEC; --muted: #9AA8A4; --line: #2A3733;
+  --accent: #3CC2A2; --accent-ink: #062019; --accent-soft: #173A32; --mark: #F2C14E; --ok: #3CC2A2; --error: #FF8A80;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font: 16px/1.6 var(--body); }
+.wrap { max-width: 1080px; margin: 0 auto; padding-inline: 20px; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.1; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(2.3rem, 5.5vw, 3.9rem); font-weight: 800; letter-spacing: -0.02em; }
+h2 { font-size: clamp(1.7rem, 3.4vw, 2.4rem); font-weight: 700; letter-spacing: -0.01em; }
+h3 { font-size: 1.2rem; font-weight: 700; }
+p { margin: 0; }
+a { color: var(--accent); }
+:focus-visible { outline: 3px solid var(--mark); outline-offset: 2px; }
+
+/* Nav */
+nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px; }
+.logo { font-family: var(--display); font-weight: 800; font-size: 1.3rem; color: var(--fg); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+.logo i { width: 12px; height: 12px; border-radius: 3px; background: var(--accent); box-shadow: 5px 5px 0 var(--mark); display: inline-block; }
+.navlinks { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
+.navlinks a { color: var(--fg); text-decoration: none; font-weight: 500; font-size: 0.95rem; }
+.navlinks a.hide-sm { }
+@media (max-width: 640px) { .navlinks a.hide-sm { display: none; } }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font: 600 1rem var(--body); padding: 12px 20px; border-radius: 999px; border: 2px solid var(--accent); background: var(--accent); color: var(--accent-ink) !important; text-decoration: none; cursor: pointer; }
+.btn:hover { filter: brightness(1.08); }
+.btn.ghost { background: transparent; color: var(--accent) !important; }
+.btn.small { padding: 8px 14px; font-size: 0.9rem; }
+
+section { padding-block: 72px; }
+.lead { font-size: 1.15rem; color: var(--muted); max-width: 60ch; }
+.sec-head { display: grid; gap: 12px; margin-bottom: 36px; max-width: 680px; }
+
+/* Hero */
+.hero { padding-block: 64px 56px; }
+.hero .wrap { display: grid; grid-template-columns: 1.15fr 1fr; gap: 48px; align-items: center; }
+.hero .copy { display: grid; gap: 22px; min-width: 0; }
+.hero h1 em { font-style: normal; background: linear-gradient(transparent 62%, var(--mark) 62%); padding-inline: 2px; }
+.tools { font-family: var(--mono); font-size: 0.85rem; color: var(--muted); }
+.cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
+@media (max-width: 860px) { .hero .wrap { grid-template-columns: 1fr; } }
+
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; box-shadow: 0 18px 50px -24px rgba(10, 40, 32, 0.35); overflow: hidden; min-width: 0; }
+.panel-top { display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid var(--line); font-family: var(--mono); font-size: 0.8rem; color: var(--muted); }
+.panel-top b { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+.panel-top span { margin-left: 6px; }
+.panel-body { padding: 18px; display: grid; gap: 16px; }
+.instr { font-family: var(--mono); font-size: 0.8rem; line-height: 1.55; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; color: var(--fg); }
+.instr .k { color: var(--accent); }
+.plabel { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; margin-bottom: 6px; }
+.rows { display: grid; gap: 8px; }
+.row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 9px 12px; border: 1px solid var(--line); border-radius: 10px; font-size: 0.92rem; }
+.pill { font-family: var(--mono); font-size: 0.72rem; padding: 3px 9px; border-radius: 999px; background: var(--accent-soft); color: var(--ok); white-space: nowrap; }
+.pill.todo { background: transparent; border: 1px dashed var(--line); color: var(--muted); }
+
+/* Benefits */
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+@media (max-width: 800px) { .grid3 { grid-template-columns: 1fr; } }
+.benefit { display: grid; gap: 8px; align-content: start; }
+.benefit .num { font-family: var(--display); font-weight: 800; font-size: 2.4rem; color: var(--accent); line-height: 1; }
+.benefit p { color: var(--muted); }
+
+/* Steps */
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 2px solid var(--fg); }
+.step { padding: 22px 22px 6px 0; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.step + .step { padding-left: 22px; border-left: 1px solid var(--line); }
+.step .n { font-family: var(--mono); font-size: 0.85rem; color: var(--accent); }
+.step p { color: var(--muted); }
+@media (max-width: 800px) {
+  .steps { grid-template-columns: 1fr; }
+  .step, .step + .step { padding: 20px 0; border-left: 0; border-bottom: 1px solid var(--line); }
+}
+
+/* Packages */
+.alt { background: var(--surface); border-block: 1px solid var(--line); }
+.plans { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+@media (max-width: 1000px) { .plans { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .plans { grid-template-columns: 1fr; } }
+.plan { border: 1px solid var(--line); border-radius: var(--r); padding: 22px; display: flex; flex-direction: column; gap: 14px; background: var(--bg); }
+.plan.featured { border: 2px solid var(--accent); }
+.plan .tag { align-self: flex-start; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; background: var(--mark); color: #1E1A0A; padding: 3px 9px; border-radius: 999px; }
+.price { font-family: var(--display); font-size: 2.2rem; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
+.price small { font-family: var(--body); font-size: 0.9rem; font-weight: 500; color: var(--muted); }
+.plan ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; font-size: 0.95rem; flex: 1; }
+.plan li { padding-left: 22px; position: relative; }
+.plan li::before { content: ""; position: absolute; left: 2px; top: 0.5em; width: 10px; height: 6px; border-left: 2px solid var(--accent); border-bottom: 2px solid var(--accent); transform: rotate(-45deg); }
+.plan .who { color: var(--muted); font-size: 0.92rem; }
+
+/* Trust */
+.trust { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+@media (max-width: 800px) { .trust { grid-template-columns: 1fr; } }
+.rules { display: grid; gap: 14px; }
+.rule { display: grid; grid-template-columns: 28px 1fr; gap: 12px; }
+.rule svg { width: 24px; height: 24px; stroke: var(--accent); fill: none; stroke-width: 2; }
+.rule p { color: var(--muted); }
+
+/* FAQ */
+details { border-bottom: 1px solid var(--line); padding-block: 16px; }
+details summary { font-weight: 600; cursor: pointer; font-size: 1.05rem; }
+details p { margin-top: 10px; color: var(--muted); max-width: 65ch; }
+
+/* Forms */
+.formcard { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 28px; display: grid; gap: 20px; }
+.fgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 18px; }
+.fgrid .full { grid-column: 1 / -1; }
+@media (max-width: 640px) { .fgrid { grid-template-columns: 1fr; } .formcard { padding: 20px; } }
+label.f, fieldset { display: grid; gap: 6px; font-weight: 600; font-size: 0.95rem; min-width: 0; }
+fieldset { border: 0; padding: 0; margin: 0; }
+legend { font-weight: 600; font-size: 0.95rem; padding: 0; margin-bottom: 8px; }
+.hint { font-weight: 400; color: var(--muted); font-size: 0.85rem; }
+input[type=text], input[type=email], input[type=tel], input[type=date], select, textarea {
+  font: 400 1rem var(--body); color: var(--fg); background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 11px 12px; width: 100%;
+}
+textarea { min-height: 96px; resize: vertical; }
+input:focus, select:focus, textarea:focus { outline: 2px solid var(--accent); outline-offset: 0; border-color: transparent; }
+.checks { display: flex; flex-wrap: wrap; gap: 8px; }
+.chk { position: relative; }
+.chk input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+.chk span { display: inline-block; padding: 8px 14px; border: 1px solid var(--line); border-radius: 999px; font-weight: 500; font-size: 0.92rem; background: var(--bg); }
+.chk input:checked + span { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.chk input:focus-visible + span { outline: 3px solid var(--mark); outline-offset: 2px; }
+.err { color: var(--error); font-size: 0.9rem; font-weight: 500; }
+.done { background: var(--accent-soft); border-radius: var(--r); padding: 22px; display: grid; gap: 10px; }
+.done h3 { color: var(--fg); }
+
+/* Intake view */
+.intake-head { padding-block: 48px 8px; display: grid; gap: 14px; }
+.intake-body { display: grid; grid-template-columns: 220px 1fr; gap: 36px; padding-block: 24px 80px; align-items: start; }
+.toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 84px); display: grid; gap: 4px; font-size: 0.92rem; }
+.toc a { color: var(--muted); text-decoration: none; padding: 6px 10px; border-left: 2px solid var(--line); }
+.toc a:hover { color: var(--fg); border-left-color: var(--accent); }
+.qblock { display: grid; gap: 18px; padding-block: 26px; border-top: 1px solid var(--line); scroll-margin-top: 90px; }
+.qblock:first-child { border-top: 0; padding-top: 0; }
+.qblock h3 { display: flex; gap: 10px; align-items: baseline; }
+.qblock h3 span { font-family: var(--mono); font-size: 0.8rem; color: var(--accent); font-weight: 500; }
+@media (max-width: 800px) { .intake-body { grid-template-columns: 1fr; } .toc { display: none; } }
+
+footer { border-top: 1px solid var(--line); padding-block: 28px; color: var(--muted); font-size: 0.9rem; }
+footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .panel .row { animation: rise 0.5s ease both; }
+  .panel .row:nth-child(2) { animation-delay: 0.08s; }
+  .panel .row:nth-child(3) { animation-delay: 0.16s; }
+  .panel .row:nth-child(4) { animation-delay: 0.24s; }
+  @keyframes rise { from { transform: translateY(6px); opacity: 0.4; } to { transform: none; opacity: 1; } }
+}
+</style>
+
+<nav>
+  <div class="wrap">
+    <a class="logo" href="#top"><i></i>Joogo</a>
+    <div class="navlinks">
+      <a class="hide-sm" href="#how">How it works</a>
+      <a class="hide-sm" href="#packages">Packages</a>
+      <a href="#intake">Questionnaire</a>
+      <a class="btn small" href="#book">Book a setup</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ HOME VIEW ============ -->
+<main id="view-home">
+  <header class="hero" id="top">
+    <div class="wrap">
+      <div class="copy">
+        <h1>You pay for AI. Let's make it <em>actually work for you.</em></h1>
+        <p class="lead">I set up Claude, ChatGPT or Gemini around your real job: your tone, your tasks, your Gmail, Calendar and files. One session, and it feels like an assistant that already knows you.</p>
+        <p class="tools">Claude · ChatGPT · Gemini · Gmail · Outlook · Google Drive · Notion · Slack</p>
+        <div class="cta-row">
+          <a class="btn" href="#book">Book your setup</a>
+          <a class="btn ghost" href="#packages">See packages</a>
+        </div>
+      </div>
+      <div class="panel" aria-label="Example of a finished setup">
+        <div class="panel-top"><b></b><b></b><b></b><span>example setup · real estate agent</span></div>
+        <div class="panel-body">
+          <div>
+            <p class="plabel">Custom instructions</p>
+            <div class="instr"><span class="k">I am</span> a real estate agent in Miami. <span class="k">Write</span> warm but short emails, Spanish or English to match the client. <span class="k">Always</span> end with one clear next step.</div>
+          </div>
+          <div>
+            <p class="plabel">Connected and ready</p>
+            <div class="rows">
+              <div class="row">Gmail <span class="pill">connected</span></div>
+              <div class="row">Google Calendar <span class="pill">connected</span></div>
+              <div class="row">Skill: weekly client follow ups <span class="pill">ready</span></div>
+              <div class="row">Listing description writer <span class="pill todo">next session</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Most people use about 10% of what their AI can do</h2>
+        <p class="lead">Not because it's hard. Because nobody showed them the settings that matter.</p>
+      </div>
+      <div class="grid3">
+        <div class="benefit">
+          <p class="num">5 hrs</p>
+          <h3>Back every week</h3>
+          <p>Typical time saved once email drafts, summaries and follow ups run through a tuned assistant.</p>
+        </div>
+        <div class="benefit">
+          <p class="num">0</p>
+          <h3>Re-explaining yourself</h3>
+          <p>Your role, tone and preferences are saved, so every chat starts already knowing you.</p>
+        </div>
+        <div class="benefit">
+          <p class="num">1</p>
+          <h3>Session to get there</h3>
+          <p>A guided call on screen share. You leave with everything working and a simple guide.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt" id="how">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>How it works</h2>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <p class="n">Step 1 · 10 min</p>
+          <h3>Tell me about your work</h3>
+          <p>Fill in a short questionnaire: your job, your tools, and the tasks that eat your time.</p>
+        </div>
+        <div class="step">
+          <p class="n">Step 2 · 60 to 90 min</p>
+          <h3>We set it up together</h3>
+          <p>On a video call, you log in and I guide every setting: instructions, memory, connectors and custom skills or GPTs.</p>
+        </div>
+        <div class="step">
+          <p class="n">Step 3 · 2 weeks</p>
+          <h3>Use it, then we tune it</h3>
+          <p>You get a one page cheat sheet. After two weeks we do a short check in and fix anything that feels off.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="packages">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Packages</h2>
+        <p class="lead">One time setup. No subscription required.</p>
+      </div>
+      <div class="plans">
+        <div class="plan">
+          <h3>Starter</h3>
+          <p class="price">$199</p>
+          <p class="who">One AI tool, set up right.</p>
+          <ul>
+            <li>1 tool: Claude, ChatGPT or Gemini</li>
+            <li>Personal profile and custom instructions</li>
+            <li>2 connections (like Gmail and Calendar)</li>
+            <li>60 min guided session</li>
+            <li>Cheat sheet</li>
+          </ul>
+          <a class="btn ghost" href="#book" data-pkg="Starter">Choose Starter</a>
+        </div>
+        <div class="plan featured">
+          <span class="tag">Most popular</span>
+          <h3>Pro</h3>
+          <p class="price">$599</p>
+          <p class="who">Built around your top tasks.</p>
+          <ul>
+            <li>Up to 3 tools</li>
+            <li>All key connections</li>
+            <li>3 custom skills, GPTs or Gems for your repeat tasks</li>
+            <li>90 min session plus 2 week tune up</li>
+            <li>Prompt library for your job</li>
+          </ul>
+          <a class="btn" href="#book" data-pkg="Pro">Choose Pro</a>
+        </div>
+        <div class="plan">
+          <h3>Team</h3>
+          <p class="price">$1,500 <small>from</small></p>
+          <p class="who">For small businesses.</p>
+          <ul>
+            <li>Setup for up to 5 people</li>
+            <li>Shared projects and skills</li>
+            <li>Team training session</li>
+            <li>Simple AI usage guidelines</li>
+          </ul>
+          <a class="btn ghost" href="#book" data-pkg="Team">Choose Team</a>
+        </div>
+        <div class="plan">
+          <h3>Care plan</h3>
+          <p class="price">$79 <small>/ month</small></p>
+          <p class="who">Keep it sharp as AI changes.</p>
+          <ul>
+            <li>Monthly 30 min check in</li>
+            <li>New features set up for you</li>
+            <li>1 new skill or automation per month</li>
+            <li>Cancel anytime</li>
+          </ul>
+          <a class="btn ghost" href="#book" data-pkg="Care plan">Add Care plan</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt">
+    <div class="wrap trust">
+      <div class="sec-head" style="margin:0">
+        <h2>Your accounts stay yours</h2>
+        <p class="lead">You'll connect your email and files, so privacy comes first. Here is how every session works.</p>
+      </div>
+      <div class="rules">
+        <div class="rule">
+          <svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+          <div><h3>I never ask for passwords</h3><p>You log in yourself. I guide you on screen share.</p></div>
+        </div>
+        <div class="rule">
+          <svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg>
+          <div><h3>Only what you approve</h3><p>We connect only the tools you choose, with the lowest access that does the job.</p></div>
+        </div>
+        <div class="rule">
+          <svg viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg>
+          <div><h3>Nothing kept after</h3><p>I don't save your data or screenshots. Your setup lives in your accounts only.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head"><h2>Questions</h2></div>
+      <details><summary>Do I need to know anything technical?</summary><p>No. If you can use email, you're ready. I explain everything in plain words.</p></details>
+      <details><summary>Which plan of Claude, ChatGPT or Gemini do I need?</summary><p>Free plans work for basics. Connecting Gmail, files and custom skills usually needs a paid plan (around $20 a month). I'll tell you before we start if you need to upgrade.</p></details>
+      <details><summary>Which tool should I pick?</summary><p>Book anyway and leave it blank. The questionnaire helps me recommend the best fit for your work.</p></details>
+      <details><summary>Is the session online?</summary><p>Yes, by video call with screen share. Most clients are done in one session.</p></details>
+    </div>
+  </section>
+
+  <section class="alt" id="book">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Book your setup</h2>
+        <p class="lead">Send a request and I'll reply within one business day with a time and the questionnaire.</p>
+      </div>
+      <form class="formcard" id="bookForm" novalidate>
+        <div class="fgrid">
+          <label class="f">Full name<input type="text" id="b-name" name="name" autocomplete="name" required></label>
+          <label class="f">Email<input type="email" id="b-email" name="email" autocomplete="email" required></label>
+          <label class="f">Phone or WhatsApp <span class="hint">optional</span><input type="tel" id="b-phone" name="phone" autocomplete="tel"></label>
+          <label class="f">Package
+            <select id="b-pkg" name="package">
+              <option>Not sure yet</option>
+              <option>Starter</option>
+              <option>Pro</option>
+              <option>Team</option>
+              <option>Care plan</option>
+            </select>
+          </label>
+          <fieldset class="full">
+            <legend>Which AI do you want set up?</legend>
+            <div class="checks">
+              <label class="chk"><input type="checkbox" id="b-ai-claude" name="ai" value="Claude"><span>Claude</span></label>
+              <label class="chk"><input type="checkbox" id="b-ai-chatgpt" name="ai" value="ChatGPT"><span>ChatGPT</span></label>
+              <label class="chk"><input type="checkbox" id="b-ai-gemini" name="ai" value="Gemini"><span>Gemini</span></label>
+              <label class="chk"><input type="checkbox" id="b-ai-unsure" name="ai" value="Help me choose"><span>Help me choose</span></label>
+            </div>
+          </fieldset>
+          <label class="f">Preferred date<input type="date" id="b-date" name="date"></label>
+          <label class="f">Best time
+            <select id="b-time" name="time">
+              <option>Morning</option>
+              <option>Afternoon</option>
+              <option>Evening</option>
+            </select>
+          </label>
+          <label class="f full">What do you most want AI to help with? <span class="hint">optional</span><textarea id="b-notes" name="notes" placeholder="Example: answering client emails faster and keeping my calendar organized"></textarea></label>
+        </div>
+        <p class="err" id="bookErr" hidden></p>
+        <div><button class="btn" type="submit">Send booking request</button></div>
+      </form>
+      <div class="done" id="bookDone" hidden>
+        <h3>Request received</h3>
+        <p>Thanks, <span id="bookDoneName"></span>. I'll email you within one business day to confirm a time.</p>
+        <p>Save time on the call by filling in the questionnaire now.</p>
+        <div><a class="btn" href="#intake">Open the questionnaire</a></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ============ INTAKE VIEW ============ -->
+<main id="view-intake" hidden>
+  <div class="wrap intake-head">
+    <a href="#top" style="font-weight:500">← Back to home</a>
+    <h1 style="font-size:clamp(2rem,4.5vw,3rem)">Before your setup</h1>
+    <p class="lead">About 10 minutes. Your answers let me prepare your instructions, connections and skills before we meet, so the call is all doing and no guessing.</p>
+  </div>
+  <div class="wrap intake-body">
+    <aside class="toc" aria-label="Sections">
+      <a href="#q-you">About you</a>
+      <a href="#q-ai">Your AI today</a>
+      <a href="#q-tasks">Your tasks</a>
+      <a href="#q-tools">Your tools</a>
+      <a href="#q-style">Your style</a>
+      <a href="#q-privacy">Privacy</a>
+    </aside>
+    <div style="min-width:0">
+      <form id="intakeForm" novalidate>
+        <div class="qblock" id="q-you">
+          <h3><span>1/6</span>About you</h3>
+          <div class="fgrid">
+            <label class="f">Full name<input type="text" id="i-name" name="name" autocomplete="name" required></label>
+            <label class="f">Email<input type="email" id="i-email" name="email" autocomplete="email" required></label>
+            <label class="f">Job title or role<input type="text" id="i-role" name="role" placeholder="Example: real estate agent"></label>
+            <label class="f">Industry<input type="text" id="i-industry" name="industry" placeholder="Example: property, health, marketing"></label>
+            <label class="f full">Describe a normal workday in 2 or 3 lines<textarea id="i-day" name="workday"></textarea></label>
+          </div>
+        </div>
+
+        <div class="qblock" id="q-ai">
+          <h3><span>2/6</span>Your AI today</h3>
+          <fieldset>
+            <legend>Which do you already have? <span class="hint">pick all that apply</span></legend>
+            <div class="checks">
+              <label class="chk"><input type="checkbox" id="i-have-cf" name="have" value="Claude free"><span>Claude free</span></label>
+              <label class="chk"><input type="checkbox" id="i-have-cp" name="have" value="Claude paid"><span>Claude paid</span></label>
+              <label class="chk"><input type="checkbox" id="i-have-gf" name="have" value="ChatGPT free"><span>ChatGPT free</span></label>
+              <label class="chk"><input type="checkbox" id="i-have-gp" name="have" value="ChatGPT paid"><span>ChatGPT paid</span></label>
+              <label class="chk"><input type="checkbox" id="i-have-mf" name="have" value="Gemini free"><span>Gemini free</span></label>
+              <label class="chk"><input type="checkbox" id="i-have-mp" name="have" value="Gemini paid"><span>Gemini paid</span></label>
+              <label class="chk"><input type="checkbox" id="i-have-none" name="have" value="None yet"><span>None yet</span></label>
+            </div>
+          </fieldset>
+          <label class="f">How often do you use AI now?
+            <select id="i-freq" name="frequency">
+              <option>Never or almost never</option>
+              <option>A few times a month</option>
+              <option>A few times a week</option>
+              <option>Every day</option>
+            </select>
+          </label>
+          <label class="f">What frustrates you about it today? <span class="hint">optional</span><textarea id="i-frustr" name="frustrations" placeholder="Example: answers sound generic, I keep repeating who I am"></textarea></label>
+        </div>
+
+        <div class="qblock" id="q-tasks">
+          <h3><span>3/6</span>Your tasks</h3>
+          <p class="hint" style="margin-top:-8px">These become your custom skills or GPTs. Be specific.</p>
+          <div class="fgrid">
+            <label class="f full">Task 1 that eats your time<input type="text" id="i-t1" name="task1" placeholder="Example: replying to new client inquiries"></label>
+            <label class="f full">Task 2<input type="text" id="i-t2" name="task2" placeholder="Example: writing a weekly report for my boss"></label>
+            <label class="f full">Task 3<input type="text" id="i-t3" name="task3" placeholder="Example: turning meeting notes into action items"></label>
+            <label class="f full">If AI could do one thing for you perfectly, what would it be?<textarea id="i-dream" name="dream"></textarea></label>
+          </div>
+        </div>
+
+        <div class="qblock" id="q-tools">
+          <h3><span>4/6</span>Your tools</h3>
+          <fieldset>
+            <legend>Which do you use for work? <span class="hint">pick all that apply</span></legend>
+            <div class="checks">
+              <label class="chk"><input type="checkbox" id="i-tl-gmail" name="tools" value="Gmail"><span>Gmail</span></label>
+              <label class="chk"><input type="checkbox" id="i-tl-outlook" name="tools" value="Outlook"><span>Outlook</span></label>
+              <label class="chk"><input type="checkbox" id="i-tl-gcal" name="tools" value="Google Calendar"><span>Google Calendar</span></label>
+              <label class="chk"><input type="checkbox" id="i-tl-gdrive" name="tools" value="Google Drive"><span>Google Drive</span></label>
+              <label class="chk"><input type="checkbox" id="i-tl-onedrive" name="tools" value="OneDrive or SharePoint"><span>OneDrive or SharePoint</span></label>
+              <label class="chk"><input type="checkbox" id="i-tl-notion" name="tools" value="Notion"><span>Notion</span></label>
+              <label class="chk"><input type="checkbox" id="i-tl-slack" name="tools" value="Slack"><span>Slack</span></label>
+              <label class="chk"><input type="checkbox" id="i-tl-teams" name="tools" value="Microsoft Teams"><span>Teams</span></label>
+              <label class="chk"><input type="checkbox" id="i-tl-wa" name="tools" value="WhatsApp Business"><span>WhatsApp Business</span></label>
+              <label class="chk"><input type="checkbox" id="i-tl-crm" name="tools" value="A CRM"><span>A CRM</span></label>
+              <label class="chk"><input type="checkbox" id="i-tl-canva" name="tools" value="Canva"><span>Canva</span></label>
+            </div>
+          </fieldset>
+          <label class="f">Anything else? <span class="hint">optional</span><input type="text" id="i-tl-other" name="toolsOther" placeholder="Example: HubSpot, Shopify, QuickBooks"></label>
+          <label class="f">Main device for work
+            <select id="i-device" name="device">
+              <option>Windows computer</option>
+              <option>Mac</option>
+              <option>Mostly phone</option>
+              <option>A mix</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="qblock" id="q-style">
+          <h3><span>5/6</span>Your style</h3>
+          <fieldset>
+            <legend>How should your AI write for you?</legend>
+            <div class="checks">
+              <label class="chk"><input type="checkbox" id="i-st-short" name="style" value="Short and direct"><span>Short and direct</span></label>
+              <label class="chk"><input type="checkbox" id="i-st-warm" name="style" value="Warm and friendly"><span>Warm and friendly</span></label>
+              <label class="chk"><input type="checkbox" id="i-st-formal" name="style" value="Formal"><span>Formal</span></label>
+              <label class="chk"><input type="checkbox" id="i-st-detail" name="style" value="Detailed"><span>Detailed</span></label>
+              <label class="chk"><input type="checkbox" id="i-st-bullets" name="style" value="Bullet points"><span>Bullet points</span></label>
+            </div>
+          </fieldset>
+          <div class="fgrid">
+            <label class="f">Languages you work in<input type="text" id="i-lang" name="languages" placeholder="Example: English and Spanish"></label>
+            <label class="f">Words or habits to avoid <span class="hint">optional</span><input type="text" id="i-avoid" name="avoid" placeholder="Example: no emojis, no jargon"></label>
+            <label class="f full">Paste a short email you wrote that sounds like you <span class="hint">optional, remove private details</span><textarea id="i-sample" name="sample"></textarea></label>
+          </div>
+        </div>
+
+        <div class="qblock" id="q-privacy">
+          <h3><span>6/6</span>Privacy</h3>
+          <fieldset>
+            <legend>Is there anything AI should never touch?</legend>
+            <div class="checks">
+              <label class="chk"><input type="checkbox" id="i-pv-client" name="privacy" value="Client personal data"><span>Client personal data</span></label>
+              <label class="chk"><input type="checkbox" id="i-pv-fin" name="privacy" value="Financial documents"><span>Financial documents</span></label>
+              <label class="chk"><input type="checkbox" id="i-pv-health" name="privacy" value="Health information"><span>Health information</span></label>
+              <label class="chk"><input type="checkbox" id="i-pv-personal" name="privacy" value="Personal email"><span>Personal email</span></label>
+            </div>
+          </fieldset>
+          <label class="f">Does your company have rules about using AI?
+            <select id="i-policy" name="policy">
+              <option>I don't know</option>
+              <option>No rules</option>
+              <option>Yes, some tools are allowed</option>
+              <option>I'm self employed</option>
+            </select>
+          </label>
+          <label class="chk" style="align-self:start"><input type="checkbox" id="i-consent" name="consent" value="yes"><span>I understand I will log in myself and never share passwords</span></label>
+        </div>
+
+        <p class="err" id="intakeErr" hidden></p>
+        <div style="padding-top:12px"><button class="btn" type="submit">Send my answers</button></div>
+      </form>
+      <div class="done" id="intakeDone" hidden>
+        <h3>All set, thank you</h3>
+        <p>I'll use your answers to prepare your setup before we meet. Here's what I'll focus on:</p>
+        <div class="instr" id="intakeSummary"></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Joogo AI Setup · Personal AI setup for Claude, ChatGPT and Gemini</span>
+    <span>Not affiliated with Anthropic, OpenAI or Google.</span>
+  </div>
+</footer>
+
+<script>
+// Paste a form endpoint here (Formspree, Tally, Google Apps Script) when the site goes live.
+const FORM_ENDPOINT = "";
+
+const home = document.getElementById("view-home");
+const intake = document.getElementById("view-intake");
+
+function route() {
+  const h = location.hash.replace("#", "");
+  const isIntake = h === "intake" || h.startsWith("q-");
+  home.hidden = isIntake;
+  intake.hidden = !isIntake;
+  if (h === "intake") window.scrollTo(0, 0);
+  else if (h) { const el = document.getElementById(h); if (el) el.scrollIntoView(); }
+}
+window.addEventListener("hashchange", route);
+route();
+
+// Package buttons preselect the package in the booking form
+document.querySelectorAll("[data-pkg]").forEach(a => a.addEventListener("click", () => {
+  document.getElementById("b-pkg").value = a.dataset.pkg;
+}));
+
+function collect(form) {
+  const data = {};
+  new FormData(form).forEach((v, k) => {
+    if (data[k] !== undefined) data[k] = [].concat(data[k], v);
+    else data[k] = v;
+  });
+  return data;
+}
+const validEmail = s => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
+
+async function send(type, data) {
+  if (!FORM_ENDPOINT) return;
+  try {
+    await fetch(FORM_ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify({ type, ...data }) });
+  } catch (e) { /* page still confirms; endpoint errors are logged on the service side */ }
+}
+
+document.getElementById("bookForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const f = e.target, err = document.getElementById("bookErr");
+  const d = collect(f);
+  if (!d.name || !d.name.trim()) { err.textContent = "Add your name so I know who to reply to."; err.hidden = false; return; }
+  if (!validEmail(d.email || "")) { err.textContent = "Check your email address. It should look like name@example.com."; err.hidden = false; return; }
+  err.hidden = true;
+  await send("booking", d);
+  document.getElementById("bookDoneName").textContent = d.name.trim().split(" ")[0];
+  f.hidden = true;
+  document.getElementById("bookDone").hidden = false;
+});
+
+document.getElementById("intakeForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const f = e.target, err = document.getElementById("intakeErr");
+  const d = collect(f);
+  if (!d.name || !d.name.trim()) { err.textContent = "Add your name in section 1."; err.hidden = false; return; }
+  if (!validEmail(d.email || "")) { err.textContent = "Check your email in section 1. It should look like name@example.com."; err.hidden = false; return; }
+  if (!d.consent) { err.textContent = "Tick the privacy box in section 6 to continue."; err.hidden = false; return; }
+  err.hidden = true;
+  await send("intake", d);
+  const list = v => [].concat(v || []).join(", ") || "not given";
+  const tasks = [d.task1, d.task2, d.task3].filter(t => t && t.trim());
+  const s = document.getElementById("intakeSummary");
+  s.textContent = "";
+  [
+    ["Role", d.role || "not given"],
+    ["Skills to build", tasks.length ? tasks.join(" / ") : "we'll pick them together"],
+    ["Tools to connect", list(d.tools)],
+    ["Writing style", list(d.style)],
+    ["Keep private", list(d.privacy)]
+  ].forEach(([k, v]) => {
+    const line = document.createElement("div");
+    const key = document.createElement("span"); key.className = "k"; key.textContent = k + ": ";
+    line.append(key, document.createTextNode(v));
+    s.append(line);
+  });
+  f.hidden = true;
+  document.getElementById("intakeDone").hidden = false;
+  window.scrollTo(0, 0);
+});
+</script>
