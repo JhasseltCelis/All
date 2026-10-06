@@ -161,7 +161,7 @@ section { padding-block: 120px; scroll-margin-top: 64px; }
 @keyframes pulse { 50% { opacity: 0.25; } }
 
 /* Packages */
-.plans { grid-template-columns: repeat(3, 1fr); }
+.plans { grid-template-columns: repeat(4, 1fr); }
 .plan { display: grid; grid-template-rows: subgrid; grid-row: span 5; gap: 18px; padding: 32px 28px; }
 .plan .ph { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
 .plan .ph h3 { font-family: var(--display); font-weight: 850; font-stretch: 112%; text-transform: uppercase; font-size: 1.4rem; }
@@ -177,7 +177,7 @@ section { padding-block: 120px; scroll-margin-top: 64px; }
 .plan.pick li svg { stroke: var(--blue-ink); }
 .plan.pick .btn { background: #FFFFFF; border-color: #FFFFFF; color: #0B0B0C; }
 .plan.pick .btn:hover { background: #0B0B0C; border-color: #0B0B0C; color: #FFFFFF; }
-@media (max-width: 1080px) { .plans { grid-template-columns: 1fr; max-width: 560px; } }
+@media (max-width: 1080px) { .plans { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 600px) { .plans { grid-template-columns: 1fr; } .plan { padding: 26px 22px; } }
 
 .compare-wrap { margin-top: 48px; overflow-x: auto; border: 1px solid var(--line); }
@@ -625,7 +625,7 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
           <div class="vis"><div class="skill"><span class="mono">Skill</span><b>Friday client follow ups</b><span>Finds this week's viewings in your calendar, drafts a warm follow up for each client, and leaves them in Gmail for you to send.</span><span class="mono">You type: "Do my Friday follow ups"</span></div></div>
         </article>
         <article class="scard" style="--i:3">
-          <div><p class="n">04</p><h3>A cheat sheet and a tune up</h3><p>A one page guide with your best prompts. Two weeks later we meet again and fix anything that feels off.</p></div>
+          <div><p class="n">04</p><h3>A cheat sheet and a tune up</h3><p>A one page guide with your best prompts. Two weeks later we meet again and fix anything that feels off. Want it kept current every month as AI changes? That's the Care plan.</p></div>
           <div class="vis" style="gap:12px"><div class="cal" aria-label="Setup on day 1, tune up on day 14"><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="on"></i></div><div class="cal-cap"><span>Day 1: setup</span><span>Day 14: tune up</span></div></div>
         </article>
         <article class="scard bonus" style="--i:4">
@@ -706,7 +706,7 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
     <div class="wrap">
       <div class="sec-head">
         <h2 class="disp">Packages</h2>
-        <p class="lead">One time price, paid after the session. Requires a paid Claude, ChatGPT or Gemini plan.</p>
+        <p class="lead">One time price, paid after the session. Requires a paid Claude, ChatGPT or Gemini plan. Care is the only monthly option, and it's optional.</p>
       </div>
       <div class="plans cells">
         <article class="plan">
@@ -749,6 +749,18 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
           </ul>
           <a class="btn line" href="#book" data-pkg="Team">Choose Team</a>
         </article>
+        <article class="plan">
+          <div class="ph"><h3>Care</h3><span class="mono muted">Optional add-on</span></div>
+          <p class="price">$79<small>/ month</small></p>
+          <p class="muted">AI changes every few weeks. Care keeps your setup current.</p>
+          <ul>
+            <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>Monthly 30 minute check in</li>
+            <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>New features set up as they launch</li>
+            <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>1 new skill or automation a month</li>
+            <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>Add it to any package, cancel anytime</li>
+          </ul>
+          <a class="btn line" href="#book" data-pkg="Care plan add-on">Add Care plan</a>
+        </article>
       </div>
       <div class="compare-wrap">
         <table class="compare">
@@ -762,7 +774,8 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
             <tr><th scope="row">Custom skills, GPTs or Gems</th><td class="no">Not included</td><td class="pk">3</td><td>Shared team skills</td></tr>
             <tr><th scope="row">Session length</th><td>60 min</td><td class="pk">90 min</td><td>Setup plus training</td></tr>
             <tr><th scope="row">Bonus setup helper</th><td>12 months</td><td class="pk">12 months</td><td>12 months, whole team</td></tr>
-            <tr><th scope="row">Free if friends chat with Charles</th><td>3 friends, $199 back</td><td class="pk">5 friends, $599 back</td><td class="no">Not included</td></tr>
+            <tr><th scope="row">Free if friends become real prospects</th><td>3 friends, $199 back</td><td class="pk">5 friends, $599 back</td><td class="no">Not included</td></tr>
+            <tr><th scope="row">Care plan, kept current monthly</th><td>Optional, $79/mo</td><td class="pk">Optional, $79/mo</td><td>Optional, per team</td></tr>
             <tr><th scope="row">Works with free AI plans</th><td class="no">No</td><td class="pk no">No</td><td class="no">No</td></tr>
             <tr><th scope="row">2 week tune up</th><td class="no">Not included</td><td class="pk">Yes</td><td>Yes</td></tr>
           </tbody>
@@ -775,31 +788,31 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
     <div class="wrap">
       <div class="sec-head">
         <h2 class="disp">Bring friends.<br><span class="blue">Get it free.</span></h2>
-        <p class="lead">Your friends don't have to buy anything. They just have to talk to Charles. He's a very good listener.</p>
+        <p class="lead">For AI For You clients only. Your friends don't have to buy anything, but they do have to be the real deal: people with a genuine need who talk to Charles for real.</p>
       </div>
       <div class="refer cells">
         <div class="goal">
           <p class="mono muted">Starter</p>
-          <p class="big"><span>3</span> chats</p>
+          <p class="big"><span>3</span> friends</p>
           <p class="refund">= <b>$199</b> back</p>
         </div>
         <div class="goal pick">
           <p class="mono">Pro</p>
-          <p class="big"><span>5</span> chats</p>
+          <p class="big"><span>5</span> friends</p>
           <p class="refund">= <b>$599</b> back</p>
         </div>
         <div class="how-ref">
           <ol>
-            <li><span class="mono">01</span><span>After your session you get a personal code and link.</span></li>
-            <li><span class="mono">02</span><span>Friends use it and have a full chat with Charles, about 10 minutes.</span></li>
-            <li><span class="mono">03</span><span>Each chat counts once their phone number is confirmed on WhatsApp or Telegram.</span></li>
+            <li><span class="mono">01</span><span>Become a client. After your session you get a personal code and link.</span></li>
+            <li><span class="mono">02</span><span>Friends use it and tell Charles about their work and what they need. No time limit, just honest answers.</span></li>
+            <li><span class="mono">03</span><span>A friend counts when Charles sees a genuine prospect, and their number is confirmed on WhatsApp or Telegram.</span></li>
             <li><span class="mono">04</span><span>Hit your number and you get the full package price back.</span></li>
           </ol>
         </div>
       </div>
       <ul class="fine">
-        <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg>Only finished chats count. A "hi" and goodbye doesn't.</li>
-        <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg>One count per phone number, and it can't be yours.</li>
+        <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg>Real conversations only. Charles can tell a "hi" and a shrug from someone who actually needs help.</li>
+        <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg>Only paying clients can refer. One count per phone number, and it can't be yours.</li>
         <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg>Starter and Pro only. Team isn't included.</li>
         <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg>One refund per package. Charles is flattered, not infinite.</li>
       </ul>
@@ -829,7 +842,7 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
         <div><span class="k">Q</span><div class="t"><h3>Which AI plan do I need?</h3><p class="muted">A paid one. Claude, ChatGPT and Gemini all keep email connections, projects and custom skills on their paid plans, usually from about $20 a month. Higher tiers get even more out of a setup. On a free plan? Upgrade before the session and you're set.</p></div></div>
         <div><span class="k">Q</span><div class="t"><h3>Is Charles a real person?</h3><p class="muted">No, Charles is our AI agent. He asks the questions and takes notes for me. I read everything and prepare your session personally.</p></div></div>
         <div><span class="k">Q</span><div class="t"><h3>I'm a developer. Should I book?</h3><p class="muted">Honestly, probably not. If you know what an API key is, you can set this up yourself, and you'd have more fun doing it. Send your non tech friends instead.</p></div></div>
-        <div><span class="k">Q</span><div class="t"><h3>What if something stops working later?</h3><p class="muted">AI tools change often. Your setup helper answers questions for 12 months, and you can book a single tune up any time.</p></div></div>
+        <div><span class="k">Q</span><div class="t"><h3>What if something stops working later?</h3><p class="muted">That\'s exactly why Care exists. AI tools change every few weeks, so for $79 a month we check in, set up new features and add a new skill each month. Your 12 month setup helper also answers questions any time.</p></div></div>
       </div>
     </div>
   </section>
@@ -852,7 +865,7 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
             <div class="field full"><label for="q-name">Your name<span class="req" aria-hidden="true">*</span></label><input type="text" id="q-name" name="name" autocomplete="name" aria-describedby="q-name-err"><span class="ferr" id="q-name-err" role="alert" hidden></span></div>
             <div class="field full"><label for="q-phone">Mobile number<span class="req" aria-hidden="true">*</span></label><input type="tel" id="q-phone" name="phone" autocomplete="tel" placeholder="+1 305 555 0142" aria-describedby="q-phone-help q-phone-err"><span class="help" id="q-phone-help">With country code, so Charles can reach you</span><span class="ferr" id="q-phone-err" role="alert" hidden></span></div>
             <div class="field full"><label for="q-pkg">Package</label>
-              <select id="q-pkg" name="package"><option value="Not sure">Not sure yet</option><option value="Starter">Starter, $199</option><option value="Pro">Pro, $599</option><option value="Team">Team, from $1,500</option></select>
+              <select id="q-pkg" name="package"><option value="Not sure">Not sure yet</option><option value="Starter">Starter, $199</option><option value="Pro">Pro, $599</option><option value="Team">Team, from $1,500</option><option value="Care plan add-on">Just the Care plan, $79/month</option></select>
             </div>
             <details class="full ref-field" id="qRefBox"><summary>I have a referral code</summary>
               <div class="field"><label for="q-ref">Referral code</label><input type="text" id="q-ref" name="ref" autocomplete="off" autocapitalize="characters" placeholder="ANA-7K3Q" aria-describedby="q-ref-help"><span class="help" id="q-ref-help">From the friend who sent you. Your chat with Charles counts for them.</span></div>
@@ -887,7 +900,7 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
             <div class="field"><label for="b-email">Email<span class="req" aria-hidden="true">*</span></label><input type="email" id="b-email" name="email" autocomplete="email" aria-describedby="b-email-err" required><span class="ferr" id="b-email-err" role="alert" hidden></span></div>
             <div class="field"><label for="b-phone">Phone or WhatsApp</label><input type="tel" id="b-phone" name="phone" autocomplete="tel"><span class="help">Optional</span></div>
             <div class="field"><label for="b-pkg">Package</label>
-              <select id="b-pkg" name="package"><option>Not sure yet</option><option>Starter</option><option>Pro</option><option>Team</option></select>
+              <select id="b-pkg" name="package"><option>Not sure yet</option><option>Starter</option><option>Pro</option><option>Team</option><option>Care plan add-on</option></select>
             </div>
             <div class="field full"><label for="b-plan">Your current AI plan</label>
               <select id="b-plan" name="plan"><option value="">Choose one</option><option>Paid (Pro, Plus or similar)</option><option>Top tier (Max, Pro, Team or Business)</option><option>Free</option><option>Not sure</option></select>

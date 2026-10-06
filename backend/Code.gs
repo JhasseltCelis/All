@@ -53,7 +53,7 @@ When every topic is covered well enough, or the client wants to stop, thank them
 
 Output fields: message is what the client sees. covered lists every topic covered so far. done is true only on your final message.`;
 
-const SUMMARY_PROMPT = `You prepare briefings for a consultant who sets up Claude, ChatGPT and Gemini for clients. Read the intake interview below and write the briefing the consultant will use to prepare the setup session. Be specific and practical. Use only what the client said; write "not mentioned" when something is missing. The service needs a paid AI plan and is not meant for developers or very technical people: set fit_warning to a short note if the client is on a free plan or seems too technical to need help, otherwise "none". The client recap is shown to the client, so write it in their language, warmly, in 2 or 3 sentences. Everything else is for the consultant, in English.`;
+const SUMMARY_PROMPT = `You prepare briefings for a consultant who sets up Claude, ChatGPT and Gemini for clients. Read the intake interview below and write the briefing the consultant will use to prepare the setup session. Be specific and practical. Use only what the client said; write "not mentioned" when something is missing. The service needs a paid AI plan and is not meant for developers or very technical people: set fit_warning to a short note if the client is on a free plan or seems too technical to need help, otherwise "none". Set qualified_prospect to true only if the person engaged meaningfully: specific, honest answers about their real work and tasks, a genuine need this service can solve, a paid AI plan or a clear willingness to get one, and not a developer or very technical person. Short, vague, joking or copied answers, or someone just going through the motions, are not qualified. Explain your decision in one sentence in qualification_reason. The client recap is shown to the client, so write it in their language, warmly, in 2 or 3 sentences. Everything else is for the consultant, in English.`;
 
 // ---------- Web entry points ----------
 
@@ -140,6 +140,7 @@ function handleFinish(req) {
   if (!out.ok || !ref) return out;
   // Website chats can't prove the phone number, so the friend confirms it on Telegram
   const lead = newLead(name, digits(contact).length >= 7 ? contact : '', 'website', ref, 'done');
+  setLeadField(lead, 'Qualified prospect', (out.qualified ? 'yes: ' : 'no: ') + out.qualReason);
   const bot = prop('TELEGRAM_BOT_USERNAME');
   if (bot) out.verifyLink = 'https://t.me/' + bot + '?start=v_' + lead.id;
   return out;
@@ -180,11 +181,13 @@ function finishInterview(name, email, history, channel) {
       session_plan: { type: 'array', items: { type: 'string' } },
       prep_checklist: { type: 'array', items: { type: 'string' } },
       open_questions: { type: 'array', items: { type: 'string' } },
-      client_recap: { type: 'string' }
+      client_recap: { type: 'string' },
+      qualified_prospect: { type: 'boolean' },
+      qualification_reason: { type: 'string' }
     },
     required: ['one_line', 'language', 'role', 'industry', 'current_ai', 'plan_status', 'fit_warning', 'tasks', 'tools_to_connect', 'writing_style',
       'privacy_limits', 'company_rules', 'preferred_times', 'recommended_package', 'package_reason', 'session_plan', 'prep_checklist',
-      'open_questions', 'client_recap'],
+      'open_questions', 'client_recap', 'qualified_prospect', 'qualification_reason'],
     additionalProperties: false
   };
 
@@ -204,7 +207,7 @@ function finishInterview(name, email, history, channel) {
     briefingText(name, email, s),
     briefingHtml(name, email, s, transcript)
   );
-  return { ok: true, recap: s.client_recap };
+  return { ok: true, recap: s.client_recap, qualified: !!s.qualified_prospect, qualReason: s.qualification_reason };
 }
 
 // ---------- Booking ----------
@@ -236,7 +239,7 @@ function handleBooking(req) {
 
 // ---------- Quick lead: name, phone, package, then Charles follows up ----------
 
-const LEAD_HEADERS = ['Received', 'Id', 'Name', 'Phone', 'Package', 'Channel', 'Status', 'Chat id', 'Covered', 'History', 'Referral code', 'Verified phone'];
+const LEAD_HEADERS = ['Received', 'Id', 'Name', 'Phone', 'Package', 'Channel', 'Status', 'Chat id', 'Covered', 'History', 'Referral code', 'Verified phone', 'Qualified prospect'];
 
 function handleLead(req) {
   const lead = {
@@ -248,7 +251,7 @@ function handleLead(req) {
   };
   if (!lead.name || digits(lead.phone).length < 7) return { ok: false, error: 'invalid' };
   lead.id = Utilities.getUuid().replace(/-/g, '').slice(0, 16);
-  sheet('Leads', LEAD_HEADERS).appendRow([new Date(), lead.id, lead.name, lead.phone, lead.pkg, lead.channel, 'new', '', '', '[]', lead.ref, '']);
+  sheet('Leads', LEAD_HEADERS).appendRow([new Date(), lead.id, lead.name, lead.phone, lead.pkg, lead.channel, 'new', '', '', '[]', lead.ref, '', '']);
 
   const out = { ok: true, channel: lead.channel };
   let how;
@@ -321,6 +324,14 @@ function countReferral(lead, phone, channel) {
     .some(r => String(r[5]) === 'counted' && samePhone(r[3], phone));
   const isClient = rows.slice(1).some(r => samePhone(r[2], phone));
   if (seen || isClient) { log('not counted: number already used'); return { counted: false, message: thanks + ' This number has already been counted before, so it can not count again.' }; }
+  // Only genuine prospects count; the consultant gets the reason and can override
+  if (String(lead.qualified).indexOf('yes') !== 0) {
+    log('not counted: not a qualified prospect (' + String(lead.qualified).replace(/^no: /, '') + ')');
+    const t = lead.ref + ' (' + ref[1] + '): ' + lead.name + ' finished a chat but Charles did not see a genuine prospect.\nReason: ' + String(lead.qualified).replace(/^no: /, '') +
+      '\nIf you disagree, add 1 to Verified chats in the Referrers tab yourself.';
+    notifyOwner('Referral not counted for ' + ref[1], t, '<pre style="font:14px/1.5 sans-serif;white-space:pre-wrap">' + esc(t) + '</pre>');
+    return { counted: false, message: thanks + ' Your consultant will review your answers and be in touch.' };
+  }
 
   log('counted');
   const count = Number(ref[7] || 0) + 1, goal = Number(ref[6]);
@@ -444,7 +455,9 @@ function finishLead(lead, send, channel) {
   const r = finishInterview(lead.name, contact, lead.history, channel);
   if (r.ok) send(r.recap);
   saveLeadState(lead, 'done');
-  if (!lead.ref) return;
+  if (!lead.ref || !r.ok) return;
+  lead.qualified = (r.qualified ? 'yes: ' : 'no: ') + r.qualReason;
+  setLeadField(lead, 'Qualified prospect', lead.qualified);
   if (channel === 'WhatsApp') {
     // WhatsApp messages come from the real number, so it is already verified
     setLeadField(lead, 'Verified phone', lead.phone);
@@ -471,7 +484,7 @@ function findLead(match) {
     try { history = JSON.parse(r[9] || '[]'); } catch (e) {}
     const lead = { row: i + 1, id: String(r[1]), name: String(r[2]), phone: String(r[3]), pkg: String(r[4]), channel: String(r[5]),
       status: String(r[6]), chatId: String(r[7]), covered: String(r[8] || '').split(',').filter(Boolean), history: history,
-      ref: String(r[10] || ''), verified: String(r[11] || '') };
+      ref: String(r[10] || ''), verified: String(r[11] || ''), qualified: String(r[12] || '') };
     if (match(lead)) return lead;
   }
   return null;
@@ -479,7 +492,7 @@ function findLead(match) {
 
 function newLead(name, phone, channel, ref, status) {
   const id = Utilities.getUuid().replace(/-/g, '').slice(0, 16);
-  sheet('Leads', LEAD_HEADERS).appendRow([new Date(), id, name, phone, '', channel, status || 'new', '', '', '[]', ref || '', '']);
+  sheet('Leads', LEAD_HEADERS).appendRow([new Date(), id, name, phone, '', channel, status || 'new', '', '', '[]', ref || '', '', '']);
   notifyOwner('New chat with Charles: ' + name, name + ' started talking to Charles on ' + channel + (phone ? ' (' + phone + ')' : '') + '.', '<p>' + esc(name) + ' started talking to Charles on ' + channel + '.</p>');
   return findLead(l => l.id === id);
 }
@@ -655,6 +668,7 @@ function briefingText(name, email, s) {
     'Keep private: ' + s.privacy_limits,
     'Company rules: ' + s.company_rules,
     'Preferred times: ' + s.preferred_times,
+    'Qualified prospect: ' + (s.qualified_prospect ? 'Yes. ' : 'No. ') + s.qualification_reason,
     '',
     'Session plan:', list(s.session_plan),
     '',
@@ -674,7 +688,7 @@ function briefingHtml(name, email, s, transcript) {
     row('Role', s.role + ', ' + s.industry) + row('AI today', s.current_ai + ' (' + s.plan_status + ')') + row('Fit check', s.fit_warning) +
     row('Package', s.recommended_package + '. ' + s.package_reason) +
     row('Connect', s.tools_to_connect.join(', ') || 'not mentioned') + row('Style', s.writing_style) +
-    row('Keep private', s.privacy_limits) + row('Company rules', s.company_rules) + row('Preferred times', s.preferred_times) + '</table>' +
+    row('Keep private', s.privacy_limits) + row('Company rules', s.company_rules) + row('Preferred times', s.preferred_times) + row('Qualified prospect', (s.qualified_prospect ? 'Yes. ' : 'No. ') + s.qualification_reason) + '</table>' +
     '<h3>Top tasks</h3><ol>' + s.tasks.map(t => '<li><b>' + esc(t.task) + '</b><br>' + esc(t.detail) +
       '<br><span style="color:#2340FF">Skill idea: ' + esc(t.skill_idea) + '</span></li>').join('') + '</ol>' +
     '<h3>Session plan</h3>' + ul(s.session_plan) +

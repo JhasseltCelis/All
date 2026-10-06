@@ -74,9 +74,11 @@ This needs a Meta WhatsApp Business account. Until it's set up, WhatsApp leads s
 
 ## Referral program
 
+Only paying clients can refer. A friend counts when Charles judges them a genuine prospect (real answers, a real need, a paid AI plan or willing to get one, not a developer) and their phone number is confirmed.
+
 1. When a Starter or Pro client has paid, open the **Referrers** tab in your sheet and type their **Name**, **Phone** and **Package**. Leave the other columns empty.
 2. Within an hour (or right away if you run **syncReferrers**), their code and share link appear, and you get a message to forward to them.
-3. Every friend who finishes a chat with Charles using that code, from a new and confirmed phone number, adds 1 to **Verified chats**. You get a message each time.
+3. Each genuine prospect with a new, confirmed number adds 1 to **Verified chats**, and you get a message. If Charles says someone wasn't a genuine prospect, you get the reason. Disagree? Add 1 to Verified chats yourself.
 4. At 3 (Starter) or 5 (Pro), the Status changes to **refund due** with a refund code, and you get an alert. Send the refund, then type **refunded** in Status.
 
 How numbers are confirmed: WhatsApp chats are confirmed automatically. On Telegram and the website, Charles asks the friend to tap "Share my number" in Telegram. The **Referrals** tab logs every attempt, including the ones that didn't count and why.
