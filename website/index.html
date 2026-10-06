@@ -470,11 +470,6 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
 @keyframes draw { to { stroke-dashoffset: 0; } }
 @media (prefers-reduced-motion: reduce) { .done .tick path { stroke-dashoffset: 0; } }
 
-.scard.bonus { background: var(--blue); color: var(--blue-ink); border-color: var(--blue); }
-.scard.bonus .n { color: var(--blue-ink); }
-.scard.bonus > div > p { color: var(--blue-ink); opacity: 0.92; }
-.scard.bonus .vis { background: color-mix(in srgb, #000 14%, var(--blue)); border-left-color: rgba(255, 255, 255, 0.25); }
-.scard.bonus .skill { color: var(--fg); }
 
 /* ===== Honest fit check ===== */
 .fit { grid-template-columns: 1fr 1fr; }
@@ -609,7 +604,7 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
     <div class="wrap">
       <div class="sec-head">
         <h2 class="disp">Four layers.<br><span class="blue">One call.</span></h2>
-        <p class="lead">Everything lives in your own account. No new apps to learn. Plus one bonus, so you're never stuck.</p>
+        <p class="lead">Everything lives in your own account. No new apps to learn.</p>
       </div>
       <div class="stack" id="stack">
         <article class="scard" style="--i:0">
@@ -627,10 +622,6 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
         <article class="scard" style="--i:3">
           <div><p class="n">04</p><h3>A cheat sheet and a tune up</h3><p>A one page guide with your best prompts. Two weeks later we meet again and fix anything that feels off. Want it kept current every month as AI changes? That's the Care plan.</p></div>
           <div class="vis" style="gap:12px"><div class="cal" aria-label="Setup on day 1, tune up on day 14"><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="on"></i></div><div class="cal-cap"><span>Day 1: setup</span><span>Day 14: tune up</span></div></div>
-        </article>
-        <article class="scard bonus" style="--i:4">
-          <div><p class="n">+</p><h3>Bonus: a helper that knows your setup</h3><p>I build a small assistant inside your ChatGPT or Claude that answers questions about your own setup, any time you forget how something works. Included with your one time payment, for 12 months.</p></div>
-          <div class="vis"><div class="skill"><span class="mono">You ask your setup helper</span><b>"How do I run my Friday follow ups again?"</b><span>Type "Do my Friday follow ups" in your Claude project. It checks this week's viewings and leaves the drafts in Gmail for you to review.</span><span class="mono">Works in ChatGPT as a custom GPT, or in Claude as a connector</span></div></div>
         </article>
       </div>
     </div>
@@ -718,7 +709,6 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
             <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>Profile and custom instructions</li>
             <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>2 connections, like Gmail and Calendar</li>
             <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>60 minute session and cheat sheet</li>
-            <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>Bonus: setup helper for 12 months</li>
           </ul>
           <a class="btn line" href="#book" data-pkg="Starter">Choose Starter</a>
         </article>
@@ -731,7 +721,6 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
             <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>All key connections</li>
             <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>3 custom skills, GPTs or Gems</li>
             <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>90 minute session and 2 week tune up</li>
-            <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>Bonus: setup helper for 12 months</li>
             <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>Prompt library for your job</li>
           </ul>
           <a class="btn" href="#book" data-pkg="Pro">Choose Pro</a>
@@ -745,7 +734,6 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
             <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>Shared projects and skills</li>
             <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>Team training session</li>
             <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>Simple AI usage guidelines</li>
-            <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>Bonus: setup helper for 12 months</li>
           </ul>
           <a class="btn line" href="#book" data-pkg="Team">Choose Team</a>
         </article>
@@ -773,7 +761,6 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
             <tr><th scope="row">Connections</th><td>2</td><td class="pk">All key tools</td><td>All key tools</td></tr>
             <tr><th scope="row">Custom skills, GPTs or Gems</th><td class="no">Not included</td><td class="pk">3</td><td>Shared team skills</td></tr>
             <tr><th scope="row">Session length</th><td>60 min</td><td class="pk">90 min</td><td>Setup plus training</td></tr>
-            <tr><th scope="row">Bonus setup helper</th><td>12 months</td><td class="pk">12 months</td><td>12 months, whole team</td></tr>
             <tr><th scope="row">Free if friends become real prospects</th><td>3 friends, $199 back</td><td class="pk">5 friends, $599 back</td><td class="no">Not included</td></tr>
             <tr><th scope="row">Care plan, kept current monthly</th><td>Optional, $79/mo</td><td class="pk">Optional, $79/mo</td><td>Optional, per team</td></tr>
             <tr><th scope="row">Works with free AI plans</th><td class="no">No</td><td class="pk no">No</td><td class="no">No</td></tr>
@@ -842,7 +829,7 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
         <div><span class="k">Q</span><div class="t"><h3>Which AI plan do I need?</h3><p class="muted">A paid one. Claude, ChatGPT and Gemini all keep email connections, projects and custom skills on their paid plans, usually from about $20 a month. Higher tiers get even more out of a setup. On a free plan? Upgrade before the session and you're set.</p></div></div>
         <div><span class="k">Q</span><div class="t"><h3>Is Charles a real person?</h3><p class="muted">No, Charles is our AI agent. He asks the questions and takes notes for me. I read everything and prepare your session personally.</p></div></div>
         <div><span class="k">Q</span><div class="t"><h3>I'm a developer. Should I book?</h3><p class="muted">Honestly, probably not. If you know what an API key is, you can set this up yourself, and you'd have more fun doing it. Send your non tech friends instead.</p></div></div>
-        <div><span class="k">Q</span><div class="t"><h3>What if something stops working later?</h3><p class="muted">That\'s exactly why Care exists. AI tools change every few weeks, so for $79 a month we check in, set up new features and add a new skill each month. Your 12 month setup helper also answers questions any time.</p></div></div>
+        <div><span class="k">Q</span><div class="t"><h3>What if something stops working later?</h3><p class="muted">That's exactly why Care exists. AI tools change every few weeks, so for $79 a month we check in, set up new features as they launch and add a new skill each month.</p></div></div>
       </div>
     </div>
   </section>
