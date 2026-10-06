@@ -161,7 +161,7 @@ section { padding-block: 120px; scroll-margin-top: 64px; }
 @keyframes pulse { 50% { opacity: 0.25; } }
 
 /* Packages */
-.plans { grid-template-columns: repeat(4, 1fr); }
+.plans { grid-template-columns: repeat(3, 1fr); }
 .plan { display: grid; grid-template-rows: subgrid; grid-row: span 5; gap: 18px; padding: 32px 28px; }
 .plan .ph { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
 .plan .ph h3 { font-family: var(--display); font-weight: 850; font-stretch: 112%; text-transform: uppercase; font-size: 1.4rem; }
@@ -177,7 +177,7 @@ section { padding-block: 120px; scroll-margin-top: 64px; }
 .plan.pick li svg { stroke: var(--blue-ink); }
 .plan.pick .btn { background: #FFFFFF; border-color: #FFFFFF; color: #0B0B0C; }
 .plan.pick .btn:hover { background: #0B0B0C; border-color: #0B0B0C; color: #FFFFFF; }
-@media (max-width: 1080px) { .plans { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 1080px) { .plans { grid-template-columns: 1fr; max-width: 560px; } }
 @media (max-width: 600px) { .plans { grid-template-columns: 1fr; } .plan { padding: 26px 22px; } }
 
 .compare-wrap { margin-top: 48px; overflow-x: auto; border: 1px solid var(--line); }
@@ -509,6 +509,30 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
 #showFull[aria-expanded="true"] svg { transform: rotate(90deg); }
 .quick-actions { display: flex; flex-wrap: wrap; gap: 10px; }
 #fullWrap { margin-top: 16px; }
+
+/* ===== Referral program ===== */
+.refer { grid-template-columns: 1fr 1fr 1.6fr; }
+.refer > div { padding: 32px 28px 36px; display: grid; gap: 10px; align-content: start; }
+.refer .big { font-family: var(--display); font-weight: 900; font-stretch: 112%; text-transform: uppercase; font-size: clamp(2.2rem, 4vw, 3.4rem); line-height: 0.9; letter-spacing: -0.03em; }
+.refer .big span { font-size: 1.9em; display: block; line-height: 0.85; }
+.refer .refund { font-size: 1.15rem; }
+.refer .refund b { font-family: var(--display); font-weight: 900; font-size: 1.6rem; letter-spacing: -0.02em; }
+.refer .goal.pick { background: var(--blue); color: var(--blue-ink); }
+.refer .goal.pick .mono { color: var(--blue-ink); }
+.how-ref ol { list-style: none; margin: 0; padding: 0; display: grid; }
+.how-ref li { display: grid; grid-template-columns: 40px 1fr; gap: 10px; padding: 12px 0; border-top: 1px solid var(--line); }
+.how-ref li:first-child { border-top: 0; padding-top: 0; }
+.how-ref .mono { color: var(--blue); padding-top: 3px; }
+.fine { list-style: none; margin: 24px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 32px; color: var(--muted); font-size: 0.95rem; }
+.fine li { display: grid; grid-template-columns: 24px 1fr; gap: 8px; }
+.fine svg { width: 18px; height: 18px; margin-top: 3px; stroke: var(--blue); fill: none; stroke-width: 2.5; }
+@media (max-width: 960px) { .refer { grid-template-columns: 1fr 1fr; } .refer .how-ref { grid-column: 1 / -1; } }
+@media (max-width: 560px) { .refer { grid-template-columns: 1fr; } .fine { grid-template-columns: 1fr; } }
+.ref-field summary { cursor: pointer; font-weight: 500; font-size: 0.93rem; color: var(--muted); padding: 6px 0; list-style: none; }
+.ref-field summary::-webkit-details-marker { display: none; }
+.ref-field summary::before { content: "+ "; color: var(--blue); }
+.ref-field[open] summary::before { content: "\2212 "; }
+.ref-field .field { margin-top: 8px; }
 </style>
 
 <a class="skip" href="#main">Skip to content</a>
@@ -682,7 +706,7 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
     <div class="wrap">
       <div class="sec-head">
         <h2 class="disp">Packages</h2>
-        <p class="lead">One time price, paid after the session. Requires a paid Claude, ChatGPT or Gemini plan. The Care plan is optional.</p>
+        <p class="lead">One time price, paid after the session. Requires a paid Claude, ChatGPT or Gemini plan.</p>
       </div>
       <div class="plans cells">
         <article class="plan">
@@ -725,18 +749,6 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
           </ul>
           <a class="btn line" href="#book" data-pkg="Team">Choose Team</a>
         </article>
-        <article class="plan">
-          <div class="ph"><h3>Care</h3></div>
-          <p class="price">$79<small>/ month</small></p>
-          <p class="muted">Stays sharp as AI changes.</p>
-          <ul>
-            <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>Monthly 30 minute check in</li>
-            <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>New features set up for you</li>
-            <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>1 new skill or automation a month</li>
-            <li><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg>Cancel anytime</li>
-          </ul>
-          <a class="btn line" href="#book" data-pkg="Care plan">Add Care plan</a>
-        </article>
       </div>
       <div class="compare-wrap">
         <table class="compare">
@@ -750,11 +762,47 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
             <tr><th scope="row">Custom skills, GPTs or Gems</th><td class="no">Not included</td><td class="pk">3</td><td>Shared team skills</td></tr>
             <tr><th scope="row">Session length</th><td>60 min</td><td class="pk">90 min</td><td>Setup plus training</td></tr>
             <tr><th scope="row">Bonus setup helper</th><td>12 months</td><td class="pk">12 months</td><td>12 months, whole team</td></tr>
+            <tr><th scope="row">Free if friends chat with Charles</th><td>3 friends, $199 back</td><td class="pk">5 friends, $599 back</td><td class="no">Not included</td></tr>
             <tr><th scope="row">Works with free AI plans</th><td class="no">No</td><td class="pk no">No</td><td class="no">No</td></tr>
             <tr><th scope="row">2 week tune up</th><td class="no">Not included</td><td class="pk">Yes</td><td>Yes</td></tr>
           </tbody>
         </table>
       </div>
+    </div>
+  </section>
+
+  <section id="refer" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 class="disp">Bring friends.<br><span class="blue">Get it free.</span></h2>
+        <p class="lead">Your friends don't have to buy anything. They just have to talk to Charles. He's a very good listener.</p>
+      </div>
+      <div class="refer cells">
+        <div class="goal">
+          <p class="mono muted">Starter</p>
+          <p class="big"><span>3</span> chats</p>
+          <p class="refund">= <b>$199</b> back</p>
+        </div>
+        <div class="goal pick">
+          <p class="mono">Pro</p>
+          <p class="big"><span>5</span> chats</p>
+          <p class="refund">= <b>$599</b> back</p>
+        </div>
+        <div class="how-ref">
+          <ol>
+            <li><span class="mono">01</span><span>After your session you get a personal code and link.</span></li>
+            <li><span class="mono">02</span><span>Friends use it and have a full chat with Charles, about 10 minutes.</span></li>
+            <li><span class="mono">03</span><span>Each chat counts once their phone number is confirmed on WhatsApp or Telegram.</span></li>
+            <li><span class="mono">04</span><span>Hit your number and you get the full package price back.</span></li>
+          </ol>
+        </div>
+      </div>
+      <ul class="fine">
+        <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg>Only finished chats count. A "hi" and goodbye doesn't.</li>
+        <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg>One count per phone number, and it can't be yours.</li>
+        <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg>Starter and Pro only. Team isn't included.</li>
+        <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg>One refund per package. Charles is flattered, not infinite.</li>
+      </ul>
     </div>
   </section>
 
@@ -781,7 +829,7 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
         <div><span class="k">Q</span><div class="t"><h3>Which AI plan do I need?</h3><p class="muted">A paid one. Claude, ChatGPT and Gemini all keep email connections, projects and custom skills on their paid plans, usually from about $20 a month. Higher tiers get even more out of a setup. On a free plan? Upgrade before the session and you're set.</p></div></div>
         <div><span class="k">Q</span><div class="t"><h3>Is Charles a real person?</h3><p class="muted">No, Charles is our AI agent. He asks the questions and takes notes for me. I read everything and prepare your session personally.</p></div></div>
         <div><span class="k">Q</span><div class="t"><h3>I'm a developer. Should I book?</h3><p class="muted">Honestly, probably not. If you know what an API key is, you can set this up yourself, and you'd have more fun doing it. Send your non tech friends instead.</p></div></div>
-        <div><span class="k">Q</span><div class="t"><h3>What if something stops working later?</h3><p class="muted">AI tools change often. The Care plan covers that, or book a single tune up any time.</p></div></div>
+        <div><span class="k">Q</span><div class="t"><h3>What if something stops working later?</h3><p class="muted">AI tools change often. Your setup helper answers questions for 12 months, and you can book a single tune up any time.</p></div></div>
       </div>
     </div>
   </section>
@@ -806,6 +854,9 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
             <div class="field full"><label for="q-pkg">Package</label>
               <select id="q-pkg" name="package"><option value="Not sure">Not sure yet</option><option value="Starter">Starter, $199</option><option value="Pro">Pro, $599</option><option value="Team">Team, from $1,500</option></select>
             </div>
+            <details class="full ref-field" id="qRefBox"><summary>I have a referral code</summary>
+              <div class="field"><label for="q-ref">Referral code</label><input type="text" id="q-ref" name="ref" autocomplete="off" autocapitalize="characters" placeholder="ANA-7K3Q" aria-describedby="q-ref-help"><span class="help" id="q-ref-help">From the friend who sent you. Your chat with Charles counts for them.</span></div>
+            </details>
             <fieldset class="full">
               <legend>Charles should reach me on</legend>
               <div class="opts" role="radiogroup">
@@ -836,7 +887,7 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
             <div class="field"><label for="b-email">Email<span class="req" aria-hidden="true">*</span></label><input type="email" id="b-email" name="email" autocomplete="email" aria-describedby="b-email-err" required><span class="ferr" id="b-email-err" role="alert" hidden></span></div>
             <div class="field"><label for="b-phone">Phone or WhatsApp</label><input type="tel" id="b-phone" name="phone" autocomplete="tel"><span class="help">Optional</span></div>
             <div class="field"><label for="b-pkg">Package</label>
-              <select id="b-pkg" name="package"><option>Not sure yet</option><option>Starter</option><option>Pro</option><option>Team</option><option>Care plan</option></select>
+              <select id="b-pkg" name="package"><option>Not sure yet</option><option>Starter</option><option>Pro</option><option>Team</option></select>
             </div>
             <div class="field full"><label for="b-plan">Your current AI plan</label>
               <select id="b-plan" name="plan"><option value="">Choose one</option><option>Paid (Pro, Plus or similar)</option><option>Top tier (Max, Pro, Team or Business)</option><option>Free</option><option>Not sure</option></select>
@@ -902,6 +953,9 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
         <div class="fgrid" style="width:100%">
           <div class="field"><label for="i-name">Your name<span class="req" aria-hidden="true">*</span></label><input type="text" id="i-name" name="name" autocomplete="name" aria-describedby="i-name-err"><span class="ferr" id="i-name-err" role="alert" hidden></span></div>
           <div class="field"><label for="i-email">Email or mobile<span class="req" aria-hidden="true">*</span></label><input type="text" id="i-email" name="email" autocomplete="email" inputmode="email" aria-describedby="i-email-err"><span class="ferr" id="i-email-err" role="alert" hidden></span></div>
+          <details class="field full ref-field" id="iRefBox"><summary>I have a referral code</summary>
+            <div class="field"><label for="i-ref">Referral code</label><input type="text" id="i-ref" name="ref" autocomplete="off" autocapitalize="characters" placeholder="ANA-7K3Q"></div>
+          </details>
           <div class="field full">
             <label class="opt wide"><input type="checkbox" id="i-consent" name="consent" aria-describedby="i-consent-err"><span>I understand Charles is an AI agent, and my answers go to my consultant</span></label>
             <span class="ferr" id="i-consent-err" role="alert" hidden></span>
@@ -974,7 +1028,7 @@ const spy = new IntersectionObserver(es => es.forEach(e => {
   if (!home.hidden) navLinks.forEach(a => a.classList.toggle("active", a.dataset.sec === e.target.id));
   mcta.classList.toggle("off", e.target.id === "top" || e.target.id === "book");
 }), { rootMargin: "-45% 0px -50% 0px" });
-["top", "why", "layers-sec", "fit", "how", "packages", "privacy", "faq", "book"].forEach(id => spy.observe($(id)));
+["top", "why", "layers-sec", "fit", "how", "packages", "refer", "privacy", "faq", "book"].forEach(id => spy.observe($(id)));
 
 document.querySelectorAll("[data-pkg]").forEach(a => a.addEventListener("click", () => {
   $("b-pkg").value = a.dataset.pkg;
@@ -1188,6 +1242,17 @@ $("b-plan").addEventListener("change", e => {
   note.classList.toggle("show", !!msg);
 });
 
+// ---------- Referral code: from a shared link (?ref=CODE) or typed in ----------
+const cleanRef = v => { const c = String(v || "").trim().toUpperCase(); return /^[A-Z]{1,8}-[A-Z0-9]{4}$/.test(c) ? c : ""; };
+let savedRef = "";
+try { savedRef = cleanRef(new URLSearchParams(location.search).get("ref")) || localStorage.getItem("afy-ref") || ""; } catch {}
+if (savedRef) {
+  try { localStorage.setItem("afy-ref", savedRef); } catch {}
+  ["q-ref", "i-ref"].forEach(id => { $(id).value = savedRef; });
+  $("qRefBox").open = true; $("iRefBox").open = true;
+}
+const currentRef = id => cleanRef($(id).value) || savedRef;
+
 // ---------- Quick booking: name, phone, package, then Charles follows up ----------
 const phoneOk = v => v.replace(/\D/g, "").length >= 7;
 const quickRules = {
@@ -1209,7 +1274,7 @@ $("quickForm").addEventListener("submit", async e => {
   const bad = Object.keys(quickRules).filter(id => fieldMsg(id, quickRules[id]()));
   if (bad.length) return $(bad[0]).focus();
   const d = { name: $("q-name").value.trim(), phone: $("q-phone").value.trim(), package: $("q-pkg").value,
-    channel: document.querySelector('input[name="channel"]:checked').value };
+    channel: document.querySelector('input[name="channel"]:checked').value, ref: currentRef("q-ref") };
   const btn = $("quickBtn");
   busy(btn, true, "Sending");
   let r = { ok: true, channel: d.channel };
@@ -1360,7 +1425,7 @@ async function finish() {
   lockInput(true); typing(true);
   let r;
   try {
-    r = AFY_API ? await api("finish", { name: iv.name, email: iv.email, messages: iv.messages })
+    r = AFY_API ? await api("finish", { name: iv.name, email: iv.email, ref: iv.ref, messages: iv.messages })
                   : await new Promise(res => setTimeout(() => res({ ok: true, recap: "Thanks for your answers. Your consultant now has notes on your work, tools and top tasks, and will prepare your setup before the call." }), 900));
   } catch { r = { ok: false, error: "network" }; }
   typing(false);
@@ -1371,7 +1436,20 @@ async function finish() {
   const p = document.createElement("p"); p.textContent = r.recap;
   const nxt = document.createElement("p"); nxt.className = "muted"; nxt.textContent = "Your consultant has your notes and will confirm your session time by email.";
   const a = document.createElement("a"); a.className = "btn line"; a.href = "#top"; a.textContent = "Back to home";
-  box.append(h, p, nxt, a);
+  box.append(h, p, nxt);
+  if (iv.ref) {
+    const rp = document.createElement("p");
+    if (r.verifyLink) {
+      rp.textContent = "One last step for your friend: confirm your number on Telegram so this chat counts for them.";
+      const v = document.createElement("a"); v.className = "btn blue"; v.href = r.verifyLink; v.target = "_blank"; v.rel = "noopener"; v.textContent = "Confirm on Telegram";
+      box.append(rp, v);
+    } else {
+      rp.className = "muted";
+      rp.textContent = AFY_API ? "Your consultant will confirm your number so this chat counts for your friend." : "Preview mode: in the live site, you'd confirm your number on Telegram here so this chat counts for your friend.";
+      box.append(rp);
+    }
+  }
+  box.append(a);
   log.append(box); box.focus();
   if (reduce) $("composer").hidden = true; else { $("composer").classList.add("leaving"); setTimeout(() => { $("composer").hidden = true; }, 160); }
   try { localStorage.removeItem(SAVE_KEY); } catch {}
@@ -1391,7 +1469,7 @@ $("ivStart").addEventListener("submit", e => {
   e.preventDefault();
   const bad = Object.keys(startRules).filter(id => fieldMsg(id, startRules[id]()));
   if (bad.length) return $(bad[0]).focus();
-  iv = { name: $("i-name").value.trim(), email: $("i-email").value.trim(), messages: [], covered: [], done: false };
+  iv = { name: $("i-name").value.trim(), email: $("i-email").value.trim(), ref: currentRef("i-ref"), messages: [], covered: [], done: false };
   openChat();
   askInterviewer();
 });

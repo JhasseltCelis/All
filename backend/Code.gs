@@ -46,6 +46,7 @@ How to talk:
 - Never ask for passwords, API keys, card numbers or similar. If the client starts sharing one, tell them kindly not to and continue.
 - Do not give setup advice or recommend products. If asked, say the consultant will cover it in the session.
 - If the client wants to stop early, wrap up politely.
+- Some people come through a friend's referral code. They don't have to buy anything: run the interview normally, and their finished chat counts for their friend.
 - The service needs a paid AI plan. If they're on a free plan, mention kindly that they'll need to upgrade before the session, and that the consultant will help them pick. If they turn out to be a developer or very technical, be honest that they may not need the service, and let the consultant decide.
 
 When every topic is covered well enough, or the client wants to stop, thank them, tell them the consultant will review their answers before the session, and set done to true.
@@ -134,7 +135,14 @@ function interviewTurn(name, history, context) {
 function handleFinish(req) {
   const history = sanitizeHistory(req.messages);
   if (!history.ok) return { ok: false, error: history.error };
-  return finishInterview(clean(req.name, 80), clean(req.email, 120), history.messages, 'website');
+  const name = clean(req.name, 80), contact = clean(req.email, 120), ref = cleanCode(req.ref);
+  const out = finishInterview(name, contact, history.messages, 'website');
+  if (!out.ok || !ref) return out;
+  // Website chats can't prove the phone number, so the friend confirms it on Telegram
+  const lead = newLead(name, digits(contact).length >= 7 ? contact : '', 'website', ref, 'done');
+  const bot = prop('TELEGRAM_BOT_USERNAME');
+  if (bot) out.verifyLink = 'https://t.me/' + bot + '?start=v_' + lead.id;
+  return out;
 }
 
 // Summarize an interview and deliver the briefing; contact is an email or phone
@@ -228,18 +236,19 @@ function handleBooking(req) {
 
 // ---------- Quick lead: name, phone, package, then Charles follows up ----------
 
-const LEAD_HEADERS = ['Received', 'Id', 'Name', 'Phone', 'Package', 'Channel', 'Status', 'Chat id', 'Covered', 'History'];
+const LEAD_HEADERS = ['Received', 'Id', 'Name', 'Phone', 'Package', 'Channel', 'Status', 'Chat id', 'Covered', 'History', 'Referral code', 'Verified phone'];
 
 function handleLead(req) {
   const lead = {
     name: clean(req.name, 80),
     phone: clean(req.phone, 40),
     pkg: clean(req.package, 40),
-    channel: req.channel === 'telegram' ? 'telegram' : 'whatsapp'
+    channel: req.channel === 'telegram' ? 'telegram' : 'whatsapp',
+    ref: cleanCode(req.ref)
   };
   if (!lead.name || digits(lead.phone).length < 7) return { ok: false, error: 'invalid' };
   lead.id = Utilities.getUuid().replace(/-/g, '').slice(0, 16);
-  sheet('Leads', LEAD_HEADERS).appendRow([new Date(), lead.id, lead.name, lead.phone, lead.pkg, lead.channel, 'new', '', '', '[]']);
+  sheet('Leads', LEAD_HEADERS).appendRow([new Date(), lead.id, lead.name, lead.phone, lead.pkg, lead.channel, 'new', '', '', '[]', lead.ref, '']);
 
   const out = { ok: true, channel: lead.channel };
   let how;
@@ -253,10 +262,84 @@ function handleLead(req) {
     how = out.whatsappAuto ? 'WhatsApp. Charles sent the first message.'
       : 'WhatsApp. Charles is not connected to WhatsApp yet, so message them yourself: https://wa.me/' + digits(lead.phone);
   }
-  const text = 'New lead: ' + lead.name + ', ' + lead.phone + '\nPackage: ' + (lead.pkg || 'not sure') + '\nWants to talk on ' + how;
+  const text = 'New lead: ' + lead.name + ', ' + lead.phone + '\nPackage: ' + (lead.pkg || 'not sure') + '\nWants to talk on ' + how + (lead.ref ? '\nReferral code: ' + lead.ref : '');
   notifyOwner('New lead: ' + lead.name, text, '<pre style="font:14px/1.5 sans-serif;white-space:pre-wrap">' + esc(text) + '</pre>');
   return out;
 }
+
+// ---------- Referral program ----------
+// Paying Starter and Pro clients get a code. Each friend who finishes a chat with
+// Charles from a new, verified phone number counts. Starter needs 3, Pro needs 5,
+// then the client gets the package price back. Team is not eligible.
+
+const REFERRER_HEADERS = ['Added', 'Name', 'Phone', 'Package', 'Code', 'Share link', 'Goal', 'Verified chats', 'Status', 'Refund code'];
+const REFERRAL_LOG_HEADERS = ['Date', 'Code', 'Friend', 'Phone', 'Channel', 'Result'];
+const REFERRAL_GOALS = { starter: 3, pro: 5 };
+const REFERRAL_PRICES = { starter: '$199', pro: '$599' };
+
+// Fills in codes for rows you added to the Referrers tab (just Name, Phone and Package)
+function syncReferrers() {
+  const sh = sheet('Referrers', REFERRER_HEADERS);
+  const rows = sh.getDataRange().getValues();
+  const used = rows.slice(1).map(r => String(r[4])).filter(Boolean);
+  for (let i = 1; i < rows.length; i++) {
+    const r = rows[i];
+    if (!r[1] || r[4] || r[8]) continue;
+    const pkg = String(r[3]).trim().toLowerCase();
+    if (!REFERRAL_GOALS[pkg]) {
+      sh.getRange(i + 1, 9).setValue('not eligible (' + (r[3] || 'no package') + ')');
+      continue;
+    }
+    let code;
+    const prefix = String(r[1]).replace(/[^A-Za-z]/g, '').slice(0, 6).toUpperCase() || 'AFY';
+    do { code = prefix + '-' + randomChars(4); } while (used.indexOf(code) >= 0);
+    used.push(code);
+    const site = prop('SITE_URL');
+    const bot = prop('TELEGRAM_BOT_USERNAME');
+    const link = site ? site + (site.indexOf('?') >= 0 ? '&' : '?') + 'ref=' + code : (bot ? 'https://t.me/' + bot + '?start=r_' + code.replace(/-/g, '_') : '');
+    sh.getRange(i + 1, 1, 1, 10).setValues([[r[0] || new Date(), r[1], r[2], r[3], code, link, REFERRAL_GOALS[pkg], 0, 'active', '']]);
+    const text = 'Referral code ready for ' + r[1] + ' (' + r[3] + '): ' + code +
+      '\nGoal: ' + REFERRAL_GOALS[pkg] + ' friends finish a chat with Charles, then ' + REFERRAL_PRICES[pkg] + ' back.' +
+      (link ? '\nShare link: ' + link : '') + '\nSend this to your client.';
+    notifyOwner('Referral code for ' + r[1] + ': ' + code, text, '<pre style="font:14px/1.5 sans-serif;white-space:pre-wrap">' + esc(text) + '</pre>');
+  }
+}
+
+function countReferral(lead, phone, channel) {
+  syncReferrers();
+  const log = (result) => sheet('Referrals', REFERRAL_LOG_HEADERS).appendRow([new Date(), lead.ref, lead.name, phone, channel, result]);
+  const sh = sheet('Referrers', REFERRER_HEADERS);
+  const rows = sh.getDataRange().getValues();
+  let row = -1;
+  for (let i = 1; i < rows.length; i++) if (String(rows[i][4]).toUpperCase() === lead.ref) row = i;
+  const thanks = 'Thanks for chatting with me, ' + lead.name.split(' ')[0] + '.';
+  if (row < 0) { log('unknown code'); return { counted: false, message: thanks + ' That referral code did not match anyone, so this chat could not be counted.' }; }
+  const ref = rows[row], friend = String(ref[1]).split(' ')[0];
+  if (String(ref[8]) !== 'active') { log('not counted: ' + ref[8]); return { counted: false, message: thanks + ' ' + friend + ' has already reached their goal. Nice work, both of you.' }; }
+  if (samePhone(phone, ref[2])) { log('not counted: own number'); return { counted: false, message: thanks + ' This number belongs to the code owner, so it does not count.' }; }
+  const seen = sheet('Referrals', REFERRAL_LOG_HEADERS).getDataRange().getValues().slice(1)
+    .some(r => String(r[5]) === 'counted' && samePhone(r[3], phone));
+  const isClient = rows.slice(1).some(r => samePhone(r[2], phone));
+  if (seen || isClient) { log('not counted: number already used'); return { counted: false, message: thanks + ' This number has already been counted before, so it can not count again.' }; }
+
+  log('counted');
+  const count = Number(ref[7] || 0) + 1, goal = Number(ref[6]);
+  sh.getRange(row + 1, 8).setValue(count);
+  let text = lead.ref + ' (' + ref[1] + '): ' + count + ' of ' + goal + ' verified chats. Latest: ' + lead.name + ', ' + phone + ', via ' + channel + '.';
+  if (count >= goal) {
+    const refund = 'REFUND-' + lead.ref + '-' + randomChars(4);
+    sh.getRange(row + 1, 9, 1, 2).setValues([['refund due', refund]]);
+    text += '\n\nGoal reached. ' + ref[1] + ' gets ' + (REFERRAL_PRICES[String(ref[3]).toLowerCase()] || 'their package') + ' back. Refund code: ' + refund +
+      '\nSend them the code and the refund, then set Status to "refunded".';
+    notifyOwner('Refund due: ' + ref[1] + ' reached ' + goal + ' referrals', text, '<pre style="font:14px/1.5 sans-serif;white-space:pre-wrap">' + esc(text) + '</pre>');
+  } else {
+    notifyOwner('Referral counted for ' + ref[1] + ' (' + count + ' of ' + goal + ')', text, '<p>' + esc(text) + '</p>');
+  }
+  return { counted: true, message: thanks + ' Your chat counts for ' + friend + ': that is ' + count + ' of ' + goal + '.' };
+}
+
+function cleanCode(v) { const c = String(v || '').trim().toUpperCase(); return /^[A-Z]{1,8}-[A-Z0-9]{4}$/.test(c) ? c : ''; }
+function randomChars(n) { const a = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'; let s = ''; for (let i = 0; i < n; i++) s += a[Math.floor(Math.random() * a.length)]; return s; }
 
 // ---------- Charles in messaging apps ----------
 
@@ -267,20 +350,42 @@ function handleTelegramUpdate(secret, update) {
   if (!m || !m.chat || String(m.chat.id) === String(prop('TELEGRAM_CHAT_ID'))) return json({ ok: true });
   const chatId = String(m.chat.id);
   const send = text => tgSend(chatId, text);
+  const firstName = (m.from && m.from.first_name) || 'there';
+
+  // Referral check: the friend shares their own number with one tap
+  if (m.contact) {
+    const lead = findLead(l => l.chatId === chatId && l.ref && !l.verified);
+    if (!lead) { tgSend(chatId, 'Thanks, nothing to confirm right now.', { remove_keyboard: true }); return json({ ok: true }); }
+    if (!m.from || String(m.contact.user_id) !== String(m.from.id)) { send('Please share your own number with the button, not a saved contact.'); return json({ ok: true }); }
+    withLock(() => {
+      setLeadField(lead, 'Verified phone', m.contact.phone_number);
+      tgSend(chatId, countReferral(lead, m.contact.phone_number, 'Telegram').message, { remove_keyboard: true });
+    });
+    return json({ ok: true });
+  }
   if (typeof m.text !== 'string') { send('I can only read text messages for now.'); return json({ ok: true }); }
 
   let lead, text = m.text.trim();
   const start = text.match(/^\/start(?:\s+(\w+))?/);
+  const param = start && start[1] ? start[1] : '';
+  if (param.indexOf('v_') === 0) {
+    // A website chat came here only to confirm the number for a referral
+    lead = findLead(l => l.id === param.slice(2));
+    if (!lead || !lead.ref || lead.verified) { send('Thanks! There is nothing to confirm on this link.'); return json({ ok: true }); }
+    setLeadField(lead, 'Chat id', chatId);
+    askForNumber(chatId, firstName);
+    return json({ ok: true });
+  }
   if (start) {
-    lead = start[1] ? findLead(l => l.id === start[1]) : null;
+    lead = param && param.indexOf('r_') !== 0 ? findLead(l => l.id === param) : null;
     if (!lead) lead = findLead(l => l.chatId === chatId && l.status !== 'done');
-    if (!lead) lead = newLead((m.from && m.from.first_name) || 'there', '', 'telegram');
+    if (!lead) lead = newLead(firstName, '', 'telegram', param.indexOf('r_') === 0 ? cleanCode(param.slice(2).replace(/_/g, '-')) : '');
     setLeadField(lead, 'Chat id', chatId);
     lead.chatId = chatId;
     text = null; // /start is not an answer
   } else {
     lead = findLead(l => l.chatId === chatId && l.status !== 'done') || findLead(l => l.chatId === chatId);
-    if (!lead) { lead = newLead((m.from && m.from.first_name) || 'there', '', 'telegram'); setLeadField(lead, 'Chat id', chatId); lead.chatId = chatId; }
+    if (!lead) { lead = newLead(firstName, '', 'telegram'); setLeadField(lead, 'Chat id', chatId); lead.chatId = chatId; }
   }
   withLock(() => converse(findLead(l => l.id === lead.id) || lead, text, send, 'Telegram'));
   return json({ ok: true });
@@ -314,6 +419,10 @@ function converse(lead, userText, send, channel) {
   }
   const history = lead.history;
   if (!history.length && !takeDailySlot()) { send('Sorry, I am fully booked today. Your consultant will contact you directly.'); return; }
+  if (userText && !lead.ref) {
+    const code = String(userText).toUpperCase().match(/\b[A-Z]{2,8}-[A-Z0-9]{4}\b/);
+    if (code) { lead.ref = code[0]; setLeadField(lead, 'Referral code', code[0]); }
+  }
   if (userText) {
     if (!history.length) history.push({ role: 'assistant', content: 'Hi ' + lead.name.split(' ')[0] + ', I am Charles, the AI agent at AI For You.' });
     history.push({ role: 'user', content: clean(userText, MAX_CHARS) });
@@ -335,6 +444,20 @@ function finishLead(lead, send, channel) {
   const r = finishInterview(lead.name, contact, lead.history, channel);
   if (r.ok) send(r.recap);
   saveLeadState(lead, 'done');
+  if (!lead.ref) return;
+  if (channel === 'WhatsApp') {
+    // WhatsApp messages come from the real number, so it is already verified
+    setLeadField(lead, 'Verified phone', lead.phone);
+    send(countReferral(lead, lead.phone, channel).message);
+  } else if (channel === 'Telegram') {
+    askForNumber(lead.chatId, lead.name.split(' ')[0]);
+  }
+}
+
+function askForNumber(chatId, firstName) {
+  tgSend(chatId, 'One last thing, ' + firstName + ': tap the button below to confirm your number. That is how your chat counts for the friend who referred you.', {
+    keyboard: [[{ text: 'Share my number', request_contact: true }]], one_time_keyboard: true, resize_keyboard: true
+  });
 }
 
 // ---------- Lead storage (Leads tab in the sheet) ----------
@@ -347,15 +470,16 @@ function findLead(match) {
     let history = [];
     try { history = JSON.parse(r[9] || '[]'); } catch (e) {}
     const lead = { row: i + 1, id: String(r[1]), name: String(r[2]), phone: String(r[3]), pkg: String(r[4]), channel: String(r[5]),
-      status: String(r[6]), chatId: String(r[7]), covered: String(r[8] || '').split(',').filter(Boolean), history: history };
+      status: String(r[6]), chatId: String(r[7]), covered: String(r[8] || '').split(',').filter(Boolean), history: history,
+      ref: String(r[10] || ''), verified: String(r[11] || '') };
     if (match(lead)) return lead;
   }
   return null;
 }
 
-function newLead(name, phone, channel) {
+function newLead(name, phone, channel, ref, status) {
   const id = Utilities.getUuid().replace(/-/g, '').slice(0, 16);
-  sheet('Leads', LEAD_HEADERS).appendRow([new Date(), id, name, phone, '', channel, 'new', '', '', '[]']);
+  sheet('Leads', LEAD_HEADERS).appendRow([new Date(), id, name, phone, '', channel, status || 'new', '', '', '[]', ref || '', '']);
   notifyOwner('New chat with Charles: ' + name, name + ' started talking to Charles on ' + channel + (phone ? ' (' + phone + ')' : '') + '.', '<p>' + esc(name) + ' started talking to Charles on ' + channel + '.</p>');
   return findLead(l => l.id === id);
 }
@@ -393,12 +517,14 @@ function samePhone(a, b) { const x = digits(a), y = digits(b); return x.length >
 
 // ---------- Senders ----------
 
-function tgSend(chatId, text) {
+function tgSend(chatId, text, markup) {
   const token = prop('TELEGRAM_BOT_TOKEN');
   if (!token) return false;
+  const body = { chat_id: chatId, text: String(text).slice(0, 4000) };
+  if (markup) body.reply_markup = markup;
   const res = UrlFetchApp.fetch('https://api.telegram.org/bot' + token + '/sendMessage', {
     method: 'post', contentType: 'application/json', muteHttpExceptions: true,
-    payload: JSON.stringify({ chat_id: chatId, text: String(text).slice(0, 4000) })
+    payload: JSON.stringify(body)
   });
   return res.getResponseCode() === 200;
 }
@@ -621,6 +747,12 @@ function setup() {
     'Privacy', 'Prep checklist', 'Open questions', 'Transcript']);
   sheet('Bookings', ['Received', 'Name', 'Email', 'Phone', 'Package', 'AI plan', 'AI', 'Date', 'Time', 'Notes']);
   sheet('Leads', LEAD_HEADERS);
+  sheet('Referrers', REFERRER_HEADERS);
+  sheet('Referrals', REFERRAL_LOG_HEADERS);
+  // Check the Referrers tab for new clients every hour
+  if (!ScriptApp.getProjectTriggers().some(t => t.getHandlerFunction() === 'syncReferrers')) {
+    ScriptApp.newTrigger('syncReferrers').timeBased().everyHours(1).create();
+  }
   console.log('Sheet ready: https://docs.google.com/spreadsheets/d/' + prop('SHEET_ID'));
 }
 

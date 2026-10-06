@@ -25,6 +25,7 @@ When it's done, every quick booking and every finished chat with Charles reaches
 |---|---|
 | ANTHROPIC_API_KEY | the key from step 1 |
 | OWNER_EMAIL | the email where you want briefings |
+| SITE_URL | optional, your website address once it is public, for referral links |
 
 4. Back in the editor, pick **setup** from the function menu and click **Run**. Google asks for permissions: click Allow. This creates your "AI For You clients" sheet in Google Drive.
 
@@ -70,3 +71,12 @@ This needs a Meta WhatsApp Business account. Until it's set up, WhatsApp leads s
 * **Daily limit:** add Script Property `DAILY_LIMIT`, for example 50.
 * **What the interviewer asks:** edit `INTERVIEW_PROMPT` near the top of the script, then Deploy, Manage deployments, Edit, New version.
 * **See every conversation:** the "Leads" tab in your sheet has each quick booking, its status (new, talking, done) and the chat so far.
+
+## Referral program
+
+1. When a Starter or Pro client has paid, open the **Referrers** tab in your sheet and type their **Name**, **Phone** and **Package**. Leave the other columns empty.
+2. Within an hour (or right away if you run **syncReferrers**), their code and share link appear, and you get a message to forward to them.
+3. Every friend who finishes a chat with Charles using that code, from a new and confirmed phone number, adds 1 to **Verified chats**. You get a message each time.
+4. At 3 (Starter) or 5 (Pro), the Status changes to **refund due** with a refund code, and you get an alert. Send the refund, then type **refunded** in Status.
+
+How numbers are confirmed: WhatsApp chats are confirmed automatically. On Telegram and the website, Charles asks the friend to tap "Share my number" in Telegram. The **Referrals** tab logs every attempt, including the ones that didn't count and why.
