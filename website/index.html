@@ -1,4 +1,5 @@
 <title>AI For You</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%232340FF'/%3E%3Cpath d='M15 33 L26 44 L49 19' fill='none' stroke='%23FFFFFF' stroke-width='8' stroke-linecap='square'/%3E%3C/svg%3E">
 <meta name="description" content="Personal setup for Claude, ChatGPT and Gemini. A short chat with our AI agent, one guided session, and your AI works the way you do.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -68,8 +69,9 @@ a { color: inherit; }
 /* Nav */
 nav.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); border-bottom: 1px solid var(--line); }
 nav.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 64px; }
-.logo { font-family: var(--display); font-weight: 900; font-stretch: 125%; font-size: 1.35rem; letter-spacing: -0.01em; text-decoration: none; display: flex; align-items: center; gap: 8px; }
-.logo i { width: 12px; height: 12px; background: var(--blue); display: inline-block; }
+.logo { font-family: var(--display); font-weight: 900; font-stretch: 125%; font-size: 1.35rem; letter-spacing: -0.01em; text-decoration: none; display: flex; align-items: center; gap: 10px; }
+/* Logo mark: three setup layers behind the finished, checked one (brand/svg/mark.svg) */
+.logo svg { width: 30px; height: 30px; flex: none; }
 .navlinks { display: flex; align-items: center; gap: 4px; height: 100%; }
 .navlinks a.nl { display: inline-flex; align-items: center; height: 100%; padding: 0 14px; color: var(--muted); text-decoration: none; font-size: 0.93rem; font-weight: 500; border-bottom: 2px solid transparent; transition: color 0.18s var(--ease); }
 .navlinks a.nl:hover { color: var(--fg); }
@@ -77,8 +79,9 @@ nav.top .wrap { display: flex; align-items: center; justify-content: space-betwe
 .navlinks .btn { min-height: 44px; padding: 0 18px; margin-left: 10px; font-size: 0.9rem; }
 @media (max-width: 820px) { .navlinks a.nl.hide-sm { display: none; } }
 .logo, .navlinks .btn { white-space: nowrap; }
-@media (max-width: 440px) { .logo { font-size: 1.1rem; } .navlinks a.nl { padding: 0 10px; font-size: 0.88rem; } .navlinks .btn { padding: 0 14px; margin-left: 4px; } }
-@media (max-width: 370px) { .navlinks a.nl { display: none; } }
+@media (max-width: 440px) { .logo { font-size: 1.1rem; gap: 7px; } .logo svg { width: 22px; height: 22px; } .navlinks a.nl { padding: 0 10px; font-size: 0.88rem; } .navlinks .btn { padding: 0 14px; margin-left: 4px; } }
+@media (max-width: 420px) { .navlinks a.nl { display: none; } }
+@media (max-width: 340px) { .logo { font-size: 0.98rem; gap: 6px; } .logo svg { width: 20px; height: 20px; } }
 
 /* Grid lines */
 .cells { display: grid; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
@@ -534,7 +537,7 @@ footer { padding-block: 64px 40px; border-top: 1px solid var(--line); overflow: 
 
 <nav class="top" aria-label="Main">
   <div class="wrap">
-    <a class="logo" href="#top" aria-label="AI For You home"><i></i>AI FOR YOU</a>
+    <a class="logo" href="#top" aria-label="AI For You home"><svg viewBox="0 0 120 120" aria-hidden="true"><rect x="38" y="2" width="80" height="80" fill="none" stroke="currentColor" stroke-width="6"/><rect x="26" y="14" width="80" height="80" fill="var(--bg)" stroke="currentColor" stroke-width="6"/><rect x="14" y="26" width="80" height="80" fill="var(--bg)" stroke="currentColor" stroke-width="6"/><rect x="2" y="38" width="80" height="80" fill="var(--blue)"/><path d="M22 79 L35 92 L63 62" fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="square"/></svg>AI FOR YOU</a>
     <div class="navlinks">
       <a class="nl hide-sm" href="#how" data-sec="how">How it works</a>
       <a class="nl hide-sm" href="#packages" data-sec="packages">Packages</a>
