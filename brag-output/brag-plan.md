@@ -1,34 +1,33 @@
-# Brag plan: Joogo AI Setup
+# Brag plan: AI For You
+
+Source: `website/index.html` on branch `claude/code-capabilities-overview-z6vcf0` (the current AI For You site).
 
 ## Rubric
-- **What is it:** A one time guided session that sets up Claude, ChatGPT or Gemini around one person's real job.
-- **Who for:** Busy, non-technical professionals (agents, office managers, freelancers) who already pay for an AI.
-- **What it does for them:** Their AI writes in their voice, reads their email and calendar, and does their repeat tasks.
-- **What sets it apart:** It's done for you, in your own accounts, with a two week tune up. No new app.
-- **Most impressive claim:** "Draft ready in 12 seconds" (the site's own console toast).
-- **Visual hook:** The site's own frustration field typing "answers sound generic, I keep repeating who I am".
-- **Real UI to show:** The hero setup console (instructions typing, connections going live, toast), the 3 step timeline, the packages.
-- **Tone:** `polished` with a warm, human feel. Matches the site: calm zinc neutrals, one emerald accent, Geist.
-- **Share caption:** Your AI, set up around the way you actually work.
-
-## Angle
-Before and after. Your AI today sounds like everyone's AI. One session later it sounds like you.
+- **What is it:** A personal setup service for Claude, ChatGPT or Gemini. A short chat with Charles (the AI agent), one guided call, and your AI works the way you do.
+- **Who for:** People great at a non tech job (agents, dentists, lawyers, designers) who already pay for AI.
+- **What it does for them:** Their AI writes in their voice, uses their calendar and files, and runs their repeat tasks.
+- **What sets it apart:** Done with you in one call, in your own accounts, and you pay after.
+- **Most impressive moment:** The site's own demo. One request to reply to Carla goes from a stiff generic email to a ready-to-send reply with real times, as each layer is added.
+- **Visual hook:** The generic reply with a "You'd rewrite this" stamp.
+- **Real UI to show:** The hero lab (Pick a job, Add the setup, AI reply, Add next layer), the "Four layers. One call." headline, the package price.
+- **Tone:** Confident and clean. Swiss: hard cuts, masked type reveals, no soft fades.
+- **Share caption:** Your AI, set up for you.
 
 ## Storyboard (landscape 1920x1080, 30fps, 20.4s)
 | # | Time | Scene | On screen | Motion / SFX |
 |---|---|---|---|---|
-| 1 | 0.0 to 3.4 | Hook | Intake field "What frustrates you about it today?" types "answers sound generic, I keep repeating who I am" | Keyboard ticks, soft pad |
-| 2 | 3.4 to 6.4 | Reveal | Joogo logo + "Your AI, set up around the way you actually work." | Field slides out, headline rises line by line, low hit on reveal |
-| 3 | 6.4 to 12.0 | Highlight: the setup | Real console: "Real estate agent, Miami", instructions type in, Gmail / Calendar / Skill rows go live, toast "Draft ready in 12 seconds" | Ticks, three soft pings on rows, pop on toast |
-| 4 | 12.0 to 16.2 | Highlight: how | "About two hours of your time. Spread over two weeks." + 3 step cards from the site | Steps stagger in with soft plucks |
-| 5 | 16.2 to 20.4 | Outro | Logo, "Make it sound like you.", "From $199. Payment after the session, not before.", cursor clicks "Book your setup", Claude / ChatGPT / Gemini | Click, final chord |
+| 1 | 0.0 to 3.4 | Hook | "You ask: Reply to Carla..." and the generic reply, stamped "You'd rewrite this" | Reply blurs in like the site, stamp slams with a thud |
+| 2 | 3.4 to 6.4 | Reveal | AI FOR YOU logo, "YOUR AI, SET UP FOR YOU." | Masked line wipes, low hit |
+| 3 | 6.4 to 13.0 | The lab | "Add the setup. Layer by layer." The site's demo: instructions, tools, skill switch on one by one and the reply rewrites itself with highlights, ending "Ready to send" | Button press click plus rising bell per layer |
+| 4 | 13.0 to 16.4 | Black band | "FOUR LAYERS. ONE CALL." with the 4 layers in a hairline grid | Hit, four plucks |
+| 5 | 16.4 to 20.4 | Outro | "BOOK YOUR SETUP." blue button, "Setups from $100. Pay after.", Claude / ChatGPT / Gemini. Cursor clicks the button | Click, final chord |
 
-Scene sum: 3.4 + 3.0 + 5.6 + 4.2 + 4.2 = 20.4s
+Scene sum: 3.4 + 3.0 + 6.6 + 3.4 + 4.0 = 20.4s
 
 ## Visual identity
-- Background #F4F5F4, raised #FFFFFF, ink #151917, muted #5C6460, accent #1B7A5E, accent wash #E3F0EB
-- Geist (sans) and Geist Mono, from the site
-- Film grain overlay from the site at 5%
+- White #FFFFFF, ink #0B0B0C, muted #5E5E66, hairline #E4E4E8, soft #F4F4F6, electric blue #2340FF
+- Archivo 900 wide uppercase for display, Geist for UI, Geist Mono for labels
+- Sharp corners, 2px black frames, black band section
 
 ## Sound
-Original track synthesized for this video, 96 BPM in A major (A, F#m, D, E). Soft pad, plucked arpeggio, light kick from scene 2. SFX built from the same tones and kept under the music.
+Original track synthesized for this video, 100 BPM in A major (A, F#m, D, E). Soft pad, plucked arpeggio, light kick from scene 2. SFX built from the same tones and kept under the music.
