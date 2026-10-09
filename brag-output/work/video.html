@@ -1,0 +1,269 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+:root {
+  --bg: #F4F5F4; --raised: #FFFFFF; --sunk: #EBEDEC; --fg: #151917; --muted: #5C6460; --line: #DCE0DE;
+  --accent: #1B7A5E; --accent-ink: #FFFFFF; --accent-wash: #E3F0EB;
+  --shadow: 0 40px 80px -36px rgba(22, 60, 47, 0.32);
+  --sans: "Geist", "Helvetica Neue", system-ui, sans-serif;
+  --mono: "Geist Mono", ui-monospace, Menlo, monospace;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: var(--bg); color: var(--fg); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+#stage { position: absolute; inset: 0; overflow: hidden; }
+#stage::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 30; opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.scene { position: absolute; inset: 0; opacity: 0; }
+.mono { font-family: var(--mono); }
+.logo { display: flex; align-items: center; gap: 18px; font-weight: 600; letter-spacing: -0.02em; }
+.logo svg { flex: none; }
+
+/* 1: hook, the site's own intake field */
+#s1 { display: grid; place-items: center; }
+.formcard { width: 1380px; background: var(--raised); border-radius: 44px; padding: 64px 68px; display: grid; gap: 30px; box-shadow: var(--shadow), inset 0 0 0 1px var(--line); }
+.qhead { font-size: 40px; font-weight: 600; letter-spacing: -0.015em; display: flex; gap: 20px; align-items: baseline; }
+.qhead span { font-family: var(--mono); font-size: 24px; color: var(--accent); font-weight: 400; }
+.flabel { font-size: 52px; font-weight: 500; letter-spacing: -0.02em; }
+.textarea { font-size: 62px; line-height: 1.25; letter-spacing: -0.02em; background: var(--raised); border: 2px solid var(--accent); border-radius: 22px; padding: 30px 34px; min-height: 230px; }
+.caret { display: inline-block; width: 4px; height: 1em; background: var(--accent); vertical-align: -0.12em; margin-left: 4px; }
+
+/* 2: reveal */
+#s2 { display: grid; align-content: center; padding-left: 190px; gap: 56px; }
+#s2 .logo { font-size: 46px; }
+#s2 h1 { margin: 0; font-size: 132px; line-height: 1.02; letter-spacing: -0.045em; font-weight: 600; }
+#s2 h1 .ln { display: block; }
+#s2 h1 .acc { color: var(--accent); }
+
+/* 3: the setup console */
+#s3 { display: grid; grid-template-columns: 640px 960px; gap: 100px; align-items: center; padding-left: 130px; }
+.pillars { display: grid; gap: 26px; }
+.pillars .kick { font-size: 34px; color: var(--muted); font-weight: 500; letter-spacing: -0.01em; margin-bottom: 10px; }
+.pillar { font-size: 78px; font-weight: 600; letter-spacing: -0.04em; line-height: 1.02; }
+.console { position: relative; background: var(--raised); border-radius: 44px; box-shadow: var(--shadow), inset 0 0 0 1px var(--line); padding: 16px; }
+.console-in { background: var(--bg); border-radius: 32px; padding: 38px; display: grid; gap: 32px; }
+.c-head { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 22px; color: var(--muted); }
+.c-who { color: var(--fg); }
+.c-label { font-size: 23px; color: var(--muted); margin: 0 0 14px; font-weight: 500; }
+.typed { font-family: var(--mono); font-size: 25px; line-height: 1.6; background: var(--raised); border-radius: 16px; padding: 24px 28px; box-shadow: inset 0 0 0 1px var(--line); height: 230px; }
+.c-rows { display: grid; gap: 10px; }
+.c-row { display: flex; justify-content: space-between; align-items: center; padding: 18px 24px; background: var(--raised); border-radius: 16px; font-size: 27px; box-shadow: inset 0 0 0 1px var(--line); }
+.state { display: inline-flex; align-items: center; gap: 12px; font-family: var(--mono); font-size: 21px; color: var(--muted); }
+.dot { width: 12px; height: 12px; border-radius: 50%; background: var(--line); position: relative; }
+.dot i { position: absolute; inset: -7px; border-radius: 50%; background: var(--accent); opacity: 0; }
+.toast { position: absolute; right: -40px; bottom: -34px; background: var(--fg); color: var(--bg); font-size: 28px; font-weight: 500; padding: 18px 26px; border-radius: 18px; box-shadow: var(--shadow); transform-origin: right center; opacity: 0; }
+
+/* 4: how it works */
+#s4 { padding: 0 130px; display: grid; align-content: center; }
+#s4 h2 { margin: 0 0 80px; font-size: 100px; letter-spacing: -0.04em; line-height: 1.04; font-weight: 600; }
+#s4 h2 .acc { color: var(--accent); }
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+.step { background: var(--raised); border-radius: 40px; padding: 56px 52px 64px; box-shadow: inset 0 0 0 1px var(--line); display: grid; gap: 20px; align-content: start; }
+.step .n { font-family: var(--mono); font-size: 96px; line-height: 1; color: var(--accent); letter-spacing: -0.04em; }
+.step .dur { font-family: var(--mono); font-size: 28px; color: var(--muted); }
+.step h3 { margin: 0; font-size: 54px; letter-spacing: -0.025em; line-height: 1.1; font-weight: 600; }
+
+/* 5: outro */
+#s5 { display: grid; place-items: center; text-align: center; }
+.out { display: grid; justify-items: center; gap: 44px; }
+#s5 .logo { font-size: 54px; }
+#s5 h2 { margin: 0; font-size: 150px; letter-spacing: -0.05em; line-height: 1; font-weight: 600; }
+#s5 .sub { font-size: 40px; color: var(--muted); letter-spacing: -0.01em; }
+.btn { position: relative; display: inline-flex; align-items: center; gap: 18px; font-size: 38px; font-weight: 500; padding: 26px 44px; border-radius: 999px; background: var(--fg); color: var(--bg); }
+.btn svg { width: 30px; height: 30px; stroke: currentColor; fill: none; stroke-width: 1.75; }
+.works { display: flex; gap: 40px; font-family: var(--mono); font-size: 26px; color: var(--muted); padding-top: 26px; border-top: 1px solid var(--line); }
+.cursor { position: absolute; width: 46px; height: 46px; z-index: 20; left: 0; top: 0; opacity: 0; }
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <section class="scene" id="s1">
+    <div class="formcard" id="s1card">
+      <div class="qhead"><span>02</span>Your AI today</div>
+      <div class="flabel">What frustrates you about it today?</div>
+      <div class="textarea"><span id="s1text"></span><span class="caret" id="s1caret"></span></div>
+    </div>
+  </section>
+
+  <section class="scene" id="s2">
+    <div class="logo" id="s2logo">
+      <svg width="58" height="58" viewBox="0 0 26 26"><rect x="1" y="1" width="24" height="24" rx="8" fill="#151917"/><path d="M8 13.5l3.2 3.2L18 9.5" fill="none" stroke="#F4F5F4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Joogo
+    </div>
+    <h1><span class="ln" id="s2l1">Your AI, set up around</span><span class="ln acc" id="s2l2">the way you actually work.</span></h1>
+  </section>
+
+  <section class="scene" id="s3">
+    <div class="pillars">
+      <div class="kick" id="s3kick">In one guided session:</div>
+      <div class="pillar" id="p1">Your instructions.</div>
+      <div class="pillar" id="p2">Your tools.</div>
+      <div class="pillar" id="p3">Your repeat tasks.</div>
+    </div>
+    <div class="console" id="s3console">
+      <div class="console-in">
+        <div class="c-head"><span>example setup</span><span class="c-who">Real estate agent, Miami</span></div>
+        <div>
+          <p class="c-label">Custom instructions</p>
+          <div class="typed"><span id="s3text"></span><span class="caret" id="s3caret"></span></div>
+        </div>
+        <div>
+          <p class="c-label">Connected</p>
+          <div class="c-rows">
+            <div class="c-row"><span>Gmail</span><span class="state"><span class="dot" id="d0"><i></i></span><span id="t0">connecting</span></span></div>
+            <div class="c-row"><span>Google Calendar</span><span class="state"><span class="dot" id="d1"><i></i></span><span id="t1">connecting</span></span></div>
+            <div class="c-row"><span>Skill: Friday client follow ups</span><span class="state"><span class="dot" id="d2"><i></i></span><span id="t2">building</span></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="toast" id="toast">Draft ready in 12 seconds</div>
+    </div>
+  </section>
+
+  <section class="scene" id="s4">
+    <h2 id="s4h">About two hours of your time.<br><span class="acc">Spread over two weeks.</span></h2>
+    <div class="steps">
+      <div class="step" id="st0"><p class="n" style="margin:0">01</p><p class="dur" style="margin:0">10 minutes, on your own</p><h3>Tell me about your work</h3></div>
+      <div class="step" id="st1"><p class="n" style="margin:0">02</p><p class="dur" style="margin:0">60 to 90 minutes, video call</p><h3>We set it up together</h3></div>
+      <div class="step" id="st2"><p class="n" style="margin:0">03</p><p class="dur" style="margin:0">20 minutes, two weeks later</p><h3>Use it, then we tune it</h3></div>
+    </div>
+  </section>
+
+  <section class="scene" id="s5">
+    <div class="out">
+      <div class="logo" id="s5logo">
+        <svg width="66" height="66" viewBox="0 0 26 26"><rect x="1" y="1" width="24" height="24" rx="8" fill="#151917"/><path d="M8 13.5l3.2 3.2L18 9.5" fill="none" stroke="#F4F5F4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Joogo
+      </div>
+      <h2 id="s5h">Make it sound like you.</h2>
+      <div class="sub" id="s5sub">From $199. Payment after the session, not before.</div>
+      <div class="btn" id="s5btn">Book your setup <svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></div>
+      <div class="works" id="s5works"><span>Claude</span><span>ChatGPT</span><span>Gemini</span></div>
+    </div>
+  </section>
+
+  <svg class="cursor" id="cursor" viewBox="0 0 24 24"><path d="M5 3l14 8-6.2 1.6L10 19z" fill="#151917" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const prog = (t, a, b) => clamp((t - a) / (b - a));
+const outExpo = x => x === 1 ? 1 : 1 - Math.pow(2, -10 * x);
+const outBack = x => { const c = 1.5; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+const inOut = x => x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const lerp = (a, b, x) => a + (b - a) * x;
+
+// enter: rise and fade in over d seconds starting at a; exit: lift and fade out
+function rise(el, t, a, d = 0.7, dist = 40) {
+  const p = outExpo(prog(t, a, a + d));
+  el.style.opacity = p; el.style.transform = `translateY(${(1 - p) * dist}px)`;
+  return p;
+}
+function scene(el, t, a, b, fade = 0.3) {
+  const on = t >= a && t < b;
+  el.style.opacity = on ? 1 - inOut(prog(t, b - fade, b)) : 0;
+  el.style.visibility = on ? "visible" : "hidden";
+  return on;
+}
+function typeTo(el, text, t, a, b) {
+  const n = Math.round(text.length * prog(t, a, b));
+  el.textContent = text.slice(0, n);
+  return n >= text.length;
+}
+const blink = (t, from) => (t < from || Math.floor((t - from) * 2) % 2 === 0) ? 1 : 0;
+
+const HOOK = "answers sound generic, I keep repeating who I am";
+const INSTR = "I sell homes in Miami. Write warm, short emails in English or Spanish to match the client. End every email with one clear next step.";
+
+window.render = function (t) {
+  // 1. Hook (0 to 3.4)
+  if (scene($("s1"), t, 0, 3.4, 0.01)) {
+    const card = $("s1card");
+    const out = inOut(prog(t, 3.0, 3.4));
+    card.style.transform = `translateY(${-out * 70}px) scale(${1 + t * 0.006})`;
+    card.style.opacity = 1 - out;
+    const done = typeTo($("s1text"), HOOK, t, 0.35, 1.85);
+    $("s1caret").style.opacity = done ? blink(t, 1.85) : 1;
+  }
+
+  // 2. Reveal (3.4 to 6.4)
+  if (scene($("s2"), t, 3.4, 6.4, 0.3)) {
+    rise($("s2logo"), t, 3.5, 0.7, 24);
+    rise($("s2l1"), t, 3.62, 0.8, 60);
+    rise($("s2l2"), t, 3.85, 0.8, 60);
+    $("s2").style.transform = `scale(${1 + prog(t, 3.4, 6.4) * 0.025})`;
+  }
+
+  // 3. The setup (6.4 to 12.0)
+  if (scene($("s3"), t, 6.4, 12.0, 0.35)) {
+    rise($("s3kick"), t, 6.45, 0.6, 20);
+    const cp = outExpo(prog(t, 6.45, 7.2));
+    $("s3console").style.opacity = cp;
+    $("s3console").style.transform = `translateX(${(1 - cp) * 120}px)`;
+    const beats = [6.6, 8.95, 9.95];
+    ["p1", "p2", "p3"].forEach((id, i) => {
+      const el = $(id);
+      const p = rise(el, t, beats[i], 0.6, 30);
+      const active = i === 2 ? t >= beats[2] : t >= beats[i] && t < beats[i + 1];
+      el.style.color = active ? "var(--fg)" : "var(--muted)";
+      el.style.opacity = p * (active ? 1 : 0.55);
+    });
+    const done = typeTo($("s3text"), INSTR, t, 6.9, 8.8);
+    $("s3caret").style.opacity = done ? 0 : 1;
+    const live = [9.1, 9.5, 10.1];
+    live.forEach((a, i) => {
+      const on = t >= a;
+      const dot = $("d" + i);
+      dot.style.background = on ? "var(--accent)" : "var(--line)";
+      const ping = prog(t, a, a + 1.1);
+      dot.firstChild.style.opacity = on ? 0.35 * (1 - ping) : 0;
+      dot.firstChild.style.transform = `scale(${0.6 + ping * 1.2})`;
+      $("t" + i).textContent = on ? (i === 2 ? "ready" : "live") : (i === 2 ? "building" : "connecting");
+      $("t" + i).style.color = on ? "var(--fg)" : "var(--muted)";
+    });
+    const tp = prog(t, 10.55, 11.1);
+    $("toast").style.opacity = clamp(tp * 3);
+    $("toast").style.transform = `scale(${tp > 0 ? lerp(0.85, 1, outBack(tp)) : 0.85})`;
+  }
+
+  // 4. How it works (12.0 to 16.2)
+  if (scene($("s4"), t, 12.0, 16.2, 0.35)) {
+    rise($("s4h"), t, 12.1, 0.8, 40);
+    [12.6, 13.4, 14.2].forEach((a, i) => rise($("st" + i), t, a, 0.7, 70));
+  }
+
+  // 5. Outro (16.2 to 20.4)
+  if (scene($("s5"), t, 16.2, 20.5, 0.01)) {
+    rise($("s5logo"), t, 16.3, 0.7, 24);
+    rise($("s5h"), t, 16.45, 0.8, 50);
+    rise($("s5sub"), t, 16.9, 0.7, 30);
+    rise($("s5btn"), t, 17.2, 0.7, 30);
+    rise($("s5works"), t, 17.5, 0.7, 20);
+    const btn = $("s5btn"), cur = $("cursor");
+    const r = btn.getBoundingClientRect();
+    const tx = r.left + r.width * 0.72, ty = r.top + r.height * 0.55;
+    const mp = inOut(prog(t, 17.8, 18.6));
+    cur.style.opacity = prog(t, 17.8, 18.0);
+    cur.style.left = lerp(1500, tx, mp) + "px";
+    cur.style.top = lerp(1000, ty, mp) + "px";
+    const press = t >= 18.75 && t < 18.9;
+    const clicked = t >= 18.75;
+    cur.style.transform = `scale(${press ? 0.85 : 1})`;
+    btn.style.transform = `scale(${press ? 0.97 : 1})`;
+    btn.style.background = clicked ? "var(--accent)" : "var(--fg)";
+    btn.style.color = clicked ? "var(--accent-ink)" : "var(--bg)";
+  } else {
+    $("cursor").style.opacity = 0;
+  }
+};
+
+window.ready = (async () => { await document.fonts.ready; await document.fonts.load('600 40px Geist'); await document.fonts.load('400 20px "Geist Mono"'); window.render(0); return true; })();
+</script>
+</body>
+</html>
