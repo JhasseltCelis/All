@@ -21,3 +21,15 @@ python src/build_logo.py <Archivo-Expanded-Black.ttf> svg      # needs fonttools
 vectorcraft-cli convert svg/logo-horizontal.svg pdf/logo-horizontal.pdf
 vectorcraft-cli convert svg/logo-horizontal.svg png/logo-horizontal.png --scale 8
 ```
+
+## Infographic
+
+`infographic/ai-for-you-infographic.vectorcraft` is the editable file (open it in VectorCraft), with `.pdf` (print), `.png` (1200 px wide, for posts) and `.svg`. All copy is from the website. Rebuild:
+
+```sh
+python src/build_infographic.py <fonts_dir> infographic/ai-for-you-infographic.svg   # needs fonttools
+vectorcraft-cli convert infographic/ai-for-you-infographic.svg infographic/ai-for-you-infographic.vectorcraft
+vectorcraft-cli convert infographic/ai-for-you-infographic.vectorcraft infographic/ai-for-you-infographic.pdf
+```
+
+Rendering needs Archivo Expanded Black, Geist (400, 500, 600) and Geist Mono installed.
