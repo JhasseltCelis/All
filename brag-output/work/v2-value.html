@@ -1,0 +1,116 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..900&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="common.css">
+<style>
+/* V2: your money's worth */
+#s1 { gap: 70px; }
+#s1 .disp { font-size: 190px; }
+.meter { display: grid; gap: 18px; }
+.meter .top { display: flex; justify-content: space-between; }
+.meter .bar { height: 46px; border: 2px solid var(--fg); position: relative; }
+.meter .fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--blue); width: 0; }
+.meter .val { font-family: var(--mono); font-size: 30px; }
+
+#s2 { gap: 60px; }
+#s2 .disp { font-size: 150px; }
+.search { display: flex; align-items: center; gap: 30px; padding: 34px 44px; border-radius: 999px; border: 2px solid var(--line); background: var(--soft); width: 1300px; }
+.search svg { width: 50px; height: 50px; stroke: var(--muted); fill: none; stroke-width: 2.2; flex: none; }
+.search span { font-size: 54px; color: var(--muted); }
+.caret { display: inline-block; width: 4px; height: 0.95em; background: var(--muted); vertical-align: -0.1em; margin-left: 6px; }
+
+#s3 { gap: 48px; align-content: center; }
+#s3 .disp { font-size: 110px; }
+#s3 .cells { grid-template-columns: repeat(4, 1fr); }
+#s3 .cells > div { min-height: 330px; }
+
+#s4 .disp { font-size: 176px; }
+#s4 { gap: 50px; }
+.cta .disp { font-size: 150px; }
+#s4 .note { font-size: 40px; color: #A0A0AA; font-weight: 500; }
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <section class="scene" id="s1">
+    <h1 class="disp"><span class="mask"><span id="s1l1">$20 a month.</span></span><span class="mask"><span class="blue" id="s1l2">$5 of value.</span></span></h1>
+    <div class="meter" id="s1m">
+      <div class="top"><span class="label">What you get from your AI subscription</span><span class="val" id="s1v">$0</span></div>
+      <div class="bar"><div class="fill" id="s1f"></div></div>
+    </div>
+  </section>
+
+  <section class="scene" id="s2">
+    <h2 class="disp"><span class="mask"><span id="s2l1">Used like a</span></span><span class="mask"><span class="blue" id="s2l2">search box.</span></span></h2>
+    <div class="search" id="s2box"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><span><span id="s2typed"></span><span class="caret"></span></span></div>
+  </section>
+
+  <section class="scene" id="s3">
+    <h2 class="disp"><span class="mask"><span id="s3t">Add the <span class="blue">missing setup.</span></span></span></h2>
+    <div class="meter" id="s3m">
+      <div class="top"><span class="label">Your money's worth</span><span class="val" id="s3v">$5</span></div>
+      <div class="bar"><div class="fill" id="s3f"></div></div>
+    </div>
+    <div class="cells">
+      <div id="c0"><span class="n">01</span><span class="tx">Instructions that sound like you</span><span class="sm">Role, clients, tone and languages, saved once</span></div>
+      <div id="c1"><span class="n">02</span><span class="tx">Your tools, connected</span><span class="sm">Email, calendar and files, with the access you approve</span></div>
+      <div id="c2"><span class="n">03</span><span class="tx">Skills for your repeat work</span><span class="sm">One short sentence, done your way</span></div>
+      <div id="c3"><span class="n">04</span><span class="tx">A cheat sheet and a tune up</span><span class="sm">We fix anything off two weeks later</span></div>
+    </div>
+  </section>
+
+  <section class="scene band" id="s4">
+    <h2 class="disp"><span class="mask"><span id="s4l1">Not a discount.</span></span><span class="mask"><span class="blue" id="s4l2">Your money's</span></span><span class="mask"><span class="blue" id="s4l3">worth.</span></span></h2>
+    <p class="note" id="s4n">From the paid plan you already have.</p>
+  </section>
+
+  <section class="scene cta" id="cta">
+    <div class="logo" id="ctaLogo"><i></i>AI FOR YOU</div>
+    <h2 class="disp"><span class="mask"><span id="ctaL1">Stop paying for</span></span><span class="mask"><span class="blue" id="ctaL2">a search box.</span></span></h2>
+    <div class="cta-row" id="ctaRow">
+      <span class="cta-btn" id="ctaBtn">Book your setup <svg viewBox="0 0 18 18"><path d="M3 9h12M10 4l5 5-5 5"/></svg></span>
+      <span class="cta-sub">Setups from $100. Pay after.</span>
+    </div>
+    <div class="cta-steps" id="ctaSteps"><span><b>01</b>Leave your name and number</span><span><b>02</b>One guided call</span><span><b>03</b>Pay after the session</span></div>
+  </section>
+
+  <svg class="cursor" id="cursor" viewBox="0 0 24 24"><path d="M5 3l14 8-6.2 1.6L10 19z" fill="#0B0B0C" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg>
+</div>
+<script src="common.js"></script>
+<script>
+function meter(fill, val, pct) {
+  fill.style.width = pct * 100 + "%";
+  val.textContent = "$" + Math.round(pct * 20);
+}
+window.render = function (t) {
+  if (scene($("s1"), t, 0, 3.6)) {
+    wipe($("s1l1"), t, 0.0); wipe($("s1l2"), t, 0.9);
+    rise($("s1m"), t, 0.2, 0.5, 20);
+    meter($("s1f"), $("s1v"), 0.25 * outExpo(prog(t, 1.0, 1.9)));
+  }
+  if (scene($("s2"), t, 3.6, 7.2)) {
+    wipe($("s2l1"), t, 3.65); wipe($("s2l2"), t, 3.85);
+    rise($("s2box"), t, 4.1, 0.5, 30);
+    typeTo($("s2typed"), "write email to client", t, 4.6, 5.6);
+  }
+  if (scene($("s3"), t, 7.2, 12.6)) {
+    wipe($("s3t"), t, 7.25);
+    rise($("s3m"), t, 7.35, 0.5, 20);
+    const at = [7.9, 8.9, 9.9, 10.9];
+    at.forEach((a, i) => rise($("c" + i), t, a, 0.5, 30));
+    let pct = 0.25;
+    at.forEach(a => { pct += 0.1875 * outExpo(prog(t, a + 0.1, a + 0.7)); });
+    meter($("s3f"), $("s3v"), pct);
+  }
+  if (scene($("s4"), t, 12.6, 16.0)) {
+    wipe($("s4l1"), t, 12.65); wipe($("s4l2"), t, 13.15); wipe($("s4l3"), t, 13.3);
+    rise($("s4n"), t, 13.7, 0.5, 20);
+  }
+  renderCta(t, 16.0);
+};
+</script>
+</body>
+</html>

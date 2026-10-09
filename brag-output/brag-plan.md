@@ -31,3 +31,36 @@ Scene sum: 3.4 + 3.0 + 6.6 + 3.4 + 4.0 = 20.4s
 
 ## Sound
 Original track synthesized for this video, 100 BPM in A major (A, F#m, D, E). Soft pad, plucked arpeggio, light kick from scene 2. SFX built from the same tones and kept under the music.
+
+---
+
+# Benefit versions (20.4s each, landscape 1920x1080)
+
+Each version sells one benefit from the site and ends on the same action card: headline, blue button that gets clicked, price line and three next steps. Sources: `work/v1-skills.html`, `work/v2-value.html`, `work/v3-easy.html`, shared `work/common.css` and `work/common.js`. Soundtracks: `work/cues/*.json` through `work/music.py`.
+
+## V1: Skills ("One sentence. Done your way.")
+| Time | Scene |
+|---|---|
+| 0.0 to 3.4 | "EVERY FRIDAY. SAME EMAILS." next to a to-do list of client follow ups |
+| 3.4 to 8.6 | "Or type one sentence." "Do my Friday follow ups" types in, the skill card ticks its 3 steps |
+| 8.6 to 12.6 | "WAITING IN GMAIL. IN YOUR TONE." with 4 drafts |
+| 12.6 to 16.0 | Black band: "ONE SENTENCE. DONE YOUR WAY." Skills, GPTs or Gems / for the tasks you repeat / built with you in one call |
+| 16.0 to 20.4 | CTA: "GET YOUR FIRST SKILL BUILT." Book your setup. Pro, $200. Pay after the session |
+
+## V2: Value ("Your money's worth.")
+| Time | Scene |
+|---|---|
+| 0.0 to 3.6 | "$20 A MONTH. $5 OF VALUE." with a value meter stuck at a quarter |
+| 3.6 to 7.2 | "USED LIKE A SEARCH BOX." "write email to client" types into a search bar |
+| 7.2 to 12.6 | "ADD THE MISSING SETUP." The 4 layers appear and the meter fills to $20 |
+| 12.6 to 16.0 | Black band: "NOT A DISCOUNT. YOUR MONEY'S WORTH." |
+| 16.0 to 20.4 | CTA: "STOP PAYING FOR A SEARCH BOX." Book your setup. Setups from $100. Pay after |
+
+## V3: Easy and private ("One hour with a person.")
+| Time | Scene |
+|---|---|
+| 0.0 to 3.6 | "10 HOURS OF TUTORIALS AT 2X SPEED?" with a playlist bar that barely moves |
+| 3.6 to 6.4 | "OR ONE HOUR WITH A PERSON." |
+| 6.4 to 12.0 | "FIRST, MEET CHARLES." The site's example interview plays out |
+| 12.0 to 16.0 | Black band: "YOUR ACCOUNTS STAY YOURS." No passwords / only the access you approve / nothing kept |
+| 16.0 to 20.4 | CTA: "TALK TO CHARLES NOW." Start the interview. 10 minutes, whenever suits you |

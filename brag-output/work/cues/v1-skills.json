@@ -1,0 +1,5 @@
+{"bpm": 104, "transpose": 2, "duration": 20.4, "groove_start": 3.4, "hats_start": 5.0, "end": 16.0,
+ "sfx": [["thud", 0.55], ["typing", 3.9, 4.8], ["tick", 5.6], ["bell", 5.6, 81], ["tick", 6.4], ["bell", 6.4, 85], ["tick", 7.2], ["bell", 7.2, 88],
+         ["pluck", 8.9, 76], ["pluck", 9.25, 81], ["pluck", 9.6, 85], ["pluck", 9.95, 88], ["thud", 12.65],
+         ["pluck", 13.4, 81], ["pluck", 13.6, 85], ["pluck", 13.8, 88], ["click", 18.45],
+         ["whoosh", 3.15], ["whoosh", 8.35], ["whoosh", 12.35]]}

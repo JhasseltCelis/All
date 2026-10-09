@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..900&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="common.css">
+<style>
+/* V3: easy and private */
+#s1 { gap: 64px; }
+#s1 .disp { font-size: 168px; }
+.player { display: grid; grid-template-columns: auto 1fr auto; gap: 34px; align-items: center; padding: 28px 36px; background: var(--fg); color: #fff; }
+.player svg { width: 40px; height: 40px; fill: #fff; }
+.player .track { height: 10px; background: #333; position: relative; }
+.player .prog { position: absolute; left: 0; top: 0; bottom: 0; background: var(--blue); }
+.player .speed { font-family: var(--mono); font-size: 30px; border: 2px solid #fff; padding: 6px 14px; }
+
+#s2 .disp { font-size: 220px; }
+
+#s3 { grid-template-columns: 1fr 820px; gap: 70px; align-items: center; }
+#s3 .disp { font-size: 120px; }
+#s3 .lead { font-size: 40px; color: var(--muted); line-height: 1.35; margin-top: 40px; max-width: 18em; font-weight: 500; }
+.chat { display: grid; }
+.chat .hd { display: flex; justify-content: space-between; padding: 22px 30px; border-bottom: 1px solid var(--line); }
+.chat .body { padding: 30px; display: grid; gap: 20px; min-height: 520px; align-content: start; }
+.bub { max-width: 88%; padding: 22px 28px; font-size: 34px; line-height: 1.4; }
+.bub.ai { background: var(--soft); justify-self: start; }
+.bub.me { background: var(--blue); color: #fff; justify-self: end; }
+.dots3 { display: inline-flex; gap: 10px; padding: 26px 28px; background: var(--soft); justify-self: start; }
+.dots3 i { width: 12px; height: 12px; background: var(--muted); }
+
+#s4 { gap: 64px; }
+#s4 .disp { font-size: 180px; }
+#s4 .cells { grid-template-columns: repeat(3, 1fr); }
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <section class="scene" id="s1">
+    <h1 class="disp"><span class="mask"><span id="s1l1">10 hours of</span></span><span class="mask"><span id="s1l2">tutorials</span></span><span class="mask"><span class="blue" id="s1l3">at 2x speed?</span></span></h1>
+    <div class="player" id="s1p">
+      <svg viewBox="0 0 24 24"><path d="M7 5l12 7-12 7z"/></svg>
+      <div class="track"><div class="prog" id="s1prog"></div></div>
+      <span class="speed">2x</span>
+    </div>
+  </section>
+
+  <section class="scene" id="s2">
+    <h2 class="disp"><span class="mask"><span id="s2l1">Or one hour</span></span><span class="mask"><span class="blue" id="s2l2">with a person.</span></span></h2>
+  </section>
+
+  <section class="scene" id="s3">
+    <div>
+      <h2 class="disp"><span class="mask"><span id="s3l1">First,</span></span><span class="mask"><span class="blue" id="s3l2">meet Charles.</span></span></h2>
+      <p class="lead" id="s3lead">Our AI agent. 10 minutes, one question at a time, in your language.</p>
+    </div>
+    <div class="chat frame" id="s3chat">
+      <div class="hd"><span class="label">Charles, AI agent</span><span class="label">example</span></div>
+      <div class="body">
+        <p class="bub ai" id="b0">Hi Ana. What does a normal workday look like for you?</p>
+        <p class="bub me" id="b1">I run the front desk at a dental clinic. Lots of calls and emails.</p>
+        <span class="dots3" id="typing"><i></i><i></i><i></i></span>
+        <p class="bub ai" id="b2">Which emails take the longest to answer? Give me one example.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene band" id="s4">
+    <h2 class="disp"><span class="mask"><span id="s4l1">Your accounts</span></span><span class="mask"><span class="blue" id="s4l2">stay yours.</span></span></h2>
+    <div class="cells">
+      <div id="c0"><span class="n">01</span><span class="tx">No passwords, ever</span><span class="sm">You log in yourself while I guide you</span></div>
+      <div id="c1"><span class="n">02</span><span class="tx">Only the access you approve</span><span class="sm">The lowest permission that does the job</span></div>
+      <div id="c2"><span class="n">03</span><span class="tx">Nothing kept from the call</span><span class="sm">Your setup lives in your accounts only</span></div>
+    </div>
+  </section>
+
+  <section class="scene cta" id="cta">
+    <div class="logo" id="ctaLogo"><i></i>AI FOR YOU</div>
+    <h2 class="disp"><span class="mask"><span id="ctaL1">Talk to</span></span><span class="mask"><span class="blue" id="ctaL2">Charles now.</span></span></h2>
+    <div class="cta-row" id="ctaRow">
+      <span class="cta-btn" id="ctaBtn">Start the interview <svg viewBox="0 0 18 18"><path d="M3 9h12M10 4l5 5-5 5"/></svg></span>
+      <span class="cta-sub">10 minutes, whenever suits you.</span>
+    </div>
+    <div class="cta-steps" id="ctaSteps"><span><b>01</b>Chat with Charles</span><span><b>02</b>We set it up together</span><span><b>03</b>Pay after the session</span></div>
+  </section>
+
+  <svg class="cursor" id="cursor" viewBox="0 0 24 24"><path d="M5 3l14 8-6.2 1.6L10 19z" fill="#0B0B0C" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg>
+</div>
+<script src="common.js"></script>
+<script>
+window.render = function (t) {
+  if (scene($("s1"), t, 0, 3.6)) {
+    wipe($("s1l1"), t, 0.0); wipe($("s1l2"), t, 0.15); wipe($("s1l3"), t, 0.45);
+    rise($("s1p"), t, 0.3, 0.5, 30);
+    // the playlist races at 2x and still barely moves
+    $("s1prog").style.width = (2 + 10 * prog(t, 0.5, 3.4)) + "%";
+  }
+  if (scene($("s2"), t, 3.6, 6.4)) {
+    wipe($("s2l1"), t, 3.65); wipe($("s2l2"), t, 3.9);
+  }
+  if (scene($("s3"), t, 6.4, 12.0)) {
+    wipe($("s3l1"), t, 6.45); wipe($("s3l2"), t, 6.6);
+    rise($("s3lead"), t, 7.0, 0.5, 20);
+    rise($("s3chat"), t, 6.6, 0.6, 50);
+    blurIn($("b0"), t, 7.3); blurIn($("b1"), t, 8.7);
+    const typing = t >= 9.9 && t < 10.5;
+    $("typing").style.display = typing ? "inline-flex" : "none";
+    [...$("typing").children].forEach((d, i) => d.style.opacity = 0.35 + 0.65 * (Math.floor(t * 6 - i) % 3 === 0));
+    $("b2").style.display = t >= 10.5 ? "block" : "none";
+    blurIn($("b2"), t, 10.5);
+  }
+  if (scene($("s4"), t, 12.0, 16.0)) {
+    wipe($("s4l1"), t, 12.05); wipe($("s4l2"), t, 12.3);
+    [12.9, 13.3, 13.7].forEach((a, i) => rise($("c" + i), t, a, 0.5, 30));
+  }
+  renderCta(t, 16.0);
+};
+</script>
+</body>
+</html>

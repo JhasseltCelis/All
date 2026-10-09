@@ -1,0 +1,4 @@
+{"bpm": 92, "transpose": -4, "duration": 20.4, "groove_start": 3.6, "hats_start": 6.4, "end": 16.0,
+ "sfx": [["thud", 0.45], ["thud", 3.65], ["bell", 7.3, 81], ["bell", 8.7, 76], ["tick", 9.9], ["bell", 10.5, 85],
+         ["thud", 12.05], ["pluck", 12.9, 81], ["pluck", 13.3, 85], ["pluck", 13.7, 88], ["click", 18.45],
+         ["whoosh", 3.35], ["whoosh", 6.15], ["whoosh", 11.75]]}
