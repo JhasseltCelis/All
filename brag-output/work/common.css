@@ -18,8 +18,9 @@ p { margin: 0; }
 .disp { font-family: var(--display); font-weight: 900; font-stretch: 118%; text-transform: uppercase; letter-spacing: -0.035em; line-height: 0.86; margin: 0; }
 .mask { display: block; overflow: hidden; padding-bottom: 0.04em; }
 .mask > span { display: block; }
-.logo { font-family: var(--display); font-weight: 900; font-stretch: 125%; letter-spacing: -0.01em; display: flex; align-items: center; gap: 14px; font-size: 40px; }
-.logo i { width: 22px; height: 22px; background: var(--blue); display: inline-block; }
+.logo { font-family: var(--display); font-weight: 900; font-stretch: 125%; letter-spacing: -0.01em; display: flex; align-items: center; gap: 16px; font-size: 52px; }
+/* The Checked Layer mark, as in brand/svg/mark.svg */
+.logo svg { width: 1.3em; height: 1.3em; flex: none; }
 .frame { border: 2px solid var(--fg); }
 .label { font-family: var(--mono); font-size: 24px; color: var(--muted); letter-spacing: 0.02em; }
 .chk { width: 30px; height: 30px; border: 2px solid var(--line); display: grid; place-items: center; flex: none; }
