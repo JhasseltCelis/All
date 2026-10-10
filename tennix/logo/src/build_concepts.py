@@ -131,6 +131,89 @@ def concept_bounce(bold, out):
     (out / "3-bounce-icon.svg").write_text(svg(240, 240, icon, bg=NAVY, rx=54))
 
 
+# ---------- Round two: the seam ball stays, the name is spelled in full ----------
+
+def classic_ball(cx, cy, r, seam=VIOLET, ball=LIME, gap=None, rot=0):
+    """Tennis ball with the familiar pair of seams curving toward each other, like ")(".
+    gap draws a ring in that colour around the ball, to separate it from what it overlaps."""
+    s = r / 100
+    clip = f"k{int(cx)}_{int(cy)}_{int(r)}_{rot}"
+    left = [(-74, -80), (-8, -34), (-8, 34), (-74, 80)]
+    right = [(74, -80), (8, -34), (8, 34), (74, 80)]
+
+    def curve(p):
+        a = math.radians(rot)
+        q = [(cx + (px * math.cos(a) - py * math.sin(a)) * s, cy + (px * math.sin(a) + py * math.cos(a)) * s) for px, py in p]
+        return "M{:g} {:g} C{:g} {:g} {:g} {:g} {:g} {:g}".format(*[v for pt in q for v in pt])
+    ring = f'<circle cx="{cx:g}" cy="{cy:g}" r="{r + 9 * s:g}" fill="{gap}"/>' if gap else ""
+    return (ring + f'<clipPath id="{clip}"><circle cx="{cx:g}" cy="{cy:g}" r="{r:g}"/></clipPath>'
+            f'<circle cx="{cx:g}" cy="{cy:g}" r="{r:g}" fill="{ball}"/>'
+            f'<g clip-path="url(#{clip})" fill="none" stroke="{seam}" stroke-width="{13 * s:g}" stroke-linecap="round">'
+            f'<path d="{curve(left)}"/><path d="{curve(right)}"/></g>')
+
+
+def concept_ball_name(black, out):
+    """04 Ball + name: the seam ball as a symbol, then TENNIX in full. The plainest, most readable route."""
+    size = 112
+    r = 62
+    d, tw, _ = black.outline("TENNIX", size, 2 * r + 34, 112, track=-0.01)
+    cy = 112 - size * black.cap / 2
+    w = 2 * r + 34 + tw + 4
+    for name, ink in [("light", NAVY), ("dark", WHITE)]:
+        (out / f"4-ball-name-{name}.svg").write_text(svg(w, 150, classic_ball(r, cy, r, rot=-28) + f'<path d="{d}" fill="{ink}"/>'))
+    (out / "4-ball-name-icon.svg").write_text(svg(240, 240, classic_ball(120, 120, 84, rot=-28), bg=NAVY, rx=54))
+
+
+def concept_sweet_spot(black, out):
+    """05 Sweet spot: TENNIX in full; the X keeps its letter shape and a small seam ball sits where its strokes cross."""
+    size = 120
+    base = 120
+    for name, ink, gap in [("light", NAVY, BG), ("dark", WHITE, NAVY)]:
+        # shape the whole word for its spacing, then draw the X on its own so it can be violet
+        _, tw, xs = black.outline("TENNIX", size, 0, base, track=-0.01)
+        d, _, _ = black.outline("TENNI", size, 0, base, track=-0.01)
+        gx, gadv = xs[5]
+        xd, _, _ = black.outline("X", size, gx, base)
+        cx, cy = gx + gadv / 2, base - size * black.cap / 2
+        ball = classic_ball(cx, cy, size * 0.17, gap=gap, rot=-28)
+        body = f'<path d="{d}" fill="{ink}"/><path d="{xd}" fill="{VIOLET}"/>' + ball
+        (out / f"5-sweet-spot-{name}.svg").write_text(svg(tw + 8, 150, body))
+    # Icon: the violet X with the ball on its crossing, on navy
+    xd, xw, xxs = black.outline("X", 230, 0, 0)
+    gx, gadv = xxs[0]
+    ox, oy = 120 - (gx + gadv / 2), 120 + 230 * black.cap / 2
+    icon = (f'<path d="{xd}" fill="{VIOLET}" transform="translate({ox:g} {oy:g})"/>'
+            + classic_ball(120, 120, 40, gap=NAVY, rot=-28))
+    (out / "5-sweet-spot-icon.svg").write_text(svg(240, 240, icon, bg=NAVY, rx=54))
+
+
+def concept_badge(bold, out):
+    """06 Ball badge: TENNIX written across the ball, between its two seams. Name and symbol in one round mark."""
+    def badge(cx, cy, r, with_name=True):
+        s = r / 100
+        clip = f"b{int(cx)}_{int(r)}_{with_name}"
+        top = [(-100, -54), (-34, -30), (34, -30), (100, -54)]
+        bot = [(-100, 54), (-34, 30), (34, 30), (100, 54)]
+
+        def curve(p):
+            q = [(cx + px * s, cy + py * s) for px, py in p]
+            return "M{:g} {:g} C{:g} {:g} {:g} {:g} {:g} {:g}".format(*[v for pt in q for v in pt])
+        out_svg = (f'<clipPath id="{clip}"><circle cx="{cx:g}" cy="{cy:g}" r="{r:g}"/></clipPath>'
+                   f'<circle cx="{cx:g}" cy="{cy:g}" r="{r:g}" fill="{LIME}"/>'
+                   f'<g clip-path="url(#{clip})" fill="none" stroke="{VIOLET}" stroke-width="{9 * s:g}" stroke-linecap="round">'
+                   f'<path d="{curve(top)}"/><path d="{curve(bot)}"/></g>')
+        if with_name:
+            # fit the name to 158 units wide, centred between the seams
+            _, w0, _ = bold.outline("TENNIX", 100, 0, 0, track=0.02)
+            size = 158 * s / w0 * 100
+            d, tw, _ = bold.outline("TENNIX", size, cx - 158 * s / 2, cy + size * bold.cap / 2, track=0.02)
+            out_svg += f'<path d="{d}" fill="{NAVY}"/>'
+        return out_svg
+    (out / "6-badge-light.svg").write_text(svg(250, 250, badge(125, 125, 120)))
+    (out / "6-badge-dark.svg").write_text(svg(250, 250, badge(125, 125, 120)))
+    (out / "6-badge-icon.svg").write_text(svg(240, 240, badge(120, 120, 92), bg=VIOLET, rx=54))
+
+
 if __name__ == "__main__":
     fonts, out = Path(sys.argv[1]), Path(sys.argv[2])
     out.mkdir(parents=True, exist_ok=True)
@@ -139,4 +222,7 @@ if __name__ == "__main__":
     concept_seam(black, out)
     concept_court(bold, out)
     concept_bounce(bold, out)
+    concept_ball_name(black, out)
+    concept_sweet_spot(black, out)
+    concept_badge(bold, out)
     print("ok")
