@@ -11,4 +11,4 @@ The audio is an offline eSpeak NG guide voiceover, generated from the exact supp
 For an MP4 export when requested:
 `npx remotion render src/index.ts TennixTravel out/tennix-travel.mp4 --browser-executable=/usr/bin/chromium --concurrency=2`
 
-This project includes the editable composition and guide narration. No MP4 export is included.
+This project includes the editable composition and guide narration. An MP4 export is included at preview/tennix-travel.mp4. It uses the temporary wordmark and synthetic guide voiceover.
