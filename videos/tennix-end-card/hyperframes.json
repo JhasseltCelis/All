@@ -80,6 +80,11 @@
       "name": "motion-blur",
       "type": "hyperframes:component",
       "target": "compositions/components/motion-blur.html"
+    },
+    {
+      "name": "transitions-light",
+      "type": "hyperframes:block",
+      "target": "compositions/transitions-light.html"
     }
   ]
 }

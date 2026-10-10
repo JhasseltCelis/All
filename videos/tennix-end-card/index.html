@@ -3,9 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=1080, height=1920" />
-    <title>Tennix End Card</title>
+    <title>Tennix End Card v2</title>
     <script src="assets/vendor/gsap.min.js"></script>
     <style>
+      @font-face {
+        font-family: "Archivo Black";
+        src: url("assets/fonts/Archivo_wdth_wght_112_900.ttf") format("truetype");
+        font-weight: 900;
+        font-style: normal;
+        font-display: block;
+      }
+      @font-face {
+        font-family: "Archivo ExtraBold";
+        src: url("assets/fonts/Archivo_wght_800.ttf") format("truetype");
+        font-weight: 800;
+        font-style: normal;
+        font-display: block;
+      }
       :root {
         --navy: #14123a;
         --violet: #5b3df5;
@@ -20,73 +34,567 @@
       }
       html,
       body {
-        margin: 0;
         width: 1080px;
         height: 1920px;
         overflow: hidden;
-        background: var(--navy);
+        background: #14123a;
       }
       #root {
         position: relative;
         width: 100%;
         height: 100%;
         overflow: hidden;
-        background: var(--navy);
+        background: #14123a;
       }
-      #card-clip {
+      .clip {
         position: absolute;
         inset: 0;
-        width: 100%;
-        height: 100%;
+        overflow: hidden;
       }
-      #card {
+      .fill {
+        position: absolute;
+        inset: 0;
+      }
+
+      /* ============ 1. THE RALLY ============ */
+      #rally {
+        z-index: 1;
+      }
+      #rally-fx {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+      }
+      .rally-sky {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, #08071d 0%, #100e30 30%, #14123a 55%, #1b1752 100%);
+      }
+      .rally-horizon {
+        position: absolute;
+        left: -260px;
+        top: 330px;
+        width: 1600px;
+        height: 640px;
+        border-radius: 50%;
+        background: radial-gradient(
+          ellipse at 50% 50%,
+          rgba(91, 61, 245, 0.62) 0%,
+          rgba(91, 61, 245, 0.22) 38%,
+          rgba(20, 18, 58, 0) 70%
+        );
+      }
+      .rally-light {
+        position: absolute;
+        top: 120px;
+        width: 900px;
+        height: 240px;
+      }
+      .rally-light .core {
+        position: absolute;
+        left: 410px;
+        top: 80px;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: radial-gradient(circle, #ffffff 0%, rgba(233, 255, 160, 0.9) 22%, rgba(215, 255, 61, 0) 70%);
+      }
+      .rally-light .streak {
+        position: absolute;
+        left: 0;
+        top: 117px;
+        width: 900px;
+        height: 6px;
+        border-radius: 3px;
+        background: linear-gradient(90deg, rgba(215, 255, 61, 0), rgba(240, 255, 190, 0.85) 50%, rgba(215, 255, 61, 0));
+      }
+      .rally-light .halo {
+        position: absolute;
+        left: 300px;
+        top: -30px;
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(215, 255, 61, 0.28), rgba(215, 255, 61, 0) 65%);
+      }
+      #rally-light-l {
+        left: -280px;
+      }
+      #rally-light-r {
+        left: 460px;
+      }
+      #rally-cam {
+        position: absolute;
+        inset: 0;
+        perspective: 1100px;
+        perspective-origin: 540px 380px;
+      }
+      #rally-world,
+      #amb-world {
+        position: absolute;
+        inset: 0;
+        transform-style: preserve-3d;
+      }
+      .court-plane {
+        position: absolute;
+        left: -110px;
+        top: -550px; /* 1700 (screen baseline) - 2250 (local baseline) */
+        width: 1300px;
+        height: 2400px;
+        transform-origin: 650px 2250px;
+        transform: translateZ(60px) rotateX(76deg);
+        transform-style: preserve-3d;
+      }
+      .court-svg {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1300px;
+        height: 2400px;
+        overflow: visible;
+      }
+
+      .court-line {
+        stroke: #d7ff3d;
+        stroke-width: 7;
+        stroke-linecap: square;
+        fill: none;
+      }
+      .court-net {
+        position: absolute;
+        left: 117px;
+        top: 1124px;
+        width: 1066px;
+        height: 80px;
+        transform-origin: 50% 100%;
+        transform: rotateX(-90deg);
+        border-top: 7px solid rgba(255, 255, 255, 0.92);
+        background:
+          repeating-linear-gradient(90deg, rgba(233, 228, 255, 0.28) 0 2px, rgba(0, 0, 0, 0) 2px 12px),
+          repeating-linear-gradient(0deg, rgba(233, 228, 255, 0.22) 0 2px, rgba(0, 0, 0, 0) 2px 12px),
+          rgba(20, 18, 58, 0.35);
+      }
+      #ball-shadow {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(5, 4, 20, 0.85), rgba(5, 4, 20, 0) 70%);
+        opacity: 0;
+      }
+      .impact-ring {
+        position: absolute;
+        width: 240px;
+        height: 240px;
+        border-radius: 50%;
+        border: 9px solid #d7ff3d;
+        box-shadow: 0 0 24px rgba(215, 255, 61, 0.9), inset 0 0 18px rgba(215, 255, 61, 0.6);
+        opacity: 0;
+      }
+      .echo {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(215, 255, 61, 0.9) 0%, rgba(215, 255, 61, 0.55) 60%, rgba(215, 255, 61, 0) 72%);
+        opacity: 0;
+      }
+      #rally-ball {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 200px;
+        height: 200px;
+      }
+      #rally-ball svg {
         display: block;
+        width: 200px;
+        height: 200px;
+        filter: drop-shadow(0 0 18px rgba(215, 255, 61, 0.7));
+      }
+      #rally-flash {
+        position: absolute;
+        inset: 0;
+        background: #ffffff;
+        opacity: 0;
+      }
+
+      /* ============ 2. PILLAR SLAMS ============ */
+      .card {
+        z-index: 2;
+      }
+      .card-stage {
+        position: absolute;
+        inset: 0;
+      }
+      .card-inner {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+      }
+      .card-stage.ltr .card-inner {
+        clip-path: polygon(-900px 0px, calc(var(--wipe) + 290px) 0px, calc(var(--wipe) - 290px) 1920px, -900px 1920px);
+      }
+      .card-stage.rtl .card-inner {
+        clip-path: polygon(calc(var(--wipe) + 290px) 0px, 2000px 0px, 2000px 1920px, calc(var(--wipe) - 290px) 1920px);
+      }
+      .card-edge {
+        position: absolute;
+        top: -240px;
+        left: calc(var(--wipe) - 9px);
+        width: 18px;
+        height: 2400px;
+        transform: rotate(16.8deg);
+        background: linear-gradient(90deg, rgba(255, 255, 255, 0), #ffffff 45%, #f4ffc8 55%, rgba(255, 255, 255, 0));
+        box-shadow: 0 0 40px 12px rgba(215, 255, 61, 0.55);
+      }
+      .card-bgtype {
+        position: absolute;
+        left: -700px;
+        top: -460px;
+        width: 2480px;
+        height: 2840px;
+        transform: rotate(-16.8deg);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 6px;
+      }
+      .bg-row {
+        font-family: "Archivo Black", sans-serif;
+        font-weight: 900;
+        font-size: 270px;
+        line-height: 300px;
+        white-space: nowrap;
+        color: rgba(0, 0, 0, 0);
+        -webkit-text-stroke: 3px var(--stroke);
+        opacity: var(--stroke-o);
+      }
+      .card-slash {
+        position: absolute;
+        left: -200px;
+        top: 1236px;
+        width: 1500px;
+        height: 22px;
+        transform-origin: 0% 50%;
+      }
+      .card-num {
+        position: absolute;
+        left: 92px;
+        top: 150px;
+        font-family: "Archivo Black", sans-serif;
+        font-weight: 900;
+        font-size: 190px;
+        line-height: 1;
+        letter-spacing: -0.02em;
+      }
+      .card-tick {
+        position: absolute;
+        left: 98px;
+        top: 372px;
+        width: 150px;
+        height: 12px;
+        transform-origin: 0% 50%;
+      }
+      .card-word {
+        position: absolute;
+        left: 0;
+        top: 820px;
+        width: 1080px;
+        height: 240px;
+        font-family: "Archivo Black", sans-serif;
+        font-weight: 900;
+        line-height: 1;
+        text-align: center;
+        letter-spacing: -0.01em;
+        transform-origin: 50% 50%;
+      }
+      /* rgb-glitch-text, customized: brand-coloured ghosts, sized per word */
+      .card-word span,
+      .card-word strong {
+        position: absolute;
+        left: 0;
+        top: 0;
         width: 100%;
-        height: 100%;
+        font-weight: 900;
       }
-      .tletter {
-        fill: var(--white);
+      .card-word span:first-child {
+        color: var(--ghost-a);
+        transform: translateX(var(--hf-glitch-red, 0px));
       }
-      .xfill {
-        fill: var(--violet);
+      .card-word span:nth-child(2) {
+        color: var(--ghost-b);
+        transform: translateX(var(--hf-glitch-blue, 0px));
       }
-      .tg,
+      .card-word strong {
+        color: var(--ink);
+      }
+      .card-label {
+        position: absolute;
+        left: 0;
+        width: 1080px;
+        top: 1100px;
+        text-align: center;
+        font-family: "Archivo ExtraBold", sans-serif;
+        font-weight: 800;
+        font-size: 40px;
+        line-height: 1;
+        letter-spacing: 0.42em;
+        text-indent: 0.42em;
+      }
+      .card-flash {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+      }
+      #card-1 .card-inner {
+        background: #14123a;
+        --stroke: #5b3df5;
+        --stroke-o: 0.5;
+        --ink: #ffffff;
+        --ghost-a: #5b3df5;
+        --ghost-b: #d7ff3d;
+      }
+      #card-2 .card-inner {
+        background: #5b3df5;
+        --stroke: #e9e4ff;
+        --stroke-o: 0.22;
+        --ink: #ffffff;
+        --ghost-a: #d7ff3d;
+        --ghost-b: #14123a;
+      }
+      #card-3 .card-inner {
+        background: #d7ff3d;
+        --stroke: #14123a;
+        --stroke-o: 0.14;
+        --ink: #14123a;
+        --ghost-a: #5b3df5;
+        --ghost-b: #ffffff;
+      }
+      #card-4 .card-inner {
+        background: #e9e4ff;
+        --stroke: #5b3df5;
+        --stroke-o: 0.2;
+        --ink: #14123a;
+        --ghost-a: #5b3df5;
+        --ghost-b: #d7ff3d;
+      }
+
+      /* ============ 3-6. SMASH, MATCH CUT, LOCKUP ============ */
+      #finale {
+        z-index: 3;
+        background: #14123a;
+      }
+      #fin-glow {
+        position: absolute;
+        left: -460px;
+        top: 0px;
+        width: 2000px;
+        height: 1800px;
+        border-radius: 50%;
+        background: radial-gradient(ellipse at 50% 50%, rgba(91, 61, 245, 0.55) 0%, rgba(91, 61, 245, 0.18) 35%, rgba(20, 18, 58, 0) 65%);
+        opacity: 0;
+      }
+      #fin-rays {
+        position: absolute;
+        left: -660px;
+        top: -660px;
+        width: 2400px;
+        height: 3120px;
+        background: repeating-conic-gradient(from 0deg at 50% 50%, rgba(233, 228, 255, 0.1) 0deg 2.2deg, rgba(0, 0, 0, 0) 2.2deg 9deg);
+        -webkit-mask-image: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0) 0%, #000 26%, #000 60%, rgba(0, 0, 0, 0) 80%);
+        mask-image: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0) 0%, #000 26%, #000 60%, rgba(0, 0, 0, 0) 80%);
+        opacity: 0;
+      }
+      #amb-cam {
+        position: absolute;
+        inset: 0;
+        perspective: 1100px;
+        perspective-origin: 540px 380px;
+        opacity: 0;
+      }
+      .camera-shake-frame {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+      }
+      .camera-shake-rig {
+        position: absolute;
+        inset: 0;
+        transform-style: preserve-3d;
+      }
+      #ball-glow {
+        position: absolute;
+        left: 589.934px;
+        top: 630px;
+        width: 230px;
+        height: 230px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(215, 255, 61, 0.42) 0%, rgba(215, 255, 61, 0.16) 30%, rgba(91, 61, 245, 0.2) 50%, rgba(91, 61, 245, 0) 70%);
+        opacity: 0;
+      }
+      .shock {
+        position: absolute;
+        left: 290px;
+        top: 650px;
+        width: 500px;
+        height: 500px;
+        border-radius: 50%;
+        opacity: 0;
+      }
+      #shock-lime {
+        border: 16px solid #d7ff3d;
+        box-shadow: 0 0 40px rgba(215, 255, 61, 0.8), inset 0 0 30px rgba(215, 255, 61, 0.5);
+      }
+      #shock-violet {
+        border: 30px solid #5b3df5;
+        box-shadow: 0 0 60px rgba(91, 61, 245, 0.8);
+      }
+      #shock-white {
+        border: 6px solid #ffffff;
+      }
+      /* smash X authored at 11x native size (crisp), scaled DOWN into the lockup */
+      #xwrap {
+        position: absolute;
+        left: -174.274px;
+        top: 295px;
+        width: 1430px;
+        height: 1210px;
+        transform-origin: 714.274px 605px;
+      }
+      #xsvg {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1430px;
+        height: 1210px;
+        overflow: visible;
+        transform-origin: 714.274px 605px;
+      }
+      #lkball {
+        position: absolute;
+        left: 439.274px;
+        top: 330px;
+        width: 550px;
+        height: 550px;
+        overflow: visible;
+        transform-origin: 275px 275px;
+      }
+      /* native-size final lockup X + ball (identical geometry), swapped in at 2.95 */
+      #xfinal {
+        position: absolute;
+        left: 640px;
+        top: 690px;
+        width: 130px;
+        height: 110px;
+        opacity: 0;
+      }
+      #xfinal-svg {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 130px;
+        height: 110px;
+        overflow: visible;
+      }
+      #lkball-final {
+        position: absolute;
+        left: 39.934px;
+        top: 30px;
+        width: 50px;
+        height: 50px;
+        overflow: visible;
+        transform-origin: 25px 25px;
+      }
+      .letter {
+        position: absolute;
+        top: 697px;
+        height: 96px;
+        overflow: visible;
+      }
+      #tag-slot {
+        position: absolute;
+        left: 250px;
+        top: 866px;
+        width: 461px;
+        height: 46px;
+        overflow: hidden;
+      }
+      .slot-word {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 461px;
+        height: 46px;
+        text-align: center;
+        font-family: "Archivo ExtraBold", sans-serif;
+        font-weight: 800;
+        font-size: 29px;
+        line-height: 46px;
+        letter-spacing: 0.2em;
+        text-indent: 0.2em;
+        color: #d7ff3d;
+        opacity: 0;
+      }
+      #tagline {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 461px;
+        height: 46px;
+        overflow: visible;
+      }
       #bar {
-        fill: var(--lime);
+        position: absolute;
+        left: 0;
+        top: 1884px;
+        width: 1080px;
+        height: 36px;
+        background: #d7ff3d;
+        transform-origin: 0% 50%;
       }
-      .ball-ring {
-        fill: var(--navy);
+      #sweep {
+        position: absolute;
+        left: 200px;
+        top: 690px;
+        width: 570px;
+        height: 110px;
+        overflow: visible;
       }
-      .ball-core {
-        fill: var(--lime);
+      /* confetti component, customized: brand palette, burst from the X crossing */
+      .hf-catalog-confetti {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
       }
-      .seams {
-        fill: none;
-        stroke: var(--violet);
-        stroke-width: 2.89942;
-        stroke-linecap: round;
+      .hf-catalog-confetti .particle {
+        position: absolute;
+        left: 540px;
+        top: 900px;
+        width: var(--w, 14px);
+        height: var(--h, 14px);
+        margin-left: calc(var(--w, 14px) / -2);
+        margin-top: calc(var(--h, 14px) / -2);
+        border-radius: var(--r, 2px);
+        background: var(--c);
+        transform: translate(var(--hf-px, 0px), var(--hf-py, 0px)) rotate(var(--hf-pr, 0deg));
+        opacity: var(--hf-po, 0);
       }
-      #ring-lime {
-        fill: none;
-        stroke: var(--lime);
-        stroke-width: 3;
+      .fx-canvas {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1080px;
+        height: 1920px;
+        opacity: 0;
       }
-      #ring-violet {
-        fill: none;
-        stroke: var(--violet);
-        stroke-width: 2;
-      }
-      .bloom-stop-a {
-        stop-color: var(--violet);
-        stop-opacity: 1;
-      }
-      .bloom-stop-b {
-        stop-color: var(--violet);
-        stop-opacity: 0.45;
-      }
-      .bloom-stop-c {
-        stop-color: var(--violet);
-        stop-opacity: 0;
+      #fx-leak {
+        mix-blend-mode: screen;
       }
     </style>
   </head>
@@ -95,258 +603,897 @@
       id="root"
       data-composition-id="main"
       data-start="0"
-      data-duration="4.5"
+      data-duration="6"
       data-fps="30"
       data-width="1080"
       data-height="1920"
     >
-      <div id="card-clip" class="clip" data-start="0" data-duration="4.5" data-track-index="0">
-        <svg id="card" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" width="1080" height="1920">
-          <defs>
-            <radialGradient id="bloom-grad" cx="0.5" cy="0.5" r="0.5">
-              <stop offset="0" class="bloom-stop-a" />
-              <stop offset="0.45" class="bloom-stop-b" />
-              <stop offset="1" class="bloom-stop-c" />
-            </radialGradient>
-            <!-- TENNI per-letter bottom-up wipe masks (static, in card space) -->
-          <clipPath id="tclip0" clipPathUnits="userSpaceOnUse"><rect class="tmask" id="tmask0" x="203.05" y="790" width="96.16" height="0"/></clipPath>
-          <clipPath id="tclip1" clipPathUnits="userSpaceOnUse"><rect class="tmask" id="tmask1" x="303.54" y="790" width="86.98" height="0"/></clipPath>
-          <clipPath id="tclip2" clipPathUnits="userSpaceOnUse"><rect class="tmask" id="tmask2" x="396.56" y="790" width="97.87" height="0"/></clipPath>
-          <clipPath id="tclip3" clipPathUnits="userSpaceOnUse"><rect class="tmask" id="tmask3" x="504.53" y="790" width="97.87" height="0"/></clipPath>
-          <clipPath id="tclip4" clipPathUnits="userSpaceOnUse"><rect class="tmask" id="tmask4" x="612.51" y="790" width="36.99" height="0"/></clipPath>
-            <!-- X stroke parallelograms (stroke 1: TL->BR, stroke 2: TR->BL) -->
-            <clipPath id="xpara1" clipPathUnits="userSpaceOnUse">
-              <polygon points="655.4,697 694.8,697 758.4,793 718.6,793" />
-            </clipPath>
-            <clipPath id="xpara2" clipPathUnits="userSpaceOnUse">
-              <polygon points="718.4,697 755.2,697 689.2,793 652,793" />
-            </clipPath>
-            <!-- growing bands along each diagonal, centred on the crossing -->
-            <clipPath id="xband1" clipPathUnits="userSpaceOnUse">
-              <rect id="band1" x="-80" y="-45" width="160" height="90" transform="translate(705.27 742.76) rotate(54.96) scale(0 1)" />
-            </clipPath>
-            <clipPath id="xband2" clipPathUnits="userSpaceOnUse">
-              <rect id="band2" x="-80" y="-45" width="160" height="90" transform="translate(705.27 742.76) rotate(126.2) scale(0 1)" />
-            </clipPath>
-            <clipPath id="ball-clip" clipPathUnits="userSpaceOnUse">
-              <circle cx="704.934" cy="745" r="22.3032" />
-            </clipPath>
-            <!-- ball artwork drawn at its final resting place (the X crossing) -->
-            <g id="ball-art">
-              <circle class="ball-ring" cx="704.934" cy="745" r="24.3105" />
-              <circle class="ball-core" cx="704.934" cy="745" r="22.3032" />
-              <g class="seams" clip-path="url(#ball-clip)">
-                <path d="M681.985 736.994 C699.799 739.142 706.919 752.533 698.738 768.502"/><path d="M711.13 721.498 C702.95 737.467 710.07 750.858 727.883 753.006"/>
+      <!-- ================= 1. THE RALLY (0.00 - 0.70) ================= -->
+      <div id="rally" class="clip" data-start="0" data-duration="0.7" data-track-index="1">
+        <div id="rally-fx">
+          <div class="rally-sky"></div>
+          <div class="rally-horizon" id="rally-horizon"></div>
+          <div class="rally-light" id="rally-light-l">
+            <div class="halo"></div>
+            <div class="streak"></div>
+            <div class="core"></div>
+          </div>
+          <div class="rally-light" id="rally-light-r">
+            <div class="halo"></div>
+            <div class="streak"></div>
+            <div class="core"></div>
+          </div>
+          <div id="rally-cam">
+            <div id="rally-world">
+              <div class="court-plane" id="court">
+                <svg id="court-svg" class="court-svg" viewBox="0 0 1300 2400" width="1300" height="2400">
+                  <defs>
+                    <filter id="court-glow" x="-20%" y="-20%" width="140%" height="140%">
+                      <feGaussianBlur in="SourceGraphic" stdDeviation="9" result="b1" />
+                      <feGaussianBlur in="SourceGraphic" stdDeviation="26" result="b2" />
+                      <feMerge><feMergeNode in="b2" /><feMergeNode in="b1" /><feMergeNode in="SourceGraphic" /></feMerge>
+                    </filter>
+                    <linearGradient id="court-surf" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0" stop-color="#2a2280" stop-opacity="0.35" />
+                      <stop offset="1" stop-color="#3a2bb8" stop-opacity="0.55" />
+                    </linearGradient>
+                  </defs>
+                  <rect x="167.32" y="158.24" width="965.36" height="2091.76" fill="url(#court-surf)" />
+                  <g id="court-lines" filter="url(#court-glow)"></g>
+                </svg>
+                <div class="court-net" id="court-net"></div>
+                <div id="ball-shadow"></div>
+                <div class="impact-ring" id="ring-b1"></div>
+                <div class="impact-ring" id="ring-b2"></div>
+              </div>
+            </div>
+          </div>
+          <div id="echoes">
+            <div class="echo" id="echo-1"></div>
+            <div class="echo" id="echo-2"></div>
+            <div class="echo" id="echo-3"></div>
+            <div class="echo" id="echo-4"></div>
+            <div class="echo" id="echo-5"></div>
+          </div>
+          <div id="rally-ball" data-hf-motion-blur='{"samplesPerFrame": 8}'>
+            <svg viewBox="0 0 200 200" width="200" height="200">
+              <defs>
+                <clipPath id="rb-clip"><circle cx="100" cy="100" r="100" /></clipPath>
+              </defs>
+              <circle cx="100" cy="100" r="100" fill="#D7FF3D" />
+              <g clip-path="url(#rb-clip)" fill="none" stroke="#5B3DF5" stroke-width="13" stroke-linecap="round">
+                <path d="M -2.9 64.1 C 77 73.7 108.9 133.8 72.3 205.4" />
+                <path d="M 127.7 -5.4 C 91 66.2 122.9 126.3 202.9 135.9" />
               </g>
-            </g>
-          </defs>
-
-          <!-- layer 1: violet bloom behind the crossing (transient, 0 at rest) -->
-          <circle id="bloom" cx="704.934" cy="745" r="230" fill="url(#bloom-grad)" opacity="0" />
-
-          <!-- layer 2: TENNI, one path per letter -->
-          <g id="tenni">
-          <g clip-path="url(#tclip0)"><path id="tl0" class="tletter" d="M236.69825072886303 790.0V722.8279883381924H207.04810495626828V699.7376093294461H295.2113702623907V722.8279883381924H265.69241982507293V790.0Z"/></g>
-          <g clip-path="url(#tclip1)"><path id="tl1" class="tletter" d="M307.5437317784257 790.0V699.7376093294461H385.6049562682216V721.3848396501458H336.5379008746356V733.8483965014577H378.52040816326536V754.5772594752186H336.5379008746356V768.3527696793003H386.5233236151604V790.0Z"/></g>
-          <g clip-path="url(#tclip2)"><path id="tl2" class="tletter" d="M400.56122448979596 790.0V699.7376093294461H425.2259475218659L453.30174927113706 732.1428571428571Q454.48250728862973 733.4548104956268 456.45043731778424 735.9475218658893Q458.4183673469388 738.4402332361516 460.4518950437318 740.9985422740524Q462.48542274052477 743.5568513119533 463.53498542274053 745.131195335277L464.1909620991254 744.868804664723Q464.0597667638484 741.195335276968 464.0597667638484 737.5874635568514Q464.0597667638484 733.9795918367347 464.0597667638484 732.1428571428571V699.7376093294461H490.43002915451893V790.0H465.89650145772595L434.27842565597666 753.9212827988338Q432.0481049562682 751.2973760932945 430.47376093294463 749.1326530612246Q428.899416909621 746.9679300291546 427.45626822157436 745.0L426.8002915451895 745.2623906705539Q426.9314868804665 747.7551020408164 426.9314868804665 750.2478134110788Q426.9314868804665 752.7405247813412 426.9314868804665 753.9212827988338V790.0Z"/></g>
-          <g clip-path="url(#tclip3)"><path id="tl3" class="tletter" d="M508.5349854227406 790.0V699.7376093294461H533.1997084548105L561.2755102040817 732.1428571428571Q562.4562682215744 733.4548104956268 564.424198250729 735.9475218658893Q566.3921282798834 738.4402332361516 568.4256559766764 740.9985422740524Q570.4591836734694 743.5568513119533 571.5087463556852 745.131195335277L572.16472303207 744.868804664723Q572.033527696793 741.195335276968 572.033527696793 737.5874635568514Q572.033527696793 733.9795918367347 572.033527696793 732.1428571428571V699.7376093294461H598.4037900874636V790.0H573.8702623906706L542.2521865889213 753.9212827988338Q540.0218658892129 751.2973760932945 538.4475218658893 749.1326530612246Q536.8731778425656 746.9679300291546 535.4300291545189 745.0L534.7740524781342 745.2623906705539Q534.9052478134112 747.7551020408164 534.9052478134112 750.2478134110788Q534.9052478134112 752.7405247813412 534.9052478134112 753.9212827988338V790.0Z"/></g>
-          <g clip-path="url(#tclip4)"><path id="tl4" class="tletter" d="M616.5087463556852 790.0V699.7376093294461H645.5029154518951V790.0Z"/></g>
-          </g>
-
-          <!-- layer 3: X. Two clipped copies grow from the crossing; the original path takes over at rest -->
-          <g id="x-grow">
-            <g clip-path="url(#xpara1)"><path class="xfill" clip-path="url(#xband1)" d="M654.4241982507289 790.0 686.698250728863 742.2448979591836 657.572886297376 699.7376093294461H692.6020408163265L706.2463556851312 722.8279883381924H706.7711370262391L720.5466472303207 699.7376093294461H752.9518950437317L723.6953352769679 742.3760932944606L755.969387755102 790.0H720.8090379008746L704.1472303206997 761.9241982507289H703.6224489795918L686.9606413994169 790.0Z" /></g>
-            <g clip-path="url(#xpara2)"><path class="xfill" clip-path="url(#xband2)" d="M654.4241982507289 790.0 686.698250728863 742.2448979591836 657.572886297376 699.7376093294461H692.6020408163265L706.2463556851312 722.8279883381924H706.7711370262391L720.5466472303207 699.7376093294461H752.9518950437317L723.6953352769679 742.3760932944606L755.969387755102 790.0H720.8090379008746L704.1472303206997 761.9241982507289H703.6224489795918L686.9606413994169 790.0Z" /></g>
-          </g>
-          <path id="x-final" class="xfill" d="M654.4241982507289 790.0 686.698250728863 742.2448979591836 657.572886297376 699.7376093294461H692.6020408163265L706.2463556851312 722.8279883381924H706.7711370262391L720.5466472303207 699.7376093294461H752.9518950437317L723.6953352769679 742.3760932944606L755.969387755102 790.0H720.8090379008746L704.1472303206997 761.9241982507289H703.6224489795918L686.9606413994169 790.0Z" opacity="0" />
-
-          <!-- layer 4: FOLLOW FOR MORE, one group per letter -->
-          <g id="tagline">
-          <path class="tg" data-cx="307.905" d="M300.0 900.0V879.39H315.81V883.59H305.37V888.03H314.55V892.14H305.37V900.0Z"/>
-          <path class="tg" data-cx="333.330" d="M333.33 900.36Q329.94 900.36 327.525 899.175Q325.11 897.99 323.82000000000005 895.62Q322.53000000000003 893.25 322.53000000000003 889.68Q322.53000000000003 886.11 323.82000000000005 883.755Q325.11 881.4 327.525 880.2149999999999Q329.94 879.03 333.33 879.03Q336.72 879.03 339.135 880.2149999999999Q341.55 881.4 342.84000000000003 883.755Q344.13 886.11 344.13 889.68Q344.13 893.25 342.84000000000003 895.62Q341.55 897.99 339.135 899.175Q336.72 900.36 333.33 900.36ZM333.33 896.16Q334.62 896.16 335.61 895.77Q336.6 895.38 337.275 894.63Q337.95 893.88 338.28 892.8Q338.61 891.72 338.61 890.37V889.05Q338.61 887.67 338.28 886.5899999999999Q337.95 885.51 337.275 884.76Q336.6 884.01 335.61 883.62Q334.62 883.23 333.33 883.23Q332.01 883.23 331.02 883.62Q330.03000000000003 884.01 329.37 884.76Q328.71 885.51 328.38 886.5899999999999Q328.05 887.67 328.05 889.05V890.37Q328.05 891.72 328.38 892.8Q328.71 893.88 329.37 894.63Q330.03000000000003 895.38 331.02 895.77Q332.01 896.16 333.33 896.16Z"/>
-          <path class="tg" data-cx="359.850" d="M351.93 900.0V879.39H357.3V895.59H367.77V900.0Z"/>
-          <path class="tg" data-cx="382.740" d="M374.82 900.0V879.39H380.19V895.59H390.65999999999997V900.0Z"/>
-          <path class="tg" data-cx="406.710" d="M406.71 900.36Q403.32 900.36 400.905 899.175Q398.49 897.99 397.20000000000005 895.62Q395.91 893.25 395.91 889.68Q395.91 886.11 397.20000000000005 883.755Q398.49 881.4 400.905 880.2149999999999Q403.32 879.03 406.71 879.03Q410.1 879.03 412.515 880.2149999999999Q414.93 881.4 416.22 883.755Q417.51 886.11 417.51 889.68Q417.51 893.25 416.22 895.62Q414.93 897.99 412.515 899.175Q410.1 900.36 406.71 900.36ZM406.71 896.16Q408.0 896.16 408.99 895.77Q409.98 895.38 410.655 894.63Q411.33 893.88 411.65999999999997 892.8Q411.99 891.72 411.99 890.37V889.05Q411.99 887.67 411.65999999999997 886.5899999999999Q411.33 885.51 410.655 884.76Q409.98 884.01 408.99 883.62Q408.0 883.23 406.71 883.23Q405.39 883.23 404.4 883.62Q403.41 884.01 402.75 884.76Q402.09 885.51 401.76 886.5899999999999Q401.43 887.67 401.43 889.05V890.37Q401.43 891.72 401.76 892.8Q402.09 893.88 402.75 894.63Q403.41 895.38 404.4 895.77Q405.39 896.16 406.71 896.16Z"/>
-          <path class="tg" data-cx="437.205" d="M427.91999999999996 900.0 422.72999999999996 879.39H428.37L430.89 890.22Q430.95 890.49 431.03999999999996 891.0Q431.13 891.51 431.235 892.0799999999999Q431.34 892.65 431.43 893.13H431.54999999999995Q431.60999999999996 892.83 431.66999999999996 892.425Q431.72999999999996 892.02 431.80499999999995 891.615Q431.88 891.21 431.955 890.85Q432.03 890.49 432.06 890.22L434.43 879.39H440.28L442.71 890.22Q442.79999999999995 890.52 442.89 891.03Q442.97999999999996 891.54 443.085 892.1099999999999Q443.19 892.68 443.28 893.13H443.4Q443.46 892.8 443.53499999999997 892.425Q443.60999999999996 892.05 443.68499999999995 891.645Q443.76 891.24 443.835 890.88Q443.90999999999997 890.52 443.96999999999997 890.22L446.4 879.39H451.68L446.49 900.0H440.49L437.84999999999997 888.6Q437.78999999999996 888.18 437.66999999999996 887.64Q437.54999999999995 887.1 437.44499999999994 886.56Q437.34 886.02 437.28 885.6H437.15999999999997Q437.09999999999997 886.02 437.01 886.56Q436.91999999999996 887.1 436.81499999999994 887.64Q436.71 888.18 436.62 888.6L434.01 900.0Z"/>
-          <path class="tg" data-cx="476.115" d="M468.21000000000004 900.0V879.39H484.02000000000004V883.59H473.58000000000004V888.03H482.76000000000005V892.14H473.58000000000004V900.0Z"/>
-          <path class="tg" data-cx="501.540" d="M501.53999999999996 900.36Q498.15 900.36 495.735 899.175Q493.32 897.99 492.03 895.62Q490.74 893.25 490.74 889.68Q490.74 886.11 492.03 883.755Q493.32 881.4 495.735 880.2149999999999Q498.15 879.03 501.53999999999996 879.03Q504.93 879.03 507.345 880.2149999999999Q509.76 881.4 511.05 883.755Q512.34 886.11 512.34 889.68Q512.34 893.25 511.05 895.62Q509.76 897.99 507.345 899.175Q504.93 900.36 501.53999999999996 900.36ZM501.53999999999996 896.16Q502.83 896.16 503.82 895.77Q504.81 895.38 505.485 894.63Q506.15999999999997 893.88 506.49 892.8Q506.82 891.72 506.82 890.37V889.05Q506.82 887.67 506.49 886.5899999999999Q506.15999999999997 885.51 505.485 884.76Q504.81 884.01 503.82 883.62Q502.83 883.23 501.53999999999996 883.23Q500.21999999999997 883.23 499.23 883.62Q498.24 884.01 497.58 884.76Q496.91999999999996 885.51 496.59 886.5899999999999Q496.26 887.67 496.26 889.05V890.37Q496.26 891.72 496.59 892.8Q496.91999999999996 893.88 497.58 894.63Q498.24 895.38 499.23 895.77Q500.21999999999997 896.16 501.53999999999996 896.16Z"/>
-          <path class="tg" data-cx="529.890" d="M520.14 900.0V879.39H532.11Q534.39 879.39 535.92 880.245Q537.4499999999999 881.1 538.2149999999999 882.585Q538.98 884.07 538.98 885.9Q538.98 887.88 538.065 889.425Q537.15 890.97 535.5 891.84L539.64 900.0H533.64L530.22 892.74H525.51V900.0ZM525.51 888.75H531.06Q532.17 888.75 532.845 888.015Q533.52 887.28 533.52 886.05Q533.52 885.24 533.22 884.6700000000001Q532.92 884.1 532.38 883.7850000000001Q531.84 883.47 531.06 883.47H525.51Z"/>
-          <path class="tg" data-cx="568.170" d="M556.71 900.0V879.39H564.5400000000001L567.0300000000001 888.57Q567.1800000000001 889.05 567.3900000000001 889.875Q567.6 890.7 567.81 891.6Q568.02 892.5 568.1700000000001 893.22H568.4100000000001Q568.5300000000001 892.65 568.71 891.855Q568.89 891.06 569.1 890.175Q569.3100000000001 889.29 569.49 888.54L572.01 879.39H579.63V900.0H574.4100000000001V891.21Q574.4100000000001 889.92 574.4250000000001 888.5999999999999Q574.44 887.28 574.47 886.2Q574.5 885.12 574.5 884.64H574.26Q574.1700000000001 885.09 573.9750000000001 885.9449999999999Q573.7800000000001 886.8 573.5550000000001 887.7149999999999Q573.33 888.63 573.1500000000001 889.29L570.1500000000001 900.0H565.83L562.8000000000001 889.29Q562.6500000000001 888.69 562.44 887.85Q562.23 887.01 562.0350000000001 886.14Q561.84 885.27 561.69 884.67H561.45Q561.48 885.45 561.51 886.575Q561.5400000000001 887.7 561.57 888.915Q561.6 890.13 561.6 891.21V900.0Z"/>
-          <path class="tg" data-cx="598.230" d="M598.2299999999999 900.36Q594.8399999999999 900.36 592.425 899.175Q590.0099999999999 897.99 588.7199999999999 895.62Q587.43 893.25 587.43 889.68Q587.43 886.11 588.7199999999999 883.755Q590.0099999999999 881.4 592.425 880.2149999999999Q594.8399999999999 879.03 598.2299999999999 879.03Q601.6199999999999 879.03 604.0349999999999 880.2149999999999Q606.4499999999999 881.4 607.74 883.755Q609.03 886.11 609.03 889.68Q609.03 893.25 607.74 895.62Q606.4499999999999 897.99 604.0349999999999 899.175Q601.6199999999999 900.36 598.2299999999999 900.36ZM598.2299999999999 896.16Q599.52 896.16 600.51 895.77Q601.4999999999999 895.38 602.175 894.63Q602.8499999999999 893.88 603.1799999999998 892.8Q603.5099999999999 891.72 603.5099999999999 890.37V889.05Q603.5099999999999 887.67 603.1799999999998 886.5899999999999Q602.8499999999999 885.51 602.175 884.76Q601.4999999999999 884.01 600.51 883.62Q599.52 883.23 598.2299999999999 883.23Q596.91 883.23 595.92 883.62Q594.93 884.01 594.27 884.76Q593.6099999999999 885.51 593.28 886.5899999999999Q592.9499999999999 887.67 592.9499999999999 889.05V890.37Q592.9499999999999 891.72 593.28 892.8Q593.6099999999999 893.88 594.27 894.63Q594.93 895.38 595.92 895.77Q596.91 896.16 598.2299999999999 896.16Z"/>
-          <path class="tg" data-cx="626.580" d="M616.8299999999999 900.0V879.39H628.8Q631.0799999999999 879.39 632.6099999999999 880.245Q634.1399999999999 881.1 634.905 882.585Q635.67 884.07 635.67 885.9Q635.67 887.88 634.7549999999999 889.425Q633.8399999999999 890.97 632.1899999999999 891.84L636.3299999999999 900.0H630.3299999999999L626.91 892.74H622.1999999999999V900.0ZM622.1999999999999 888.75H627.7499999999999Q628.8599999999999 888.75 629.5349999999999 888.015Q630.2099999999999 887.28 630.2099999999999 886.05Q630.2099999999999 885.24 629.9099999999999 884.6700000000001Q629.6099999999999 884.1 629.0699999999999 883.7850000000001Q628.53 883.47 627.7499999999999 883.47H622.1999999999999Z"/>
-          <path class="tg" data-cx="652.200" d="M643.5899999999999 900.0V879.39H660.6V883.59H648.9599999999999V887.46H659.13V891.57H648.9599999999999V895.8H660.81V900.0Z"/>
-          </g>
-
-          <!-- layer 5: impact shockwave rings (transient) -->
-          <circle id="ring-lime" cx="704.934" cy="745" r="24" opacity="0" />
-          <circle id="ring-violet" cx="704.934" cy="745" r="24" opacity="0" />
-
-          <!-- layer 6: ball echo ghosts + lead ball -->
-          <use id="ghost3" class="ghost" href="#ball-art" opacity="0" />
-          <use id="ghost2" class="ghost" href="#ball-art" opacity="0" />
-          <use id="ghost1" class="ghost" href="#ball-art" opacity="0" />
-          <use id="ball" href="#ball-art" />
-
-          <!-- layer 7: lime bar -->
-          <rect id="bar" x="0" y="1884" width="0" height="36" />
-        </svg>
+            </svg>
+          </div>
+        </div>
+        <div id="rally-flash"></div>
       </div>
+
+      <!-- ================= 2. FOUR PILLAR SLAMS (0.60 - 2.00) ================= -->
+      <div id="card-1" class="clip card" data-start="0.60" data-duration="0.46" data-track-index="2">
+        <div class="card-stage ltr" id="card-1-stage" style="--wipe: -420px">
+          <div class="card-inner">
+          <div class="card-bgtype">
+            <div class="bg-row" id="card-1-row-0">FOLLOW FOLLOW FOLLOW FOLLOW FOLLOW FOLLOW</div>
+            <div class="bg-row" id="card-1-row-1">FOLLOW FOLLOW FOLLOW FOLLOW FOLLOW FOLLOW</div>
+            <div class="bg-row" id="card-1-row-2">FOLLOW FOLLOW FOLLOW FOLLOW FOLLOW FOLLOW</div>
+            <div class="bg-row" id="card-1-row-3">FOLLOW FOLLOW FOLLOW FOLLOW FOLLOW FOLLOW</div>
+            <div class="bg-row" id="card-1-row-4">FOLLOW FOLLOW FOLLOW FOLLOW FOLLOW FOLLOW</div>
+            <div class="bg-row" id="card-1-row-5">FOLLOW FOLLOW FOLLOW FOLLOW FOLLOW FOLLOW</div>
+            <div class="card-slash" id="card-1-slash" style="top: 1690px; left: 0; width: 2480px; background: #D7FF3D"></div>
+          </div>
+          <div class="card-num" id="card-1-num" style="color: #5B3DF5">01</div>
+          <div class="card-tick" id="card-1-tick" style="background: #5B3DF5"></div>
+          <div class="card-word" id="card-1-word" data-hf-motion-blur='{"samplesPerFrame": 8}'><span>FOLLOW</span><span>FOLLOW</span><strong>FOLLOW</strong></div>
+          <div class="card-label" id="card-1-label" style="color: #E9E4FF">FRECUENCIA</div>
+          <div class="card-flash" id="card-1-flash" style="background: #FFFFFF"></div>
+          </div>
+          <div class="card-edge" id="card-1-edge"></div>
+        </div>
+      </div>
+      <div id="card-2" class="clip card" data-start="0.95" data-duration="0.46" data-track-index="3">
+        <div class="card-stage rtl" id="card-2-stage" style="--wipe: 1500px">
+          <div class="card-inner">
+          <div class="card-bgtype">
+            <div class="bg-row" id="card-2-row-0">TRAVEL TRAVEL TRAVEL TRAVEL TRAVEL TRAVEL</div>
+            <div class="bg-row" id="card-2-row-1">TRAVEL TRAVEL TRAVEL TRAVEL TRAVEL TRAVEL</div>
+            <div class="bg-row" id="card-2-row-2">TRAVEL TRAVEL TRAVEL TRAVEL TRAVEL TRAVEL</div>
+            <div class="bg-row" id="card-2-row-3">TRAVEL TRAVEL TRAVEL TRAVEL TRAVEL TRAVEL</div>
+            <div class="bg-row" id="card-2-row-4">TRAVEL TRAVEL TRAVEL TRAVEL TRAVEL TRAVEL</div>
+            <div class="bg-row" id="card-2-row-5">TRAVEL TRAVEL TRAVEL TRAVEL TRAVEL TRAVEL</div>
+            <div class="card-slash" id="card-2-slash" style="top: 1690px; left: 0; width: 2480px; background: #D7FF3D"></div>
+          </div>
+          <div class="card-num" id="card-2-num" style="color: #FFFFFF">02</div>
+          <div class="card-tick" id="card-2-tick" style="background: #FFFFFF"></div>
+          <div class="card-word" id="card-2-word" data-hf-motion-blur='{"samplesPerFrame": 8}'><span>TRAVEL</span><span>TRAVEL</span><strong>TRAVEL</strong></div>
+          <div class="card-label" id="card-2-label" style="color: #FFFFFF">EXPERIENCIAS</div>
+          <div class="card-flash" id="card-2-flash" style="background: #FFFFFF"></div>
+          </div>
+          <div class="card-edge" id="card-2-edge"></div>
+        </div>
+      </div>
+      <div id="card-3" class="clip card" data-start="1.30" data-duration="0.46" data-track-index="4">
+        <div class="card-stage ltr" id="card-3-stage" style="--wipe: -420px">
+          <div class="card-inner">
+          <div class="card-bgtype">
+            <div class="bg-row" id="card-3-row-0">GEAR GEAR GEAR GEAR GEAR GEAR</div>
+            <div class="bg-row" id="card-3-row-1">GEAR GEAR GEAR GEAR GEAR GEAR</div>
+            <div class="bg-row" id="card-3-row-2">GEAR GEAR GEAR GEAR GEAR GEAR</div>
+            <div class="bg-row" id="card-3-row-3">GEAR GEAR GEAR GEAR GEAR GEAR</div>
+            <div class="bg-row" id="card-3-row-4">GEAR GEAR GEAR GEAR GEAR GEAR</div>
+            <div class="bg-row" id="card-3-row-5">GEAR GEAR GEAR GEAR GEAR GEAR</div>
+            <div class="card-slash" id="card-3-slash" style="top: 1690px; left: 0; width: 2480px; background: #14123A"></div>
+          </div>
+          <div class="card-num" id="card-3-num" style="color: #14123A">03</div>
+          <div class="card-tick" id="card-3-tick" style="background: #14123A"></div>
+          <div class="card-word" id="card-3-word" data-hf-motion-blur='{"samplesPerFrame": 8}'><span>GEAR</span><span>GEAR</span><strong>GEAR</strong></div>
+          <div class="card-label" id="card-3-label" style="color: #14123A">COMPRA</div>
+          <div class="card-flash" id="card-3-flash" style="background: #FFFFFF"></div>
+          </div>
+          <div class="card-edge" id="card-3-edge"></div>
+        </div>
+      </div>
+      <div id="card-4" class="clip card" data-start="1.65" data-duration="0.35" data-track-index="5">
+        <div class="card-stage rtl" id="card-4-stage" style="--wipe: 1500px">
+          <div class="card-inner">
+          <div class="card-bgtype">
+            <div class="bg-row" id="card-4-row-0">CLUB CLUB CLUB CLUB CLUB CLUB</div>
+            <div class="bg-row" id="card-4-row-1">CLUB CLUB CLUB CLUB CLUB CLUB</div>
+            <div class="bg-row" id="card-4-row-2">CLUB CLUB CLUB CLUB CLUB CLUB</div>
+            <div class="bg-row" id="card-4-row-3">CLUB CLUB CLUB CLUB CLUB CLUB</div>
+            <div class="bg-row" id="card-4-row-4">CLUB CLUB CLUB CLUB CLUB CLUB</div>
+            <div class="bg-row" id="card-4-row-5">CLUB CLUB CLUB CLUB CLUB CLUB</div>
+            <div class="card-slash" id="card-4-slash" style="top: 1690px; left: 0; width: 2480px; background: #5B3DF5"></div>
+          </div>
+          <div class="card-num" id="card-4-num" style="color: #5B3DF5">04</div>
+          <div class="card-tick" id="card-4-tick" style="background: #5B3DF5"></div>
+          <div class="card-word" id="card-4-word" data-hf-motion-blur='{"samplesPerFrame": 8}'><span>CLUB</span><span>CLUB</span><strong>CLUB</strong></div>
+          <div class="card-label" id="card-4-label" style="color: #5B3DF5">B2B</div>
+          <div class="card-flash" id="card-4-flash" style="background: #D7FF3D"></div>
+          </div>
+          <div class="card-edge" id="card-4-edge"></div>
+        </div>
+      </div>
+
+      <!-- ================= 3-6. SMASH -> MATCH CUT -> LOCKUP (2.00 - 6.00) ================= -->
+      <div id="finale" class="clip" data-start="2" data-duration="4" data-track-index="6">
+        <div id="fin-glow"></div>
+        <div id="fin-rays"></div>
+        <div id="amb-cam">
+          <div id="amb-world"></div>
+        </div>
+        <div class="camera-shake-frame" id="shake-frame">
+          <div class="camera-shake-rig" id="shake-rig">
+            <div id="ball-glow"></div>
+            <div class="shock" id="shock-violet"></div>
+            <div class="shock" id="shock-lime"></div>
+            <div class="shock" id="shock-white"></div>
+
+            <svg class="letter" id="lt-0" style="left: 205.05px; width: 92.16px" viewBox="205.05 697 92.16 96">
+              <path d="M236.69825072886303 790.0V722.8279883381924H207.04810495626828V699.7376093294461H295.2113702623907V722.8279883381924H265.69241982507293V790.0Z" fill="#FFFFFF" />
+            </svg>
+            <svg class="letter" id="lt-1" style="left: 305.54px; width: 82.98px" viewBox="305.54 697 82.98 96">
+              <path d="M307.5437317784257 790.0V699.7376093294461H385.6049562682216V721.3848396501458H336.5379008746356V733.8483965014577H378.52040816326536V754.5772594752186H336.5379008746356V768.3527696793003H386.5233236151604V790.0Z" fill="#FFFFFF" />
+            </svg>
+            <svg class="letter" id="lt-2" style="left: 398.56px; width: 93.87px" viewBox="398.56 697 93.87 96">
+              <path d="M400.56122448979596 790.0V699.7376093294461H425.2259475218659L453.30174927113706 732.1428571428571Q454.48250728862973 733.4548104956268 456.45043731778424 735.9475218658893Q458.4183673469388 738.4402332361516 460.4518950437318 740.9985422740524Q462.48542274052477 743.5568513119533 463.53498542274053 745.131195335277L464.1909620991254 744.868804664723Q464.0597667638484 741.195335276968 464.0597667638484 737.5874635568514Q464.0597667638484 733.9795918367347 464.0597667638484 732.1428571428571V699.7376093294461H490.43002915451893V790.0H465.89650145772595L434.27842565597666 753.9212827988338Q432.0481049562682 751.2973760932945 430.47376093294463 749.1326530612246Q428.899416909621 746.9679300291546 427.45626822157436 745.0L426.8002915451895 745.2623906705539Q426.9314868804665 747.7551020408164 426.9314868804665 750.2478134110788Q426.9314868804665 752.7405247813412 426.9314868804665 753.9212827988338V790.0Z" fill="#FFFFFF" />
+            </svg>
+            <svg class="letter" id="lt-3" style="left: 506.53px; width: 93.87px" viewBox="506.53 697 93.87 96">
+              <path d="M508.5349854227406 790.0V699.7376093294461H533.1997084548105L561.2755102040817 732.1428571428571Q562.4562682215744 733.4548104956268 564.424198250729 735.9475218658893Q566.3921282798834 738.4402332361516 568.4256559766764 740.9985422740524Q570.4591836734694 743.5568513119533 571.5087463556852 745.131195335277L572.16472303207 744.868804664723Q572.033527696793 741.195335276968 572.033527696793 737.5874635568514Q572.033527696793 733.9795918367347 572.033527696793 732.1428571428571V699.7376093294461H598.4037900874636V790.0H573.8702623906706L542.2521865889213 753.9212827988338Q540.0218658892129 751.2973760932945 538.4475218658893 749.1326530612246Q536.8731778425656 746.9679300291546 535.4300291545189 745.0L534.7740524781342 745.2623906705539Q534.9052478134112 747.7551020408164 534.9052478134112 750.2478134110788Q534.9052478134112 752.7405247813412 534.9052478134112 753.9212827988338V790.0Z" fill="#FFFFFF" />
+            </svg>
+            <svg class="letter" id="lt-4" style="left: 614.51px; width: 32.99px" viewBox="614.51 697 32.99 96">
+              <path d="M616.5087463556852 790.0V699.7376093294461H645.5029154518951V790.0Z" fill="#FFFFFF" />
+            </svg>
+
+            <div id="xwrap">
+              <svg id="xsvg" viewBox="640 690 130 110" width="1430" height="1210" data-hf-motion-blur='{"samplesPerFrame": 8}'>
+                <path id="xpath" d="M654.4241982507289 790.0 686.698250728863 742.2448979591836 657.572886297376 699.7376093294461H692.6020408163265L706.2463556851312 722.8279883381924H706.7711370262391L720.5466472303207 699.7376093294461H752.9518950437317L723.6953352769679 742.3760932944606L755.969387755102 790.0H720.8090379008746L704.1472303206997 761.9241982507289H703.6224489795918L686.9606413994169 790.0Z" fill="#5B3DF5" />
+              </svg>
+              <svg id="lkball" viewBox="679.934 720 50 50" width="550" height="550" data-hf-motion-blur='{"samplesPerFrame": 8}'>
+                <defs>
+                  <clipPath id="lk-ball-clip"><circle cx="704.934" cy="745" r="22.3032" /></clipPath>
+                </defs>
+                <circle cx="704.934" cy="745" r="24.3105" fill="#14123A" />
+                <circle cx="704.934" cy="745" r="22.3032" fill="#D7FF3D" />
+                <g clip-path="url(#lk-ball-clip)" fill="none" stroke="#5B3DF5" stroke-width="2.89942" stroke-linecap="round">
+                  <path d="M681.985 736.994 C699.799 739.142 706.919 752.533 698.738 768.502" />
+                  <path d="M711.13 721.498 C702.95 737.467 710.07 750.858 727.883 753.006" />
+                </g>
+              </svg>
+            </div>
+            <div id="xfinal">
+              <svg id="xfinal-svg" viewBox="640 690 130 110" width="130" height="110">
+                <path id="xpath-final" d="M654.4241982507289 790.0 686.698250728863 742.2448979591836 657.572886297376 699.7376093294461H692.6020408163265L706.2463556851312 722.8279883381924H706.7711370262391L720.5466472303207 699.7376093294461H752.9518950437317L723.6953352769679 742.3760932944606L755.969387755102 790.0H720.8090379008746L704.1472303206997 761.9241982507289H703.6224489795918L686.9606413994169 790.0Z" fill="#5B3DF5" />
+              </svg>
+              <svg id="lkball-final" viewBox="679.934 720 50 50" width="50" height="50">
+                <defs>
+                  <clipPath id="lk-ball-clip-final"><circle cx="704.934" cy="745" r="22.3032" /></clipPath>
+                </defs>
+                <circle cx="704.934" cy="745" r="24.3105" fill="#14123A" />
+                <circle cx="704.934" cy="745" r="22.3032" fill="#D7FF3D" />
+                <g clip-path="url(#lk-ball-clip-final)" fill="none" stroke="#5B3DF5" stroke-width="2.89942" stroke-linecap="round">
+                  <path d="M681.985 736.994 C699.799 739.142 706.919 752.533 698.738 768.502" />
+                  <path d="M711.13 721.498 C702.95 737.467 710.07 750.858 727.883 753.006" />
+                </g>
+              </svg>
+            </div>
+
+            <svg id="sweep" viewBox="200 690 570 110" width="570" height="110">
+              <defs>
+                <clipPath id="sweep-clip">
+                  <path d="M236.69825072886303 790.0V722.8279883381924H207.04810495626828V699.7376093294461H295.2113702623907V722.8279883381924H265.69241982507293V790.0ZM307.5437317784257 790.0V699.7376093294461H385.6049562682216V721.3848396501458H336.5379008746356V733.8483965014577H378.52040816326536V754.5772594752186H336.5379008746356V768.3527696793003H386.5233236151604V790.0ZM400.56122448979596 790.0V699.7376093294461H425.2259475218659L453.30174927113706 732.1428571428571Q454.48250728862973 733.4548104956268 456.45043731778424 735.9475218658893Q458.4183673469388 738.4402332361516 460.4518950437318 740.9985422740524Q462.48542274052477 743.5568513119533 463.53498542274053 745.131195335277L464.1909620991254 744.868804664723Q464.0597667638484 741.195335276968 464.0597667638484 737.5874635568514Q464.0597667638484 733.9795918367347 464.0597667638484 732.1428571428571V699.7376093294461H490.43002915451893V790.0H465.89650145772595L434.27842565597666 753.9212827988338Q432.0481049562682 751.2973760932945 430.47376093294463 749.1326530612246Q428.899416909621 746.9679300291546 427.45626822157436 745.0L426.8002915451895 745.2623906705539Q426.9314868804665 747.7551020408164 426.9314868804665 750.2478134110788Q426.9314868804665 752.7405247813412 426.9314868804665 753.9212827988338V790.0ZM508.5349854227406 790.0V699.7376093294461H533.1997084548105L561.2755102040817 732.1428571428571Q562.4562682215744 733.4548104956268 564.424198250729 735.9475218658893Q566.3921282798834 738.4402332361516 568.4256559766764 740.9985422740524Q570.4591836734694 743.5568513119533 571.5087463556852 745.131195335277L572.16472303207 744.868804664723Q572.033527696793 741.195335276968 572.033527696793 737.5874635568514Q572.033527696793 733.9795918367347 572.033527696793 732.1428571428571V699.7376093294461H598.4037900874636V790.0H573.8702623906706L542.2521865889213 753.9212827988338Q540.0218658892129 751.2973760932945 538.4475218658893 749.1326530612246Q536.8731778425656 746.9679300291546 535.4300291545189 745.0L534.7740524781342 745.2623906705539Q534.9052478134112 747.7551020408164 534.9052478134112 750.2478134110788Q534.9052478134112 752.7405247813412 534.9052478134112 753.9212827988338V790.0ZM616.5087463556852 790.0V699.7376093294461H645.5029154518951V790.0Z" />
+                  <path d="M654.4241982507289 790.0 686.698250728863 742.2448979591836 657.572886297376 699.7376093294461H692.6020408163265L706.2463556851312 722.8279883381924H706.7711370262391L720.5466472303207 699.7376093294461H752.9518950437317L723.6953352769679 742.3760932944606L755.969387755102 790.0H720.8090379008746L704.1472303206997 761.9241982507289H703.6224489795918L686.9606413994169 790.0Z" />
+                </clipPath>
+                <linearGradient id="sweep-grad" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0" stop-color="#D7FF3D" stop-opacity="0" />
+                  <stop offset="0.5" stop-color="#F2FFC2" stop-opacity="0.9" />
+                  <stop offset="1" stop-color="#D7FF3D" stop-opacity="0" />
+                </linearGradient>
+              </defs>
+              <g clip-path="url(#sweep-clip)">
+                <rect id="sweep-bar" x="40" y="690" width="90" height="110" fill="url(#sweep-grad)" />
+              </g>
+            </svg>
+
+            <div id="tag-slot">
+              <div class="slot-word" id="slot-0">FOLLOW</div>
+              <div class="slot-word" id="slot-1">TRAVEL</div>
+              <div class="slot-word" id="slot-2">GEAR</div>
+              <div class="slot-word" id="slot-3">CLUB</div>
+              <svg id="tagline" viewBox="250 866 461 46" width="461" height="46">
+                <path d="M300.0 900.0V879.39H315.81V883.59H305.37V888.03H314.55V892.14H305.37V900.0ZM333.33 900.36Q329.94 900.36 327.525 899.175Q325.11 897.99 323.82000000000005 895.62Q322.53000000000003 893.25 322.53000000000003 889.68Q322.53000000000003 886.11 323.82000000000005 883.755Q325.11 881.4 327.525 880.2149999999999Q329.94 879.03 333.33 879.03Q336.72 879.03 339.135 880.2149999999999Q341.55 881.4 342.84000000000003 883.755Q344.13 886.11 344.13 889.68Q344.13 893.25 342.84000000000003 895.62Q341.55 897.99 339.135 899.175Q336.72 900.36 333.33 900.36ZM333.33 896.16Q334.62 896.16 335.61 895.77Q336.6 895.38 337.275 894.63Q337.95 893.88 338.28 892.8Q338.61 891.72 338.61 890.37V889.05Q338.61 887.67 338.28 886.5899999999999Q337.95 885.51 337.275 884.76Q336.6 884.01 335.61 883.62Q334.62 883.23 333.33 883.23Q332.01 883.23 331.02 883.62Q330.03000000000003 884.01 329.37 884.76Q328.71 885.51 328.38 886.5899999999999Q328.05 887.67 328.05 889.05V890.37Q328.05 891.72 328.38 892.8Q328.71 893.88 329.37 894.63Q330.03000000000003 895.38 331.02 895.77Q332.01 896.16 333.33 896.16ZM351.93 900.0V879.39H357.3V895.59H367.77V900.0ZM374.82 900.0V879.39H380.19V895.59H390.65999999999997V900.0ZM406.71 900.36Q403.32 900.36 400.905 899.175Q398.49 897.99 397.20000000000005 895.62Q395.91 893.25 395.91 889.68Q395.91 886.11 397.20000000000005 883.755Q398.49 881.4 400.905 880.2149999999999Q403.32 879.03 406.71 879.03Q410.1 879.03 412.515 880.2149999999999Q414.93 881.4 416.22 883.755Q417.51 886.11 417.51 889.68Q417.51 893.25 416.22 895.62Q414.93 897.99 412.515 899.175Q410.1 900.36 406.71 900.36ZM406.71 896.16Q408.0 896.16 408.99 895.77Q409.98 895.38 410.655 894.63Q411.33 893.88 411.65999999999997 892.8Q411.99 891.72 411.99 890.37V889.05Q411.99 887.67 411.65999999999997 886.5899999999999Q411.33 885.51 410.655 884.76Q409.98 884.01 408.99 883.62Q408.0 883.23 406.71 883.23Q405.39 883.23 404.4 883.62Q403.41 884.01 402.75 884.76Q402.09 885.51 401.76 886.5899999999999Q401.43 887.67 401.43 889.05V890.37Q401.43 891.72 401.76 892.8Q402.09 893.88 402.75 894.63Q403.41 895.38 404.4 895.77Q405.39 896.16 406.71 896.16ZM427.91999999999996 900.0 422.72999999999996 879.39H428.37L430.89 890.22Q430.95 890.49 431.03999999999996 891.0Q431.13 891.51 431.235 892.0799999999999Q431.34 892.65 431.43 893.13H431.54999999999995Q431.60999999999996 892.83 431.66999999999996 892.425Q431.72999999999996 892.02 431.80499999999995 891.615Q431.88 891.21 431.955 890.85Q432.03 890.49 432.06 890.22L434.43 879.39H440.28L442.71 890.22Q442.79999999999995 890.52 442.89 891.03Q442.97999999999996 891.54 443.085 892.1099999999999Q443.19 892.68 443.28 893.13H443.4Q443.46 892.8 443.53499999999997 892.425Q443.60999999999996 892.05 443.68499999999995 891.645Q443.76 891.24 443.835 890.88Q443.90999999999997 890.52 443.96999999999997 890.22L446.4 879.39H451.68L446.49 900.0H440.49L437.84999999999997 888.6Q437.78999999999996 888.18 437.66999999999996 887.64Q437.54999999999995 887.1 437.44499999999994 886.56Q437.34 886.02 437.28 885.6H437.15999999999997Q437.09999999999997 886.02 437.01 886.56Q436.91999999999996 887.1 436.81499999999994 887.64Q436.71 888.18 436.62 888.6L434.01 900.0ZM468.21000000000004 900.0V879.39H484.02000000000004V883.59H473.58000000000004V888.03H482.76000000000005V892.14H473.58000000000004V900.0ZM501.53999999999996 900.36Q498.15 900.36 495.735 899.175Q493.32 897.99 492.03 895.62Q490.74 893.25 490.74 889.68Q490.74 886.11 492.03 883.755Q493.32 881.4 495.735 880.2149999999999Q498.15 879.03 501.53999999999996 879.03Q504.93 879.03 507.345 880.2149999999999Q509.76 881.4 511.05 883.755Q512.34 886.11 512.34 889.68Q512.34 893.25 511.05 895.62Q509.76 897.99 507.345 899.175Q504.93 900.36 501.53999999999996 900.36ZM501.53999999999996 896.16Q502.83 896.16 503.82 895.77Q504.81 895.38 505.485 894.63Q506.15999999999997 893.88 506.49 892.8Q506.82 891.72 506.82 890.37V889.05Q506.82 887.67 506.49 886.5899999999999Q506.15999999999997 885.51 505.485 884.76Q504.81 884.01 503.82 883.62Q502.83 883.23 501.53999999999996 883.23Q500.21999999999997 883.23 499.23 883.62Q498.24 884.01 497.58 884.76Q496.91999999999996 885.51 496.59 886.5899999999999Q496.26 887.67 496.26 889.05V890.37Q496.26 891.72 496.59 892.8Q496.91999999999996 893.88 497.58 894.63Q498.24 895.38 499.23 895.77Q500.21999999999997 896.16 501.53999999999996 896.16ZM520.14 900.0V879.39H532.11Q534.39 879.39 535.92 880.245Q537.4499999999999 881.1 538.2149999999999 882.585Q538.98 884.07 538.98 885.9Q538.98 887.88 538.065 889.425Q537.15 890.97 535.5 891.84L539.64 900.0H533.64L530.22 892.74H525.51V900.0ZM525.51 888.75H531.06Q532.17 888.75 532.845 888.015Q533.52 887.28 533.52 886.05Q533.52 885.24 533.22 884.6700000000001Q532.92 884.1 532.38 883.7850000000001Q531.84 883.47 531.06 883.47H525.51ZM556.71 900.0V879.39H564.5400000000001L567.0300000000001 888.57Q567.1800000000001 889.05 567.3900000000001 889.875Q567.6 890.7 567.81 891.6Q568.02 892.5 568.1700000000001 893.22H568.4100000000001Q568.5300000000001 892.65 568.71 891.855Q568.89 891.06 569.1 890.175Q569.3100000000001 889.29 569.49 888.54L572.01 879.39H579.63V900.0H574.4100000000001V891.21Q574.4100000000001 889.92 574.4250000000001 888.5999999999999Q574.44 887.28 574.47 886.2Q574.5 885.12 574.5 884.64H574.26Q574.1700000000001 885.09 573.9750000000001 885.9449999999999Q573.7800000000001 886.8 573.5550000000001 887.7149999999999Q573.33 888.63 573.1500000000001 889.29L570.1500000000001 900.0H565.83L562.8000000000001 889.29Q562.6500000000001 888.69 562.44 887.85Q562.23 887.01 562.0350000000001 886.14Q561.84 885.27 561.69 884.67H561.45Q561.48 885.45 561.51 886.575Q561.5400000000001 887.7 561.57 888.915Q561.6 890.13 561.6 891.21V900.0ZM598.2299999999999 900.36Q594.8399999999999 900.36 592.425 899.175Q590.0099999999999 897.99 588.7199999999999 895.62Q587.43 893.25 587.43 889.68Q587.43 886.11 588.7199999999999 883.755Q590.0099999999999 881.4 592.425 880.2149999999999Q594.8399999999999 879.03 598.2299999999999 879.03Q601.6199999999999 879.03 604.0349999999999 880.2149999999999Q606.4499999999999 881.4 607.74 883.755Q609.03 886.11 609.03 889.68Q609.03 893.25 607.74 895.62Q606.4499999999999 897.99 604.0349999999999 899.175Q601.6199999999999 900.36 598.2299999999999 900.36ZM598.2299999999999 896.16Q599.52 896.16 600.51 895.77Q601.4999999999999 895.38 602.175 894.63Q602.8499999999999 893.88 603.1799999999998 892.8Q603.5099999999999 891.72 603.5099999999999 890.37V889.05Q603.5099999999999 887.67 603.1799999999998 886.5899999999999Q602.8499999999999 885.51 602.175 884.76Q601.4999999999999 884.01 600.51 883.62Q599.52 883.23 598.2299999999999 883.23Q596.91 883.23 595.92 883.62Q594.93 884.01 594.27 884.76Q593.6099999999999 885.51 593.28 886.5899999999999Q592.9499999999999 887.67 592.9499999999999 889.05V890.37Q592.9499999999999 891.72 593.28 892.8Q593.6099999999999 893.88 594.27 894.63Q594.93 895.38 595.92 895.77Q596.91 896.16 598.2299999999999 896.16ZM616.8299999999999 900.0V879.39H628.8Q631.0799999999999 879.39 632.6099999999999 880.245Q634.1399999999999 881.1 634.905 882.585Q635.67 884.07 635.67 885.9Q635.67 887.88 634.7549999999999 889.425Q633.8399999999999 890.97 632.1899999999999 891.84L636.3299999999999 900.0H630.3299999999999L626.91 892.74H622.1999999999999V900.0ZM622.1999999999999 888.75H627.7499999999999Q628.8599999999999 888.75 629.5349999999999 888.015Q630.2099999999999 887.28 630.2099999999999 886.05Q630.2099999999999 885.24 629.9099999999999 884.6700000000001Q629.6099999999999 884.1 629.0699999999999 883.7850000000001Q628.53 883.47 627.7499999999999 883.47H622.1999999999999ZM643.5899999999999 900.0V879.39H660.6V883.59H648.9599999999999V887.46H659.13V891.57H648.9599999999999V895.8H660.81V900.0Z" fill="#D7FF3D" />
+              </svg>
+            </div>
+
+            <div id="bar"></div>
+
+            <div class="hf-catalog-confetti" id="confetti" data-layout-allow-overflow></div>
+          </div>
+        </div>
+        <canvas id="fx-chroma" class="fx-canvas" width="540" height="960"></canvas>
+        <canvas id="fx-leak" class="fx-canvas" width="180" height="320"></canvas>
+      </div>
+
+      <audio
+        id="soundtrack"
+        src="assets/audio/endcard-v2.wav"
+        data-start="0"
+        data-duration="6"
+        data-track-index="9"
+      ></audio>
     </div>
 
+    <script src="assets/fx/camera-shake.js"></script>
+    <script src="assets/fx/motion-blur.js"></script>
     <script>
       (function () {
         "use strict";
-        // ---- geometry (from assets/end-card-1080x1920.svg) ----
-        var CX = 704.934,
-          CY = 745;
-        var XC = { x: 705.27, y: 742.76 };
-        // ball flight: quadratic arc from off-frame lower-left, apex ~ (430, 484), landing on the crossing
-        var P0 = { x: -90, y: 1240 },
-          P1 = { x: 350, y: 40 },
-          P2 = { x: CX, y: CY };
-        var FLIGHT = 0.8; // lands on frame 24
-        var S0 = 1.5; // uniform flight scale -> 1.0
-        var SPIN0 = -540; // seams land in their final orientation
-        var DIP_START = 0.8,
-          DIP_DUR = 0.12,
-          DIP_PX = 5;
-        // echo trail (motion-blur-streak path B)
-        var ECHO_DELTA = 0.022;
-        var ECHO_BASE = [0.35, 0.2, 0.1];
-        var ECHO_GONE = 0.75;
+        var COMP_ID = "main";
 
-        var power2Out = gsap.parseEase("power2.out");
-        var power3Out = gsap.parseEase("power3.out");
-
+        /* ---------- seeded randomness (mulberry32, from caption-kinetic-slam) ---------- */
+        function mulberry32(seed) {
+          return function () {
+            seed |= 0;
+            seed = (seed + 0x6d2b79f5) | 0;
+            var t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+            t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+            return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+          };
+        }
         function clamp01(v) {
           return v < 0 ? 0 : v > 1 ? 1 : v;
         }
-        function flightAt(t) {
-          var p = clamp01(t / FLIGHT);
-          var u = power2Out(p);
-          var a = (1 - u) * (1 - u),
-            b = 2 * u * (1 - u),
-            c = u * u;
-          var x = a * P0.x + b * P1.x + c * P2.x;
-          var y = a * P0.y + b * P1.y + c * P2.y;
-          var s = S0 + (1 - S0) * u;
-          var r = SPIN0 * (1 - power3Out(p));
-          if (t >= DIP_START && t <= DIP_START + DIP_DUR) {
-            var q = power2Out((t - DIP_START) / DIP_DUR);
-            y += DIP_PX * Math.sin(Math.PI * q);
-          }
-          return { x: x, y: y, s: s, r: r, done: p >= 1 };
+        function lerp(a, b, p) {
+          return a + (b - a) * p;
         }
-        function transformFor(st) {
-          if (st.done && Math.abs(st.y - CY) < 1e-6) return "";
-          return (
-            "translate(" + st.x.toFixed(3) + " " + st.y.toFixed(3) + ") scale(" + st.s.toFixed(5) + ") rotate(" +
-            st.r.toFixed(3) + ") translate(" + (-CX) + " " + (-CY) + ")"
-          );
+        // Seek-safe driver (camera-shake pattern): GSAP writes `t` on every render,
+        // including seek(), so the setter repaints deterministic state from time.
+        function driver(fn) {
+          var o = {};
+          var v = 0;
+          Object.defineProperty(o, "t", {
+            get: function () {
+              return v;
+            },
+            set: function (n) {
+              v = n;
+              fn(n);
+            },
+          });
+          return o;
         }
 
-        var ball = document.getElementById("ball");
-        var ghosts = [
-          document.getElementById("ghost1"),
-          document.getElementById("ghost2"),
-          document.getElementById("ghost3"),
+        /* ================= COURT GEOMETRY (shared by rally + ambient hold) ================= */
+        var S = 88; // px per metre on the plane
+        var CX = 650;
+        var YB = 2250; // local baseline y
+        var D = 5.485 * S;
+        var SG = 4.115 * S;
+        var Y_FAR = YB - 23.77 * S;
+        var Y_NET = YB - 11.885 * S;
+        var Y_SN = YB - 5.485 * S;
+        var Y_SF = YB - 18.285 * S;
+        // [x1, y1, x2, y2, start, duration] - every line grows away from the far end
+        var LINES = [
+          [CX, Y_FAR, CX - D, Y_FAR, 0.0, 0.09],
+          [CX, Y_FAR, CX + D, Y_FAR, 0.0, 0.09],
+          [CX - D, Y_FAR, CX - D, YB, 0.03, 0.27],
+          [CX + D, Y_FAR, CX + D, YB, 0.03, 0.27],
+          [CX - SG, Y_FAR, CX - SG, YB, 0.05, 0.26],
+          [CX + SG, Y_FAR, CX + SG, YB, 0.05, 0.26],
+          [CX, Y_SF, CX - SG, Y_SF, 0.07, 0.08],
+          [CX, Y_SF, CX + SG, Y_SF, 0.07, 0.08],
+          [CX, Y_SF, CX, Y_SN, 0.07, 0.17],
+          [CX, Y_NET, CX - D - 50, Y_NET, 0.12, 0.09],
+          [CX, Y_NET, CX + D + 50, Y_NET, 0.12, 0.09],
+          [CX, Y_SN, CX - SG, Y_SN, 0.18, 0.09],
+          [CX, Y_SN, CX + SG, Y_SN, 0.18, 0.09],
+          [CX, YB, CX - D, YB, 0.25, 0.1],
+          [CX, YB, CX + D, YB, 0.25, 0.1],
+          [CX, YB, CX, YB - 14, 0.3, 0.05],
         ];
-        var band1 = document.getElementById("band1");
-        var band2 = document.getElementById("band2");
-
-        function applyBall(t) {
-          var lead = flightAt(t);
-          var tf = transformFor(lead);
-          if (tf) ball.setAttribute("transform", tf);
-          else ball.removeAttribute("transform");
-          var fade = clamp01((ECHO_GONE - t) / 0.2);
-          for (var i = 0; i < ghosts.length; i++) {
-            var g = flightAt(t - (i + 1) * ECHO_DELTA);
-            var dist = Math.hypot(g.x - lead.x, g.y - lead.y);
-            var a = ECHO_BASE[i] * clamp01(dist / 24) * fade;
-            ghosts[i].setAttribute("transform", transformFor(g) || "translate(0 0)");
-            ghosts[i].setAttribute("opacity", a < 0.002 ? "0" : a.toFixed(4));
-          }
-        }
-        function bandTransform(angle, s) {
-          return "translate(" + XC.x + " " + XC.y + ") rotate(" + angle + ") scale(" + s.toFixed(5) + " 1)";
-        }
-
-        var bandA = { v: 0 },
-          bandB = { v: 0 };
-        function applyBands() {
-          band1.setAttribute("transform", bandTransform(54.96, bandA.v));
-          band2.setAttribute("transform", bandTransform(126.2, bandB.v));
-        }
-
-        var tl = gsap.timeline({
-          paused: true,
-          onUpdate: function () {
-            applyBall(tl.time());
-            applyImpact(tl.time());
-          },
+        var SVGNS = "http://www.w3.org/2000/svg";
+        var courtLines = document.getElementById("court-lines");
+        var lineEls = LINES.map(function (L, i) {
+          var el = document.createElementNS(SVGNS, "line");
+          el.setAttribute("id", "cl-" + i);
+          el.setAttribute("class", "court-line");
+          el.setAttribute("x1", L[0]);
+          el.setAttribute("y1", L[1]);
+          el.setAttribute("x2", L[2]);
+          el.setAttribute("y2", L[3]);
+          el.setAttribute("pathLength", "1");
+          el.setAttribute("stroke-dasharray", "1 1");
+          el.setAttribute("stroke-dashoffset", "1");
+          courtLines.appendChild(el);
+          return el;
         });
 
-        // anchor: timeline spans the full 4.5s so every seek fires onUpdate
-        tl.to({ p: 0 }, { p: 1, duration: 4.5, ease: "none" }, 0);
-
-        // b1 impact (logo-sting accent ring + cursor-click-ripple mechanics, no white flash)
-        // and ambient-glow-bloom. Pure functions of tl.time(): exactly 0 outside their windows.
-        var ringLime = document.getElementById("ring-lime");
-        var ringViolet = document.getElementById("ring-violet");
-        var bloom = document.getElementById("bloom");
-        var sineOut = gsap.parseEase("sine.out");
-        var sineInOut = gsap.parseEase("sine.inOut");
-        function ring(el, t, t0, dur, r0, r1, o0, ease) {
-          if (t < t0 || t >= t0 + dur) {
-            el.setAttribute("opacity", "0");
-            el.setAttribute("r", String(r0));
-            return;
-          }
-          var e = ease((t - t0) / dur);
-          el.setAttribute("r", (r0 + (r1 - r0) * e).toFixed(3));
-          el.setAttribute("opacity", (o0 * (1 - e)).toFixed(4));
-        }
-        function applyImpact(t) {
-          ring(ringLime, t, 0.8, 0.5, 24, 120, 0.9, power2Out);
-          ring(ringViolet, t, 0.87, 0.5, 24, 80, 0.6, power3Out);
-          var b = 0;
-          if (t >= 0.8 && t < 0.9) b = 0.3 * sineOut((t - 0.8) / 0.1);
-          else if (t >= 0.9 && t < 1.6) b = 0.3 * (1 - sineInOut((t - 0.9) / 0.7));
-          bloom.setAttribute("opacity", b.toFixed(4));
-        }
-
-        // b2 X strokes grow out of the crossing (expo.out), then swap to the original path
-        tl.fromTo(bandA, { v: 0 }, { v: 1, duration: 0.28, ease: "expo.out", onUpdate: applyBands }, 0.8);
-        tl.fromTo(bandB, { v: 0 }, { v: 1, duration: 0.28, ease: "expo.out", onUpdate: applyBands, immediateRender: false }, 0.86);
-        tl.fromTo("#x-final", { attr: { opacity: 0 } }, { attr: { opacity: 1 }, duration: 0.001 }, 1.15);
-        tl.fromTo("#x-grow", { attr: { opacity: 1 } }, { attr: { opacity: 0 }, duration: 0.001 }, 1.15);
-
-        // b3 TENNI ripples right-to-left, I first, T last: bottom-up wipe + rise
-        for (var k = 0; k < 5; k++) {
-          var idx = 4 - k;
-          var at = 1.0 + k * 0.06;
-          tl.fromTo("#tmask" + idx, { attr: { y: 790, height: 0 } }, { attr: { y: 690, height: 104 }, duration: 0.38, ease: "power4.out" }, at);
-          tl.fromTo("#tl" + idx, { y: 36 }, { y: 0, duration: 0.38, ease: "power4.out" }, at);
-        }
-
-        // b4 FOLLOW FOR MORE tracks in: per-letter translateX from 1.6x offset, no glyph scaling
-        var TAG_CX = 480;
-        gsap.utils.toArray("#tagline .tg").forEach(function (el) {
-          var cx = parseFloat(el.getAttribute("data-cx"));
-          tl.fromTo(el, { x: (cx - TAG_CX) * 0.6 }, { x: 0, duration: 0.6, ease: "expo.out" }, 1.9);
+        // Ambient court for the living hold: a static clone of the same court.
+        var ambWorld = document.getElementById("amb-world");
+        var ambPlane = document.getElementById("court").cloneNode(true);
+        ambPlane.removeAttribute("id");
+        Array.prototype.forEach.call(ambPlane.querySelectorAll("[id]"), function (n) {
+          n.removeAttribute("id");
         });
-        tl.fromTo("#tagline", { attr: { opacity: 0 } }, { attr: { opacity: 1 }, duration: 0.25, ease: "power1.out" }, 1.9);
+        Array.prototype.forEach.call(ambPlane.querySelectorAll("div"), function (n) {
+          n.parentNode.removeChild(n);
+        });
+        Array.prototype.forEach.call(ambPlane.querySelectorAll("line"), function (n) {
+          n.removeAttribute("stroke-dasharray");
+          n.removeAttribute("stroke-dashoffset");
+        });
+        var ambSvg = ambPlane.querySelector("svg");
+        var ambG = ambSvg.querySelector("g");
+        if (ambG) ambG.removeAttribute("filter");
+        var ambDefs = ambSvg.querySelector("defs");
+        if (ambDefs) ambDefs.parentNode.removeChild(ambDefs);
+        var ambRect = ambSvg.querySelector("rect");
+        if (ambRect) ambRect.setAttribute("fill", "rgba(0,0,0,0)");
+        ambPlane.id = "amb-court";
+        ambWorld.appendChild(ambPlane);
 
-        // b5 lime bar sweeps left to right
-        tl.fromTo("#bar", { attr: { width: 0 } }, { attr: { width: 1080 }, duration: 0.45, ease: "expo.out" }, 2.3);
+        /* ================= RALLY PROJECTION (mirrors the CSS 3D court) ================= */
+        var P = 1100;
+        var TH = (76 * Math.PI) / 180;
+        var COS = Math.cos(TH);
+        var SIN = Math.sin(TH);
+        var SCREEN_YB = 1700;
+        var ZC = 60;
+        var OY = 380;
+        var BALL_R = 34; // world radius in px at k = 1
+        var B1 = 0.3;
+        var B2 = 0.55;
+        var LENS = 0.6;
 
-        // b6 hold: dead still to 4.5s
-        tl.seek(0);
-        applyBall(0);
-        applyImpact(0);
-        applyBands();
-        window.__timelines["main"] = tl;
+        function pushAt(t) {
+          return 330 * Math.pow(clamp01(t / 0.7), 1.25);
+        }
+        function joltAt(t) {
+          var j = 0;
+          [
+            [B1, 15],
+            [B2, 22],
+          ].forEach(function (b) {
+            var x = t - b[0];
+            if (x >= 0) j += b[1] * Math.exp(-x * 22) * Math.cos(x * 75);
+          });
+          return j;
+        }
+        function project(u, d, h, push, jolt) {
+          var X = 540 + u * S;
+          var Y = SCREEN_YB - d * S * COS - h * S * SIN + jolt;
+          var Z = ZC + push - d * S * SIN + h * S * COS;
+          Z = Math.min(Z, P - 20);
+          var k = P / (P - Z);
+          return { x: 540 + (X - 540) * k, y: OY + (Y - OY) * k, k: k };
+        }
+        // ball path in court metres: u across, d from near baseline, h height
+        function ballAt(t) {
+          var p;
+          if (t < B1) {
+            p = clamp01(t / B1);
+            return { u: lerp(-2.4, -0.7, p), d: lerp(22.8, 7.4, p), h: lerp(1.4, 0, p) + 1.15 * 4 * p * (1 - p) };
+          }
+          if (t < B2) {
+            p = (t - B1) / (B2 - B1);
+            return { u: lerp(-0.7, 0.45, p), d: lerp(7.4, 1.5, p), h: 1.05 * 4 * p * (1 - p) };
+          }
+          p = clamp01((t - B2) / (LENS - B2));
+          return { u: lerp(0.45, 0.2, p), d: lerp(1.5, -2.5, p), h: lerp(0, 1.6, p) };
+        }
+        function ballScreen(t) {
+          var b = ballAt(t);
+          var pr = project(b.u, b.d, b.h, pushAt(t), joltAt(t));
+          var r = BALL_R * pr.k;
+          var x = pr.x;
+          var y = pr.y;
+          if (t > B2) {
+            // lens hit: the ball leaves the court plane and fills the lens
+            var e = clamp01((t - B2) / (LENS - B2));
+            var e2 = e * e;
+            x = lerp(x, 540, e2);
+            y = lerp(y, 960, e2);
+            r = lerp(r, 1500, Math.pow(e, 2.6));
+          }
+          return { x: x, y: y, r: r, b: b };
+        }
+
+        var rallyWorld = document.getElementById("rally-world");
+        var rallyBall = document.getElementById("rally-ball");
+        var ballShadow = document.getElementById("ball-shadow");
+        var echoes = [1, 2, 3, 4, 5].map(function (i) {
+          return document.getElementById("echo-" + i);
+        });
+
+        function renderRally(t) {
+          var push = pushAt(t);
+          var jolt = joltAt(t);
+          gsap.set(rallyWorld, { z: push, y: jolt });
+          var s = ballScreen(t);
+          gsap.set(rallyBall, {
+            x: s.x - 100,
+            y: s.y - 100,
+            scale: s.r / 100,
+            rotation: t * 1100,
+          });
+          var lens = clamp01((t - B2) / (LENS - B2));
+          echoes.forEach(function (el, i) {
+            var te = t - (i + 1) * 0.024;
+            if (te < 0) {
+              gsap.set(el, { opacity: 0 });
+              return;
+            }
+            var se = ballScreen(te);
+            gsap.set(el, {
+              x: se.x - 100,
+              y: se.y - 100,
+              scale: se.r / 100,
+              opacity: (0.42 - i * 0.075) * (1 - lens),
+            });
+          });
+          var b = s.b;
+          gsap.set(ballShadow, {
+            x: CX + b.u * S - 45,
+            y: YB - b.d * S - 45,
+            opacity: t > B2 + 0.02 ? 0 : 0.8 * clamp01(1 - b.h / 2.2),
+          });
+        }
+
+        /* ================= PILLAR CARDS ================= */
+        var CARDS = [
+          { word: "FOLLOW", t: 0.6, dir: "ltr", mode: 0, flash: "#ffffff" },
+          { word: "TRAVEL", t: 0.95, dir: "rtl", mode: 1, flash: "#ffffff" },
+          { word: "GEAR", t: 1.3, dir: "ltr", mode: 2, flash: "#ffffff" },
+          { word: "CLUB", t: 1.65, dir: "rtl", mode: 3, flash: "#d7ff3d" },
+        ];
+        var SAFE_WORD_WIDTH = 760;
+
+        // caption-kinetic-slam fitFontSize, customized for Archivo Black and the 760px safe width
+        var _fitCanvas = document.createElement("canvas");
+        var _fitCtx = _fitCanvas.getContext("2d");
+        function fitFontSize(text, baseFontSize, maxWidth) {
+          var size = baseFontSize;
+          var minSize = Math.floor(baseFontSize * 0.3);
+          while (size > minSize) {
+            _fitCtx.font = '900 ' + size + 'px "Archivo Black"';
+            if (_fitCtx.measureText(text).width * 0.99 <= maxWidth) return size;
+            size -= 2;
+          }
+          return minSize;
+        }
+
+        function build() {
+          var tl = gsap.timeline({ paused: true });
+
+          /* ---------- 1. RALLY ---------- */
+          lineEls.forEach(function (el, i) {
+            var L = LINES[i];
+            tl.fromTo(
+              el,
+              { attr: { "stroke-dashoffset": 1 } },
+              { attr: { "stroke-dashoffset": 0 }, duration: L[5], ease: "power2.out" },
+              L[4],
+            );
+          });
+          tl.fromTo("#court-net", { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "power1.out" }, 0.12);
+          tl.fromTo("#rally-horizon", { opacity: 0.55, scale: 0.9 }, { opacity: 1, scale: 1.08, duration: 0.7, ease: "sine.out" }, 0);
+          tl.fromTo("#rally-light-l", { opacity: 0.4 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, 0.02);
+          tl.fromTo("#rally-light-r", { opacity: 0.4 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, 0.08);
+          tl.to(driver(renderRally), { t: 0.7, duration: 0.7, ease: "none" }, 0);
+          // bounce impact rings on the court plane
+          [
+            ["#ring-b1", B1, ballAt(B1 - 0.0001)],
+            ["#ring-b2", B2, ballAt(B2 - 0.0001)],
+          ].forEach(function (r) {
+            gsap.set(r[0], { x: CX + r[2].u * S - 120, y: YB - r[2].d * S - 120 });
+            tl.fromTo(
+              r[0],
+              { scale: 0.15, opacity: 1 },
+              { scale: 1.9, opacity: 0, duration: 0.26, ease: "expo.out", immediateRender: false },
+              r[1],
+            );
+          });
+          // transitions-light "overexposure burn" into the lens hit
+          tl.fromTo("#rally-fx", { filter: "brightness(1)" }, { filter: "brightness(1.6)", duration: 0.039, ease: "power1.in" }, 0.53);
+          tl.to("#rally-fx", { filter: "brightness(2.6)", duration: 0.03, ease: "power2.in" }, 0.57);
+          tl.fromTo("#rally-flash", { opacity: 0 }, { opacity: 0.55, duration: 0.029, ease: "power1.in" }, 0.56);
+          tl.to("#rally-flash", { opacity: 1, duration: 0.01, ease: "none" }, 0.59);
+          tl.to("#rally-flash", { opacity: 0, duration: 0.1, ease: "power2.out" }, 0.6);
+
+          /* ---------- 2. PILLAR SLAMS ---------- */
+          CARDS.forEach(function (c, i) {
+            var n = i + 1;
+            var T = c.t;
+            var stage = "#card-" + n + "-stage";
+            var word = document.getElementById("card-" + n + "-word");
+            var size = fitFontSize(c.word, 330, SAFE_WORD_WIDTH);
+            word.style.fontSize = size + "px";
+            word.style.height = size + "px";
+            word.style.top = 940 - size * 0.5 + "px";
+            document.getElementById("card-" + n + "-label").style.top = 940 + size * 0.42 + 50 + "px";
+
+            // diagonal wipe along the court-line angle, alternating direction
+            var from = c.dir === "ltr" ? "-420px" : "1500px";
+            var to = c.dir === "ltr" ? "1500px" : "-420px";
+            tl.fromTo(stage, { "--wipe": from }, { "--wipe": to, duration: 0.11, ease: "power2.in" }, T);
+            tl.fromTo("#card-" + n + "-edge", { opacity: 1 }, { opacity: 0, duration: 0.04, ease: "none" }, T + 0.1);
+
+            // background type rows drift in opposite directions (fills the frame)
+            for (var r = 0; r < 6; r++) {
+              var dx = (r % 2 === 0 ? -1 : 1) * (c.dir === "ltr" ? 1 : -1) * 220;
+              tl.fromTo(
+                "#card-" + n + "-row-" + r,
+                { x: -dx * 0.5 },
+                { x: dx * 0.5, duration: 0.46, ease: "none" },
+                T,
+              );
+            }
+            tl.fromTo("#card-" + n + "-slash", { scaleX: 0 }, { scaleX: 1, duration: 0.16, ease: "expo.out" }, T + 0.04);
+            tl.fromTo("#card-" + n + "-num", { y: -90, opacity: 0 }, { y: 0, opacity: 1, duration: 0.14, ease: "power3.out" }, T + 0.06);
+            tl.fromTo("#card-" + n + "-tick", { scaleX: 0 }, { scaleX: 1, duration: 0.14, ease: "expo.out" }, T + 0.1);
+            tl.fromTo(
+              "#card-" + n + "-label",
+              { scaleX: 1.45, opacity: 0 },
+              { scaleX: 1, opacity: 1, duration: 0.18, ease: "expo.out" },
+              T + 0.1,
+            );
+
+            // caption-kinetic-slam entrance modes, scaled up to a full-frame slam with overshoot
+            var W0 = T + 0.02;
+            if (c.mode === 0) {
+              tl.fromTo(word, { y: -620, scale: 1.7, opacity: 0 }, { y: 0, scale: 1, opacity: 1, duration: 0.2, ease: "back.out(2.2)" }, W0);
+            } else if (c.mode === 1) {
+              tl.fromTo(word, { x: 980, skewX: -22, scale: 1.25, opacity: 0 }, { x: 0, skewX: 0, scale: 1, opacity: 1, duration: 0.2, ease: "back.out(1.6)" }, W0);
+            } else if (c.mode === 2) {
+              tl.fromTo(word, { x: -980, skewX: 22, scale: 1.25, opacity: 0 }, { x: 0, skewX: 0, scale: 1, opacity: 1, duration: 0.2, ease: "back.out(1.6)" }, W0);
+            } else {
+              tl.fromTo(word, { scale: 2.6, rotation: -10, opacity: 0 }, { scale: 1, rotation: 0, opacity: 1, duration: 0.2, ease: "back.out(2.4)" }, W0);
+            }
+            // 2-frame hit flash
+            tl.fromTo("#card-" + n + "-flash", { opacity: 0 }, { opacity: 0.8, duration: 0.001, ease: "none" }, T + 0.15);
+            tl.to("#card-" + n + "-flash", { opacity: 0, duration: 0.001, ease: "none" }, T + 0.217);
+            // rgb-glitch accent on the hit
+            tl.fromTo(
+              word,
+              { "--hf-glitch-red": "0px", "--hf-glitch-blue": "0px" },
+              { "--hf-glitch-red": "-16px", "--hf-glitch-blue": "16px", duration: 0.034, repeat: 3, yoyo: true, ease: "steps(1)" },
+              T + 0.16,
+            );
+            tl.set(word, { "--hf-glitch-red": "0px", "--hf-glitch-blue": "0px" }, T + 0.3);
+          });
+
+          /* ---------- 3. THE SMASH (2.00 - 2.35) ---------- */
+          var XS = 11; // giant X scale: overflows the 1080 width (authored natively at 11x)
+          var XTX = 540 - 704.934;
+          var XTY = 900 - 745;
+          tl.set("#xwrap", { x: 0, y: 0, scale: 1 }, 0);
+          tl.fromTo("#fin-glow", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.18, ease: "expo.out" }, 2.0);
+          tl.fromTo("#xsvg", { scale: 2.7, rotation: -16 }, { scale: 0.93, rotation: 2, duration: 0.12, ease: "power4.in" }, 2.0);
+          tl.fromTo("#xsvg", { opacity: 0 }, { opacity: 1, duration: 0.04, ease: "none", immediateRender: false }, 2.0);
+          tl.to("#xsvg", { scale: 1, rotation: 0, duration: 0.06, ease: "back.out(3)" }, 2.12);
+          tl.fromTo("#fin-rays", { opacity: 0, rotation: 0, scale: 0.8 }, { opacity: 1, rotation: 14, scale: 1.25, duration: 0.5, ease: "expo.out" }, 2.12);
+          tl.to("#fin-rays", { opacity: 0, duration: 0.3, ease: "power2.in" }, 2.62);
+          // ball dives from the top into the X crossing
+          tl.fromTo("#lkball", { y: -1650, rotation: -540 }, { y: 0, rotation: 0, duration: 0.17, ease: "power2.in" }, 2.18);
+          // camera-shake component (customized envelope): kick on the slam, bigger kick on the smash
+          window.cameraShake(tl, "#shake-rig", {
+            profile: "handheld-wideangle-strong",
+            intensity: 3,
+            frequency: 3.2,
+            duration: 0.9,
+            at: 2.0,
+            fps: 30,
+            width: 1080,
+            height: 1920,
+            overscan: 1.04, // rig is transparent: no plate edge to hide, so no solve-zoom
+            envelope: function (tau) {
+              function kick(x, a) {
+                return x < 0 ? 0 : a * Math.exp(-x * 9);
+              }
+              var e = kick(tau - 0.12, 1) + kick(tau - 0.35, 1.25);
+              var fade = 1 - clamp01((tau - 0.62) / 0.2);
+              return e * fade * fade;
+            },
+          });
+
+          /* ---------- impact at 2.35 ---------- */
+          var HIT = 2.35;
+          tl.fromTo("#shock-lime", { scale: 0.15, opacity: 1 }, { scale: 4.2, opacity: 0, duration: 0.5, ease: "expo.out", immediateRender: false }, HIT);
+          tl.fromTo("#shock-violet", { scale: 0.1, opacity: 1 }, { scale: 3.2, opacity: 0, duration: 0.55, ease: "expo.out", immediateRender: false }, HIT + 0.03);
+          tl.fromTo("#shock-white", { scale: 0.2, opacity: 0.9 }, { scale: 5.5, opacity: 0, duration: 0.4, ease: "power3.out", immediateRender: false }, HIT + 0.01);
+          tl.to("#fin-glow", { opacity: 0, duration: 0.8, ease: "power2.inOut" }, HIT + 0.2);
+
+          // confetti component, customized: seeded brand-colour burst with drag + gravity
+          var conf = document.getElementById("confetti");
+          var rnd = mulberry32(0x7e11);
+          var COLORS = ["#D7FF3D", "#D7FF3D", "#D7FF3D", "#5B3DF5", "#5B3DF5", "#FFFFFF", "#E9E4FF"];
+          var parts = [];
+          for (var pi = 0; pi < 72; pi++) {
+            var sp = document.createElement("span");
+            sp.className = "particle";
+            var sz = 8 + Math.floor(rnd() * 16);
+            var round = rnd() < 0.4;
+            sp.style.setProperty("--w", sz + "px");
+            sp.style.setProperty("--h", (round ? sz : Math.round(sz * (0.5 + rnd() * 0.9))) + "px");
+            sp.style.setProperty("--r", round ? "50%" : "2px");
+            sp.style.setProperty("--c", COLORS[Math.floor(rnd() * COLORS.length)]);
+            conf.appendChild(sp);
+            var ang = rnd() * Math.PI * 2;
+            var speed = 900 + rnd() * 1900;
+            parts.push({
+              el: sp,
+              vx: Math.cos(ang) * speed,
+              vy: Math.sin(ang) * speed - 300,
+              spin: (rnd() - 0.5) * 1600,
+              life: 0.55 + rnd() * 0.45,
+            });
+          }
+          var DRAG = 3.2;
+          var G = 2200;
+          function renderConfetti(tau) {
+            for (var i = 0; i < parts.length; i++) {
+              var q = parts[i];
+              var f = (1 - Math.exp(-DRAG * tau)) / DRAG;
+              var px = q.vx * f;
+              var py = q.vy * f + 0.5 * G * tau * tau;
+              var o = tau <= 0 ? 0 : clamp01((q.life - tau) / 0.2);
+              q.el.style.setProperty("--hf-px", px.toFixed(1) + "px");
+              q.el.style.setProperty("--hf-py", py.toFixed(1) + "px");
+              q.el.style.setProperty("--hf-pr", (q.spin * tau).toFixed(1) + "deg");
+              q.el.style.setProperty("--hf-po", o.toFixed(3));
+            }
+          }
+          renderConfetti(0);
+          tl.to(driver(renderConfetti), { t: 1.0, duration: 1.0, ease: "none" }, HIT);
+
+          // chromatic-radial-split shader (2-frame flash) + light-leak shader glow
+          setupImpactFx(tl, HIT, XS, XTX, XTY);
+
+          /* ---------- 4. MATCH CUT TO LOCKUP (2.35 - 2.95) ---------- */
+          tl.fromTo(
+            "#xwrap",
+            { x: 0, y: 0, scale: 1 },
+            { x: -XTX, y: -XTY, scale: 1 / XS, duration: 0.57, ease: "expo.inOut", immediateRender: false },
+            2.38,
+          );
+          // the scaled-down 11x X now coincides with the native lockup: swap to the crisp one
+          tl.set("#xwrap", { opacity: 0 }, 2.95);
+          tl.set("#xfinal", { opacity: 1 }, 2.95);
+          // logo-outro ripple: letters fly in from the left, rightmost first, landing by 2.95
+          var LETTER_X = [205.05, 305.54, 398.56, 506.53, 614.51];
+          [4, 3, 2, 1, 0].forEach(function (li, k) {
+            tl.fromTo(
+              "#lt-" + li,
+              { x: -(LETTER_X[li] + 260), skewX: -26 },
+              { x: 0, skewX: 0, duration: 0.33, ease: "expo.out" },
+              2.42 + k * 0.05,
+            );
+          });
+
+          /* ---------- 5. TAGLINE SLOT (kinetic-type-swap) + BAR ---------- */
+          var slots = ["#slot-0", "#slot-1", "#slot-2", "#slot-3"];
+          var ROLL = 0.08;
+          var swapTimes = [3.03, 3.11, 3.19, 3.27];
+          gsap.set(slots, { yPercent: 112, opacity: 0 });
+          tl.fromTo(slots[0], { yPercent: 112, opacity: 1 }, { yPercent: 0, opacity: 1, duration: 0.07, ease: "power4.out" }, 2.95);
+          swapTimes.forEach(function (at, si) {
+            var outEl = slots[si];
+            var outDur = ROLL * 0.55;
+            tl.to(outEl, { yPercent: -112, duration: outDur, ease: "power4.in" }, at);
+            tl.set(outEl, { opacity: 0 }, at + outDur);
+            if (si + 1 < slots.length) {
+              var inStart = at + ROLL - ROLL * 0.55;
+              tl.fromTo(slots[si + 1], { yPercent: 112, opacity: 1 }, { yPercent: 0, opacity: 1, duration: ROLL * 0.55, ease: "power4.out", immediateRender: false }, inStart);
+            }
+          });
+          // the exact tagline path lands last, with the swap's back.out settle, at 3.40
+          tl.fromTo("#tagline", { y: 50 }, { y: 0, duration: 0.1, ease: "back.out(1.7)" }, 3.3);
+          tl.fromTo("#bar", { scaleX: 0 }, { scaleX: 1, duration: 0.3, ease: "power3.inOut" }, 3.15);
+
+          /* ---------- 6. LIVING HOLD (3.40 - 6.00) ---------- */
+          // ambient court, faint, drifting
+          tl.fromTo("#amb-cam", { opacity: 0 }, { opacity: 0.11, duration: 0.7, ease: "power1.out" }, 2.95);
+          tl.fromTo("#amb-world", { z: 0, x: -24, y: 460 }, { z: 110, x: 24, y: 460, duration: 3.05, ease: "none" }, 2.95);
+          // logo-outro glow bloom, then a slow breath behind the ball
+          tl.fromTo("#ball-glow", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1.15, duration: 0.4, ease: "power2.out" }, 2.9);
+          tl.to("#ball-glow", { opacity: 0.7, scale: 0.95, duration: 0.5, ease: "power2.inOut" }, 3.3);
+          tl.to("#ball-glow", { opacity: 1, scale: 1.1, duration: 0.55, ease: "sine.inOut", yoyo: true, repeat: 3 }, 3.8);
+          // ball spin wobble (<= 7deg), ends at rest
+          tl.to("#lkball-final", {
+            keyframes: [
+              { rotation: 7, duration: 0.45, ease: "sine.out" },
+              { rotation: -7, duration: 0.9, ease: "sine.inOut" },
+              { rotation: 6, duration: 0.85, ease: "sine.inOut" },
+              { rotation: 0, duration: 0.4, ease: "sine.inOut" },
+            ],
+          }, 3.4);
+          // one light sweep across TENNIX
+          tl.fromTo("#sweep-bar", { attr: { x: 110 } }, { attr: { x: 780 }, duration: 0.5, ease: "power2.inOut" }, 4.55);
+
+          tl.seek(0);
+          window.__timelines = window.__timelines || {};
+          window.__timelines[COMP_ID] = tl;
+        }
+
+        /* ================= IMPACT FX: CPU ports of two registry shader blocks =================
+           chromatic-radial-split and light-leak ship as WebGL fragment shaders. The software
+           renderer here reports "WebGL unavailable", so both shaders are ported to Canvas 2D with
+           the same math: the radial split samples R at uv + c*s and B at uv - c*s (a uniform
+           scale about the centre per channel), and the leak evaluates the block's exp() leak +
+           flare terms per pixel, recoloured lime/violet and screen-blended over the frame. */
+        function setupImpactFx(tl, HIT, XS, XTX, XTY) {
+          var chromaCanvas = document.getElementById("fx-chroma");
+          var leakCanvas = document.getElementById("fx-leak");
+
+          // ---- chromatic radial split: source = the smash frame, redrawn from the real SVG paths ----
+          var CW = chromaCanvas.width;
+          var CH = chromaCanvas.height;
+          var src = document.createElement("canvas");
+          src.width = CW;
+          src.height = CH;
+          var c2 = src.getContext("2d");
+          var k0 = CW / 1080;
+          c2.fillStyle = "#14123A";
+          c2.fillRect(0, 0, CW, CH);
+          c2.setTransform(XS * k0, 0, 0, XS * k0, (540 - XS * 704.934) * k0, (900 - XS * 745) * k0);
+          c2.fillStyle = "#5B3DF5";
+          c2.fill(new Path2D(document.getElementById("xpath").getAttribute("d")));
+          c2.fillStyle = "#14123A";
+          c2.beginPath();
+          c2.arc(704.934, 745, 24.3105, 0, Math.PI * 2);
+          c2.fill();
+          c2.fillStyle = "#D7FF3D";
+          c2.beginPath();
+          c2.arc(704.934, 745, 22.3032, 0, Math.PI * 2);
+          c2.fill();
+          c2.save();
+          c2.beginPath();
+          c2.arc(704.934, 745, 22.3032, 0, Math.PI * 2);
+          c2.clip();
+          c2.strokeStyle = "#5B3DF5";
+          c2.lineWidth = 2.89942;
+          c2.lineCap = "round";
+          c2.stroke(new Path2D("M681.985 736.994 C699.799 739.142 706.919 752.533 698.738 768.502"));
+          c2.stroke(new Path2D("M711.13 721.498 C702.95 737.467 710.07 750.858 727.883 753.006"));
+          c2.restore();
+
+          var tmp = document.createElement("canvas");
+          tmp.width = CW;
+          tmp.height = CH;
+          var tctx = tmp.getContext("2d");
+          var out = chromaCanvas.getContext("2d");
+          function renderChroma(amount) {
+            var s = amount * 0.09;
+            out.globalCompositeOperation = "source-over";
+            out.fillStyle = "#000";
+            out.fillRect(0, 0, CW, CH);
+            // shader: r = tex(uv + c*s) -> image scaled by 1/(1+s); b = tex(uv - c*s) -> 1/(1-s)
+            [
+              [1 / (1 + s), "#ff0000"],
+              [1, "#00ff00"],
+              [1 / (1 - s), "#0000ff"],
+            ].forEach(function (ch) {
+              var k = ch[0];
+              tctx.globalCompositeOperation = "source-over";
+              tctx.setTransform(1, 0, 0, 1, 0, 0);
+              tctx.fillStyle = "#14123A";
+              tctx.fillRect(0, 0, CW, CH);
+              tctx.setTransform(k, 0, 0, k, (CW / 2) * (1 - k), (CH / 2) * (1 - k));
+              tctx.drawImage(src, 0, 0);
+              tctx.setTransform(1, 0, 0, 1, 0, 0);
+              tctx.globalCompositeOperation = "multiply";
+              tctx.fillStyle = ch[1];
+              tctx.fillRect(0, 0, CW, CH);
+              out.globalCompositeOperation = "lighter";
+              out.drawImage(tmp, 0, 0);
+            });
+            out.globalCompositeOperation = "source-over";
+          }
+          tl.to(
+            driver(function (a) {
+              if (a > 0) renderChroma(a);
+            }),
+            { t: 1, duration: 0.001, ease: "none" },
+            HIT,
+          );
+          // two frames: full split, then a half-strength echo, then gone
+          tl.set(chromaCanvas, { opacity: 1 }, HIT + 0.001);
+          tl.set(chromaCanvas, { opacity: 0.55 }, HIT + 0.04);
+          tl.set(chromaCanvas, { opacity: 0 }, HIT + 0.075);
+
+          // ---- light leak: per-pixel port of the block's leak + flare terms ----
+          var LW = leakCanvas.width;
+          var LH = leakCanvas.height;
+          var lctx = leakCanvas.getContext("2d");
+          var img = lctx.createImageData(LW, LH);
+          function aces(x) {
+            var v = (x * (2.51 * x + 0.03)) / (x * (2.43 * x + 0.59) + 0.14);
+            return v < 0 ? 0 : v > 1 ? 1 : v;
+          }
+          function renderLeak(p, cx, cy) {
+            var data = img.data;
+            var i = 0;
+            for (var y = 0; y < LH; y++) {
+              var vy = (y + 0.5) / LH;
+              var dy = (vy - cy) * 1.7778;
+              for (var x = 0; x < LW; x++) {
+                var dx = (x + 0.5) / LW - cx;
+                var dist = Math.sqrt(dx * dx + dy * dy);
+                var leak = Math.min(1, Math.exp(-dist * 2.8) * p * 1.6);
+                var m = Math.min(1, dist * 1.4);
+                var flare = Math.exp(-Math.abs(dy - dx * 0.18) * 26) * p * 0.7 * Math.exp(-Math.abs(dx) * 1.2);
+                data[i] = 255 * aces((0.84 + (0.36 - 0.84) * m) * leak * 1.3 + 0.9 * flare);
+                data[i + 1] = 255 * aces((1 + (0.24 - 1) * m) * leak * 1.3 + 1 * flare);
+                data[i + 2] = 255 * aces((0.24 + (0.96 - 0.24) * m) * leak * 1.3 + 0.6 * flare);
+                data[i + 3] = 255;
+                i += 4;
+              }
+            }
+            lctx.putImageData(img, 0, 0);
+          }
+          tl.to(
+            driver(function (tau) {
+              if (tau <= 0) return;
+              var p = Math.min(1, tau / 0.03) * Math.exp(-Math.max(0, tau - 0.03) * 4.2);
+              // the leak's source follows the ball (expo.inOut) as it travels to the lockup
+              var m = clamp01((tau - 0.03) / 0.57);
+              var e = m <= 0 ? 0 : m >= 1 ? 1 : m < 0.5 ? Math.pow(2, 20 * m - 10) / 2 : (2 - Math.pow(2, -20 * m + 10)) / 2;
+              renderLeak(p, lerp(540, 704.934, e) / 1080, lerp(900, 745, e) / 1920);
+            }),
+            { t: 0.75, duration: 0.75, ease: "none" },
+            HIT,
+          );
+          tl.set(leakCanvas, { opacity: 1 }, HIT + 0.001);
+          tl.set(leakCanvas, { opacity: 0 }, HIT + 0.75);
+        }
+
+        Promise.all([
+          document.fonts.load('900 100px "Archivo Black"'),
+          document.fonts.load('800 40px "Archivo ExtraBold"'),
+        ]).then(build, build);
       })();
     </script>
   </body>
