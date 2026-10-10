@@ -15,6 +15,8 @@ TENNIX spelled in full; the violet X carries a tennis ball where its strokes cro
 | Link preview (Open Graph) | `web/og-image-1200x630.png` |
 | Social profile picture (all platforms) | `social/profile-1080.png` (safe for circle crops) |
 | Social covers | `social/x-header-1500x500.png`, `linkedin-cover-1584x396.png`, `facebook-cover-1640x624.png`, `youtube-banner-2560x1440.png` |
+| Instagram | `social/instagram/`: profile, intro post and 4 pillar posts (1080x1350, also a carousel), story template, 4 highlight covers |
+| TikTok | `social/tiktok/`: profile, video cover, end card, and a safe area guide (content clear of the buttons and caption) |
 | Merch | One colour logo files above for garments; ideas in `merch/merch-mockups.png` |
 
 Colours: navy `#14123A`, violet `#5B3DF5`, lime `#D7FF3D`, lavender `#E9E4FF`, background `#F6F4FF`. CMYK values in the guidelines are starting points; confirm with a print proof.

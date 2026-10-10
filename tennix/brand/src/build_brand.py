@@ -149,6 +149,70 @@ def build(kit, out):
     # ---- Brand guidelines page ----
     write(out / "guidelines" / "tennix-brand-guidelines.svg", guidelines(kit))
 
+    # ---- Instagram and TikTok ----
+    instagram(kit, out / "social" / "instagram")
+    tiktok(kit, out / "social" / "tiktok")
+
+
+# The four pillar cards from the Tennix product deck: (number, word, card colour, text colour, number colour)
+PILLARS = [("01", "FOLLOW", NAVY, WHITE, VIOLET), ("02", "TRAVEL", VIOLET, WHITE, WHITE),
+           ("03", "GEAR", LIME, NAVY, NAVY), ("04", "CLUB", LAVENDER, NAVY, VIOLET)]
+
+
+def instagram(kit, out):
+    W, H = 1080, 1350  # 4:5 feed post
+    # Brand intro post: the symbol large, the lockup, the pillars
+    b = kit.symbol(540, 520, 460, gap=NAVY)
+    b += kit.lockup(540 - kit.lockup_width(70) / 2, 900, 70, ink=WHITE, gap=NAVY)
+    b += kit.pillars(540, 1090, 24, LAVENDER)
+    write(out / "post-01-intro-1080x1350.svg", svg(W, H, b, bg=NAVY))
+    # One post per pillar, in the colours of the deck's cards; together they also work as a carousel
+    for i, (num, word, bg, ink, num_ink) in enumerate(PILLARS, start=2):
+        b = kit.text(num, kit.bold, 44, 90, 150, num_ink, track=0.04)
+        b += kit.text(word, kit.black, 210 if len(word) <= 4 else 168, 84, 1110, ink, track=-0.02)
+        gap = {NAVY: NAVY, VIOLET: VIOLET, LIME: LIME, LAVENDER: LAVENDER}[bg]
+        small = kit.lockup(W - 90 - kit.lockup_width(30), 120, 30, ink=ink, x_ink=NAVY if bg == VIOLET else VIOLET, gap=gap,
+                           ball=WHITE if bg == LIME else LIME)
+        bar = {LIME: NAVY, LAVENDER: VIOLET}.get(bg, LIME)  # lime vanishes on lime and on lavender
+        b += small + f'<rect x="90" y="1180" width="140" height="10" fill="{bar}"/>'
+        write(out / f"post-0{i}-{word.lower()}-1080x1350.svg", svg(W, H, b, bg=bg))
+    # Story: logo at the top, an open area for photos or video, pillars at the bottom
+    S = 1920
+    b = kit.lockup(540 - kit.lockup_width(64) / 2, 230, 64, ink=WHITE, gap=NAVY)
+    b += f'<rect x="90" y="420" width="900" height="1100" fill="none" stroke="{VIOLET}" stroke-width="4" stroke-dasharray="14 14"/>'
+    b += kit.text("YOUR PHOTO OR VIDEO", kit.bold, 26, 540, 985, LAVENDER, track=0.12, anchor="middle")
+    b += kit.pillars(540, 1680, 24, LAVENDER)
+    write(out / "story-template-1080x1920.svg", svg(1080, S, b, bg=NAVY))
+    # Highlight covers: Instagram shows the centre as a small circle, so keep one bold shape in the middle
+    for num, word, bg, ink, num_ink in PILLARS:
+        b = f'<circle cx="540" cy="960" r="300" fill="{bg}"/>'
+        b += kit.text(num, kit.black, 230, 540, 960 + 230 * kit.black.cap / 2, ink, track=-0.02, anchor="middle")
+        write(out / f"highlight-{word.lower()}-1080x1920.svg", svg(1080, S, b, bg=NAVY if bg != NAVY else VIOLET))
+    write(out / "profile-1080.svg", svg(1080, 1080, kit.symbol(540, 540, 560, gap=NAVY), bg=NAVY))
+
+
+def tiktok(kit, out):
+    W, H = 1080, 1920
+    # TikTok's buttons cover the right edge and the caption covers the bottom, so content sits in the upper middle
+    safe = (60, 260, 900, 1160)  # x, y, w, h of the area kept clear of the app's interface
+    cover = kit.symbol(480, 640, 420, gap=NAVY)
+    cover += kit.lockup(480 - kit.lockup_width(64) / 2, 960, 64, ink=WHITE, gap=NAVY)
+    cover += kit.pillars(480, 1150, 22, LAVENDER)
+    write(out / "video-cover-1080x1920.svg", svg(W, H, cover, bg=NAVY))
+    end = kit.lockup(480 - kit.lockup_width(90) / 2, 700, 90, ink=WHITE, gap=NAVY)
+    end += kit.text("FOLLOW FOR MORE", kit.bold, 30, 480, 900, LIME, track=0.14, anchor="middle")
+    end += f'<rect x="0" y="{H - 36}" width="{W}" height="36" fill="{LIME}"/>'
+    write(out / "end-card-1080x1920.svg", svg(W, H, end, bg=NAVY))
+    write(out / "profile-1080.svg", svg(1080, 1080, kit.symbol(540, 540, 560, gap=NAVY), bg=NAVY))
+    # A guide showing the safe area, for whoever designs the next covers
+    g = f'<rect x="{safe[0]}" y="{safe[1]}" width="{safe[2]}" height="{safe[3]}" fill="none" stroke="{LIME}" stroke-width="4" stroke-dasharray="16 12"/>'
+    g += f'<rect x="{W - 150}" y="700" width="150" height="900" fill="{VIOLET}" opacity="0.35"/>'
+    g += f'<rect x="0" y="{H - 420}" width="{W - 150}" height="420" fill="{VIOLET}" opacity="0.35"/>'
+    g += kit.text("SAFE AREA", kit.bold, 26, safe[0] + 24, safe[1] + 50, LIME, track=0.12)
+    g += kit.text("BUTTONS", kit.bold, 22, W - 75, 1150, WHITE, track=0.1, anchor="middle")
+    g += kit.text("CAPTION AND MUSIC", kit.bold, 22, (W - 150) / 2, H - 200, WHITE, track=0.1, anchor="middle")
+    write(out / "safe-area-guide-1080x1920.svg", svg(W, H, cover + g, bg=NAVY))
+
 
 def merch_sheet(kit):
     W, H = 1800, 1200
