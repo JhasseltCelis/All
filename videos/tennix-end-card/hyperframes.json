@@ -35,6 +35,51 @@
       "name": "caption-clip-wipe",
       "type": "hyperframes:component",
       "target": "compositions/components/caption-clip-wipe.html"
+    },
+    {
+      "name": "caption-kinetic-slam",
+      "type": "hyperframes:component",
+      "target": "compositions/components/caption-kinetic-slam.html"
+    },
+    {
+      "name": "kinetic-type-swap",
+      "type": "hyperframes:component",
+      "target": "compositions/components/kinetic-type-swap.html"
+    },
+    {
+      "name": "confetti",
+      "type": "hyperframes:component",
+      "target": "compositions/components/confetti.html"
+    },
+    {
+      "name": "chromatic-radial-split",
+      "type": "hyperframes:block",
+      "target": "compositions/chromatic-radial-split.html"
+    },
+    {
+      "name": "light-leak",
+      "type": "hyperframes:block",
+      "target": "compositions/light-leak.html"
+    },
+    {
+      "name": "rgb-glitch-text",
+      "type": "hyperframes:component",
+      "target": "compositions/components/rgb-glitch-text.html"
+    },
+    {
+      "name": "logo-outro",
+      "type": "hyperframes:block",
+      "target": "compositions/logo-outro.html"
+    },
+    {
+      "name": "camera-shake",
+      "type": "hyperframes:component",
+      "target": "compositions/components/camera-shake.html"
+    },
+    {
+      "name": "motion-blur",
+      "type": "hyperframes:component",
+      "target": "compositions/components/motion-blur.html"
     }
   ]
 }

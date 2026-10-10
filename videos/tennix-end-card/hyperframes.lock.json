@@ -1,7 +1,16 @@
 {
+  "compositions/chromatic-radial-split.html": "7ced9e0002160371c4381963cec481bc2497afaef29617f94f147e8f97b16a02",
   "compositions/components/arc-motion-path.html": "26fe5636069b3396af3f8ed4d88034bf939c78eb1e836cd3db9899e7f669a187",
+  "compositions/components/camera-shake.html": "3f64f5da225acb5b408847fef9c388f889b1bf1e8d85ec95f0f4316839a60db4",
   "compositions/components/caption-clip-wipe.html": "8b9e06353df3ea3bc0113a9c7ef3e480293a6ed75bee46744b053bf5e02dc5f6",
+  "compositions/components/caption-kinetic-slam.html": "86b7a54e045f626d1375636a2f1cde19c2f3cbdad1df1d7d0204fe6b4452044a",
+  "compositions/components/confetti.html": "e1aab1fba4eac8fcbed7367d94a262c41b08dc26cd723a3a0cde51158f7c864f",
   "compositions/components/echo-trail.html": "fefc245f4fa503d5a5494334e17c41b7ee07cd10083c258c17836b77d637942d",
+  "compositions/components/kinetic-type-swap.html": "e98407ad72306094c3f17f25043924c5214428ef290235db0409c44865e259ba",
   "compositions/components/logo-sting.html": "d120e9f7f8e76fc609d3413b94459f64e2112bc2504a8cb71fcfca72e32a99da",
-  "compositions/components/tracking-in.html": "23d477361fd4b3bbe8111cb9616e5936f1c420a4762adf4855b9741425c0b091"
+  "compositions/components/motion-blur.html": "b604aa760009d6966241f3ea47e24c92b52bd807e99d52e38239c2466b782eef",
+  "compositions/components/rgb-glitch-text.html": "ca732686dde84890e658b9f3900b9e58735d8e7fe0f516ba8dbce094caa9099b",
+  "compositions/components/tracking-in.html": "23d477361fd4b3bbe8111cb9616e5936f1c420a4762adf4855b9741425c0b091",
+  "compositions/light-leak.html": "6f3961d0b875f5c5e0ff5a423dab636613fad0d486e23c5da315ef5d1183359a",
+  "compositions/logo-outro.html": "d5b91c5e750e0cfca97a834e5fd16123747ef12736b889849272e14eaca09f11"
 }
