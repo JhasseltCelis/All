@@ -9,5 +9,32 @@
   "media": {
     "autoProxy": true
   },
-  "authoringSkill": "motion-graphics"
+  "authoringSkill": "motion-graphics",
+  "registryItems": [
+    {
+      "name": "logo-sting",
+      "type": "hyperframes:component",
+      "target": "compositions/components/logo-sting.html"
+    },
+    {
+      "name": "arc-motion-path",
+      "type": "hyperframes:component",
+      "target": "compositions/components/arc-motion-path.html"
+    },
+    {
+      "name": "echo-trail",
+      "type": "hyperframes:component",
+      "target": "compositions/components/echo-trail.html"
+    },
+    {
+      "name": "tracking-in",
+      "type": "hyperframes:component",
+      "target": "compositions/components/tracking-in.html"
+    },
+    {
+      "name": "caption-clip-wipe",
+      "type": "hyperframes:component",
+      "target": "compositions/components/caption-clip-wipe.html"
+    }
+  ]
 }
