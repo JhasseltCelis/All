@@ -1,0 +1,115 @@
+{
+  "status": "final",
+  "category": "logo-reveal",
+  "duration_s": 4.5,
+  "fps": 30,
+  "canvas": { "w": 1080, "h": 1920, "aspect": "9:16" },
+  "style": "Premium sports-tech end card. Flat navy field, crisp vector brand shapes, one dominant motif: the lime ball is the sweet spot. Punchy, fast-in / still-out (expo/power4 outs, no elastic or cartoon squash). Transient FX (trail, shockwave, glow) are restrained and fully gone before the hold so the final frame IS the static end card.",
+  "palette": ["#14123A", "#5B3DF5", "#D7FF3D", "#E9E4FF", "#FFFFFF"],
+  "font": "Archivo Black (reference only: every glyph is already an outlined path in assets/end-card-1080x1920.svg; no live text needed)",
+  "beats": [0.0, 0.8, 1.15, 1.9, 2.3, 2.75],
+  "export": "mp4",
+
+  "asset_needs": [],
+
+  "block": "logo-sting",
+  "customize": {
+    "base_block_role": "Install `logo-sting` (component) as the structural reference: entrance lands, fires ONE accent ring, then holds completely still. Replace its wordmark-slam with the ball-landing trigger below; ring colour = lime #D7FF3D (secondary ring violet #5B3DF5); DROP its white impact frame (too loud for this brand).",
+    "supporting_components": {
+      "arc-motion-path": "ball flight along a curved arc (autoRotate OFF; ball spin is a separate rotation tween)",
+      "echo-trail": "3 ghost copies of the ball behind it during flight (opacity 0.35 / 0.2 / 0.1), collapsing into the lead by the landing",
+      "tracking-in": "FOLLOW FOR MORE letter-spacing reveal",
+      "caption-clip-wipe": "pattern reference for the per-letter TENNI mask reveal (direction changed, see beats)"
+    },
+    "rules": [
+      "hyperframes-animation/rules/motion-blur-streak (path B echo trail, envelope locked to the flight tween's ease/window: max smear at launch, razor-sharp at landing)",
+      "hyperframes-animation/rules/ambient-glow-bloom (violet bloom behind the crossing at impact, peak opacity <= 0.3, then fades to 0)",
+      "hyperframes-animation/rules/cursor-click-ripple (ripple-ring mechanics for the impact shockwave: rings live in DOM from t=0 at scale 0 / opacity 0)"
+    ],
+    "canvas_note": "The scaffold index.html is 1920x1080 with a placeholder title: switch it to 1080x1920 (data-width/height, viewport meta, body size), body/background #14123A, duration 4.5.",
+    "geometry": {
+      "source_svg": "assets/end-card-1080x1920.svg (viewBox 0 0 1080 1920); paste its paths inline so final positions are byte-exact",
+      "TENNI_path": "white #FFFFFF, x 207.0-645.5, y 699.7-790.0; the single path contains 5 'M' subpaths = T, E, N, N, I -> split into 5 <path>s, one per letter",
+      "X_path": "violet #5B3DF5, x 654.4-756.0, y 699.7-790.0",
+      "sweet_spot": { "cx": 704.934, "cy": 745, "navy_ring_r": 24.3105, "ball_r": 22.3032, "seam_stroke": 2.89942 },
+      "ball_group": "navy ring circle + lime circle + clipPath + 2 violet seam paths; wrap ring+ball+seams in one <g> with transform-origin at (704.934,745) so it can fly/spin and land exactly",
+      "tagline_path": "FOLLOW FOR MORE lime #D7FF3D, x 300.0-660.8, y 879.0-900.4; group its subpaths per letter (O/R have counter subpaths: keep each letter's subpaths together) for tracking-in",
+      "bar": "rect x0 y1884 w1080 h36 lime #D7FF3D"
+    },
+    "safe_area": "Final layout is unchanged from the static card (content left of centre, right ~180px reserved for TikTok buttons, bottom ~420px for caption). The ball flight path stays within x < 880 and enters from the lower-left; nothing animated may rest in the right or bottom UI zones."
+  },
+
+  "content": {
+    "logo": "assets/end-card-1080x1920.svg",
+    "logo_standalone": ["assets/tennix-logo-dark.svg", "assets/tennix-symbol-dark.svg"],
+    "tagline": "FOLLOW FOR MORE",
+    "url": null,
+    "reference_frame": "assets/end-card-reference.png (the last frame must match this pixel-for-pixel within render tolerance)",
+
+    "brief": "A tennis shot opens the card: the lime ball is struck in from the lower-left, arcs high across the navy field with a short ghost trail and spinning seams, and drops precisely onto the empty spot where the X's strokes will cross. Its landing is the trigger: a single lime shockwave ring and a soft violet bloom pulse out, the two violet X strokes shoot outward from under the ball, and TENNI ripples in letter by letter travelling leftwards away from the impact, like the energy of the hit. FOLLOW FOR MORE then tracks in from wide letter-spacing, the lime bar sweeps across the bottom edge, and everything locks into a dead-still hold identical to the static end card. Dominant motion idea: the ball IS the sweet spot; everything in the logo is set off by its landing.",
+
+    "beats": [
+      {
+        "id": "b0-serve",
+        "start": 0.0,
+        "end": 0.8,
+        "what": "Ball shot. Only the ball group (navy ring + lime ball + seams) is visible on navy. Launches from off-frame lower-left (centre approx x -90, y 1240, scale 1.5), arcs through an apex near (430, 480), descends onto the crossing (704.934, 745) at scale 1.0.",
+        "motion": "arc-motion-path; position ease power2.out-ish so it decelerates into the landing (fast hit, controlled drop); scale 1.5 -> 1.0 same window; ball spin rotation -540deg -> 0 (ease power3.out) so seams land in their exact final orientation; echo-trail 3 ghosts + motion-blur-streak path B, ghosts collapse to 0 by t=0.75.",
+        "hook": "Ball is on screen by frame 2; first readable read at ~0.3s.",
+        "sfx_slot_optional": "soft racket 'pock' at 0.00s + light air whoosh 0.05-0.6s (optional, not required; silent is fine)"
+      },
+      {
+        "id": "b1-impact",
+        "start": 0.8,
+        "end": 1.3,
+        "what": "Landing at frame 24 exactly on (704.934, 745). Micro settle: ball dips +5px y and returns over 0.12s (power2.out), no squash/stretch. Lime shockwave ring (stroke 3px, no fill) expands r 24 -> 120 with opacity 0.9 -> 0 over 0.5s (power2.out); a thinner violet ring follows 0.07s later, r 24 -> 80, opacity 0.6 -> 0. Violet glow bloom behind the crossing ramps to opacity 0.3 at 0.9s and decays to 0 by 1.6s.",
+        "motion": "logo-sting accent ring (customized colours, no white flash) + cursor-click-ripple ring mechanics + ambient-glow-bloom (bloom-in only, then decay to 0, no idle breathe).",
+        "sfx_slot_optional": "tight ball-impact thud/pop at 0.80s (optional)"
+      },
+      {
+        "id": "b2-x-snap",
+        "start": 0.8,
+        "end": 1.15,
+        "what": "The violet X grows OUT of the ball: two copies of the X path, each clipped to one diagonal stroke; each clip is a band along that diagonal that expands from the crossing toward both ends. Stroke 1 (top-left to bottom-right) 0.80-1.08s, stroke 2 (top-right to bottom-left) 0.86-1.14s. Ball stays on top (z-order: X below ball group).",
+        "motion": "clip-path / mask growth, ease expo.out; final state = the original unclipped X path (swap to the single original path at the end so edges are exact)."
+      },
+      {
+        "id": "b3-tenni-ripple",
+        "start": 1.0,
+        "end": 1.6,
+        "what": "TENNI reveals right-to-left, I first, T last (energy travelling away from the impact). Each letter mask-wipes up from its baseline (clip inset from bottom 100% -> 0) while rising y +36px -> 0.",
+        "motion": "per-letter stagger 0.06s, each 0.38s, ease power4.out; no opacity flicker, no blur. Pattern from caption-clip-wipe, direction bottom-up and stagger order reversed."
+      },
+      {
+        "id": "b4-tagline",
+        "start": 1.9,
+        "end": 2.5,
+        "what": "Pattern interrupt: the lockup has been still for ~0.3s; FOLLOW FOR MORE tracks in. Letter groups start spread from the tagline centre (x 480) at 1.6x their final offset with opacity 0, and converge to their exact final positions.",
+        "motion": "tracking-in (per-letter-group translateX, never scaleX on the glyphs); ease expo.out 0.6s; opacity 0 -> 1 over the first 0.25s."
+      },
+      {
+        "id": "b5-bar-sweep",
+        "start": 2.3,
+        "end": 2.75,
+        "what": "The lime bar at the bottom edge sweeps in left to right.",
+        "motion": "underline_sweep / bar_wipe: scaleX 0 -> 1, transform-origin left center, ease expo.out 0.45s."
+      },
+      {
+        "id": "b6-hold",
+        "start": 2.75,
+        "end": 4.5,
+        "what": "Clean, dead-still hold of the exact static end card (1.75s, ample for the CTA to read). No idle breathe, no shimmer: the hold must equal assets/end-card-reference.png.",
+        "motion": "hold"
+      }
+    ],
+
+    "exit": "none (end card; final frame is the hold)",
+    "audio": "Silent by default. Optional SFX slots noted on b0 (pock + whoosh) and b1 (impact pop at 0.80s); if added later, keep them short and dry, no music bed required.",
+    "acceptance": [
+      "Frame at t=4.5s (and anywhere in 2.8-4.5s) matches assets/end-card-reference.png: same positions, colours, sizes; no residual glow, ring or ghost.",
+      "Ball lands on (704.934, 745) at frame 24 with seams in their final orientation; X strokes start growing on that same frame.",
+      "No recolouring and no non-uniform scaling of any brand shape at rest; flight-time scale is uniform only.",
+      "Nothing animated rests in the right-edge TikTok button zone or the bottom ~420px caption zone (the bar is the only element there, as in the static card)."
+    ]
+  }
+}
